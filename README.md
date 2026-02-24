@@ -1,4 +1,4 @@
-Project: The Threshold of Quasqueton (v1.0)
+Project: Red Box (v1.0)
 Welcome to the development hub for an immersive, old-school RPG experience. This project transitions from a basic scaffold into a tactile, "Trapper Keeper" style adventure inspired by the legendary Module B1: In Search of the Unknown.
 
 Overview
