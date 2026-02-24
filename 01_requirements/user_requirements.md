@@ -1,33 +1,38 @@
-# User Requirements Document: Version 1.0
-**Project**: Red Box Beta (Old School RPG Demo)
-**Status**: Hand-off Ready for Version 1.0 Production
-**Target Framework**: React 18 / Vite / LocalStorage
+# User Requirements: Red Box (v1.0)
 
-## 1. Vision & Scope
-Version 1.0 transforms the "tutorial scaffold" into a persistent campaign experience. The interface must move from a standard web layout to a tactile "Trapper Keeper" folder metaphor, supporting a loop of exploration, survival, and town-based recovery.
+## 1. Navigation & UI Architecture (The "N-Tab" System)
+* **Tactile Folder Shell:** The application must utilize a persistent UI wrapper mimicking a physical "Trapper Keeper" or weathered folder, featuring paper textures and tactile tab-based navigation.
+* **Dynamic Tab Logic:** The UI must support a scalable "N-tab" system to allow for the dynamic addition of future modules or gameplay tools.
+* **Home Page Arrangement:** The primary navigation must be organized into the following tabs:
+    1.  **Characters:** Central management for all player heroes.
+    2.  **Adventures:** The active gateway to the game world (Town and Dungeon).
+    3.  **Dice Roller:** Dedicated utility for tactical rolls.
+    4.  **Reference:** Comprehensive library for rules and creature data.
 
-## 2. Core Feature Requirements
+## 2. Character Management
+* **Paged Character View:** Within the Characters tab, data must be organized into distinct pages:
+    * **Sheet:** Interactive display of ability scores, hit points, and saving throws.
+    * **Inventory:** List-based tracking for gear with automated weight and encumbrance calculations.
+    * **Spells:** A "Spellbook" interface for managing known spells and tracking daily slots.
+* **Persistence:** Character states, including HP and equipment changes, must be saved to `localStorage` to persist between sessions.
 
-### 2.1 The "Trapper Keeper" Interface
-- **Analog Aesthetic**: The UI must mimic physical artifacts (looseleaf paper, weathered maps, handwritten fonts).
-- **Tabbed Navigation**:
-    - **Home/Town**: Current hub status, NPC interactions, and "Duke's Law" alerts.
-    - **Chars**: Dynamic character sheet with XP tracking and level-up capabilities (Levels 1-10).
-    - **Maps**: 10' per square graph paper grid with "Fog of War."
-    - **Journal**: A persistent, append-only log of every room discovery, dice roll, and rumor learned.
-    - **Bestiary**: A reference guide for encountered monsters.
+## 3. Adventures & Exploration (The Quasqueton Engine)
+* **High-Fidelity Map Rendering:** The dungeon explorer must utilize modern CSS to mimic classic module cartography:
+    * **Architectural Weight:** Use visual logic to distinguish between 4px "Outer Foundation" walls and 1px "Inner Partition" dividers.
+    * **Environmental Texturing:** Implementation of "Stippled Rock" effects and cavernous edge rendering to represent solid earth.
+    * **Tactical Annotations:** Scaling room numbers and descriptive labels (e.g., "Dungeon Entrance") integrated directly onto the grid.
 
-### 2.2 The Town of Threshold (Hub)
-- **Transition Logic**: Upon completing the Haunted Crypt (Tutorial), the user is presented with a "Go to Town" button.
-- **The Duke's Law**: Strict enforcement in town. Large weapons (swords, axes) must be flagged as "Stashed" and are unavailable for combat while in the Town view.
-- **The Gold Dragon Inn**: Provides HP and Spell recovery. 
-    - Cost: 5gp per night.
-    - Requirement: Character must possess at least 1 unit of Rations.
-- **Merchant System**: Full equipment list from the 1983 Basic Set. Purchases must accurately calculate "Coin Weight" (10 coins = 1 lb).
+* **Dynamic Fog of War:** Visibility must transition from a binary "hidden/revealed" state to a gradient-driven system that simulates torchlight falloff.
+* **The "Threshold" Loop:** The Adventures tab must support a non-combat hub featuring:
+    * **The Gold Dragon Inn:** For recovery of HP and spells.
+    * **The Shop:** For purchasing expedition-critical gear (oil, spikes, 10' poles).
 
-### 2.3 Module B1: In Search of the Unknown
-- **Dynamic Stocking**: The 44 rooms of the Upper Level must be stocked *once* per playthrough using the Mike Carr random distribution (30% Monsters, 30% Treasure, 40% Special/Empty).
-- **Exploration Mechanics**:
-    - **Searching**: Manual action to reveal secret doors (1-in-6 chance for non-elves).
-    - **Resource Management**: Tracking turn-based consumption of torches and lanterns.
-    - **Wandering Monsters**: A 1-in-6 chance check every 3
+## 4. Tactical Utilities & Reference
+* **Integrated Dice Roller:** A functional utility supporting standard RPG dice (d4, d6, d8, d10, d12, d20, d100) with a results history log.
+* **Searchable Reference Archive:**
+    * **Rules:** Quick access to combat maneuvers, movement rates, and THAC0 (To Hit Armor Class 0) reference tables.
+    * **Bestiary:** A data-driven archive of creatures (e.g., Orcs, Troglodytes, Giant Rats) including Armor Class, Hit Dice, and XP values.
+
+## 5. Campaign Systems
+* **XP & Progression:** The system must automate experience point tracking and provide level-up utilities supporting a Level 1-10 progression curve.
+* **E2E Gameplay Flow:** The application must support a seamless transition from the initial Tutorial through the Town of Threshold and into the Caverns of Quasqueton.
