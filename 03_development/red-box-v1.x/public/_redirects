@@ -1,0 +1,5 @@
+# Netlify Redirects for Red Box RPG
+# This ensures React Router works correctly when refreshing pages
+
+# Redirect all requests to index.html for client-side routing
+/*    /index.html   200

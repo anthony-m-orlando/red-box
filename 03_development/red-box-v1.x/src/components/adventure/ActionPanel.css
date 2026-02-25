@@ -1,0 +1,265 @@
+.action-panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.action-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================
+   Character Status
+   ======================================== */
+
+.character-status {
+  margin-bottom: var(--space-md);
+}
+
+.character-status h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-md);
+  color: var(--ink-black);
+  text-align: center;
+}
+
+.status-bars {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.status-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.status-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hp-bar {
+  height: 32px;
+  background-color: var(--paper-aged);
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+}
+
+.hp-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: var(--ink-red);
+  transition: width var(--transition-medium);
+}
+
+.hp-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  color: var(--ink-black);
+  z-index: 1;
+  text-shadow: 0 0 2px var(--paper-cream);
+}
+
+.status-row {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.status-compact {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm);
+  background-color: var(--paper-aged);
+  border-radius: var(--radius-sm);
+}
+
+/* ========================================
+   Section Divider
+   ======================================== */
+
+.section-divider {
+  height: 2px;
+  background-color: var(--border-dark);
+  margin: var(--space-md) 0;
+}
+
+/* ========================================
+   Current Room Info
+   ======================================== */
+
+.current-room-info {
+  margin-bottom: var(--space-md);
+}
+
+.current-room-info h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-sm);
+}
+
+.room-name {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  color: var(--ink-black);
+  margin-bottom: var(--space-md);
+}
+
+.danger-warning {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  background-color: rgba(139, 38, 53, 0.1);
+  border: 2px solid var(--ink-red);
+  border-radius: var(--radius-sm);
+  color: var(--ink-red);
+  font-weight: 700;
+}
+
+.cleared-notice {
+  padding: var(--space-sm);
+  background-color: rgba(44, 74, 124, 0.1);
+  border: 2px solid var(--ink-blue);
+  border-radius: var(--radius-sm);
+  color: var(--ink-blue);
+  font-weight: 700;
+  text-align: center;
+}
+
+/* ========================================
+   Combat Section
+   ======================================== */
+
+.combat-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-lg);
+  background-color: var(--paper-aged);
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+}
+
+.combat-section h4 {
+  font-size: 1.5rem;
+  color: var(--ink-red);
+  margin-bottom: var(--space-md);
+}
+
+/* ========================================
+   Available Actions
+   ======================================== */
+
+.available-actions {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.available-actions h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-brown);
+}
+
+.action-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.action-group-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-xs);
+}
+
+/* ========================================
+   Progress
+   ======================================== */
+
+.adventure-progress {
+  margin-top: auto;
+  padding-top: var(--space-md);
+  border-top: 2px solid var(--border-dark);
+}
+
+.adventure-progress h4 {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-sm);
+}
+
+.progress-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-xs) 0;
+  font-size: 0.875rem;
+}
+
+/* ========================================
+   Light Status
+   ======================================== */
+
+.light-status {
+  padding: var(--space-sm);
+  background-color: rgba(255, 165, 0, 0.1);
+  border: 2px solid rgba(255, 140, 0, 0.3);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-weight: 600;
+  color: var(--ink-brown);
+  font-size: 0.875rem;
+  margin-top: var(--space-sm);
+}
+
+.darkness-warning-exploration {
+  padding: var(--space-sm);
+  background-color: rgba(139, 0, 0, 0.1);
+  border: 2px solid rgba(139, 0, 0, 0.3);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-weight: 600;
+  color: #8B0000;
+  font-size: 0.875rem;
+  margin-top: var(--space-sm);
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .status-row {
+    flex-direction: column;
+  }
+}

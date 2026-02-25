@@ -1,0 +1,351 @@
+.combat-ui {
+  width: 100%;
+}
+
+.combat-container {
+  min-height: 400px;
+}
+
+/* ========================================
+   Enemy Status
+   ======================================== */
+
+.enemy-status {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.enemy-status h3 {
+  font-size: 1.75rem;
+  color: var(--ink-red);
+  margin-bottom: var(--space-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.enemy-hp-bar {
+  height: 40px;
+  background-color: var(--paper-cream);
+  border: 3px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: var(--space-md);
+}
+
+.enemy-hp-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  background-color: var(--ink-red);
+  transition: width var(--transition-medium);
+}
+
+.enemy-hp-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  color: var(--ink-black);
+  z-index: 1;
+  text-shadow: 0 0 2px var(--paper-cream);
+}
+
+.enemy-stats {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-lg);
+  font-weight: 700;
+  color: var(--ink-brown);
+}
+
+/* ========================================
+   Combat Divider
+   ======================================== */
+
+.combat-divider {
+  height: 2px;
+  background-color: var(--border-dark);
+  margin: var(--space-lg) 0;
+}
+
+/* ========================================
+   Combat Log
+   ======================================== */
+
+.combat-log {
+  margin-bottom: var(--space-lg);
+}
+
+.combat-log h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-md);
+}
+
+.log-entries {
+  background-color: var(--paper-cream);
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  min-height: 120px;
+  max-height: 150px;
+  overflow-y: auto;
+  font-family: var(--font-body);
+}
+
+.log-entry {
+  padding: var(--space-xs) 0;
+  line-height: 1.6;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.log-entry:not(:last-child) {
+  border-bottom: 1px solid rgba(42, 35, 28, 0.1);
+}
+
+/* ========================================
+   Combat Actions
+   ======================================== */
+
+.combat-actions {
+  margin-bottom: var(--space-md);
+}
+
+.combat-actions h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* ========================================
+   Combat Waiting
+   ======================================== */
+
+.combat-waiting {
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.combat-waiting h4 {
+  font-size: 1.25rem;
+  color: var(--ink-red);
+  margin-bottom: var(--space-md);
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.combat-waiting .flavor-text {
+  font-family: var(--font-flavor);
+  font-style: italic;
+  color: var(--ink-brown);
+}
+
+/* ========================================
+   Combat Results
+   ======================================== */
+
+.combat-result {
+  text-align: center;
+  padding: var(--space-xxl);
+  animation: slideUp 0.5s ease-out;
+}
+
+.combat-result h2 {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-md);
+}
+
+.victory-result h2 {
+  color: var(--ink-blue);
+}
+
+.defeat-result h2 {
+  color: var(--ink-red);
+}
+
+.combat-result p {
+  font-size: 1.125rem;
+  margin-bottom: var(--space-sm);
+}
+
+.xp-award {
+  font-family: var(--font-numbers);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink-blue);
+  margin-top: var(--space-md);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   Active Buffs
+   ======================================== */
+
+.active-buffs {
+  padding: var(--space-md);
+  background-color: rgba(44, 74, 124, 0.1);
+  border-left: 3px solid var(--ink-blue);
+  border-radius: var(--radius-sm);
+}
+
+.active-buffs h4 {
+  margin: 0 0 var(--space-sm) 0;
+  font-size: 0.9375rem;
+  color: var(--ink-blue);
+  font-weight: 700;
+}
+
+.buff-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.buff-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.875rem;
+  padding: var(--space-xs);
+  background-color: rgba(44, 74, 124, 0.05);
+  border-radius: var(--radius-sm);
+}
+
+.buff-indicator svg {
+  color: var(--ink-blue);
+  flex-shrink: 0;
+}
+
+.buff-name {
+  color: var(--ink-black);
+  font-weight: 600;
+}
+
+.buff-effect {
+  color: var(--ink-blue);
+  font-weight: 700;
+  font-family: var(--font-numbers);
+}
+
+.buff-duration {
+  margin-left: auto;
+  color: var(--ink-brown);
+  font-size: 0.8125rem;
+  font-style: italic;
+}
+
+/* ========================================
+   Enemy Conditions
+   ======================================== */
+
+.enemy-condition {
+  margin-top: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background-color: rgba(138, 43, 226, 0.1);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.condition-asleep {
+  font-weight: 600;
+  color: var(--ink-blue);
+  font-size: 0.875rem;
+}
+
+/* ========================================
+   Darkness Warning
+   ======================================== */
+
+.darkness-warning {
+  padding: var(--space-md);
+  background-color: rgba(139, 0, 0, 0.1);
+  border: 2px solid rgba(139, 0, 0, 0.3);
+  border-left: 4px solid #8B0000;
+  border-radius: var(--radius-sm);
+}
+
+.darkness-warning h4 {
+  margin: 0 0 var(--space-xs) 0;
+  font-size: 0.9375rem;
+  color: #8B0000;
+  font-weight: 700;
+}
+
+.darkness-warning p {
+  margin: var(--space-xs) 0;
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+  font-weight: 600;
+}
+
+.darkness-hint {
+  font-size: 0.8125rem !important;
+  font-style: italic;
+  color: var(--ink-brown) !important;
+  font-weight: 400 !important;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .enemy-status h3 {
+    font-size: 1.5rem;
+  }
+  
+  .combat-result h2 {
+    font-size: 2rem;
+  }
+  
+  .log-entries {
+    max-height: 100px;
+  }
+}

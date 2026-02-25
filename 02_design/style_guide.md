@@ -90,3 +90,21 @@ Buttons should avoid modern "glossy" looks.
 * **Desktop:** Full binder view (Tabs on the right).
 * **Tablet:** Binder view with tabs collapsed into a "Index" page.
 * **Mobile:** Single "Page" view with a bottom-navigation bar mimicking the tab colors.
+
+# Visual Style Guide: Project Redbox
+
+## 1. Aesthetic: "Trapper Keeper"
+* **Primary Motif**: Paper-on-plastic, high-contrast, weathered textures.
+* **Fonts**: Headers (Cormorant Garamond), Data (Courier Prime), Journal (Indie Flower).
+
+## 2. Visual Feedback
+* **Highlighter Effect**: Hovering over interactive elements uses a `#FEF3C7` (Light Yellow) tint.
+* **NPC Status**: 
+    * **Friendly**: Subtle green glow or handwritten "Ally" note.
+    * **Surrendered**: 50% opacity with a "shackled" icon.
+* **Grid**: 10' squares, graph paper blue (`#D1D5DB`).
+
+## 3. Map Elements
+* **Outer Walls**: 4px Ink Black.
+* **Inner Walls**: 1px Graph Paper Blue.
+* **Fog of War**: Radial gradient simulating 30ft torchlight.

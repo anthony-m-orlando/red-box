@@ -1,0 +1,330 @@
+.character-finalization {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  min-height: 100vh;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.finalization-header {
+  text-align: center;
+  margin-bottom: var(--space-xxl);
+}
+
+.finalization-header h1 {
+  color: var(--ink-red);
+  font-size: 3rem;
+  margin-bottom: var(--space-sm);
+  animation: slideUp 0.5s ease-out;
+}
+
+/* ========================================
+   Naming Section
+   ======================================== */
+
+.naming-section {
+  max-width: 600px;
+  margin: 0 auto;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+}
+
+.naming-content {
+  text-align: center;
+  width: 100%;
+}
+
+.naming-content h1 {
+  margin-bottom: var(--space-md);
+  color: var(--ink-red);
+}
+
+.naming-form {
+  margin: var(--space-xxl) 0;
+}
+
+.name-input-group {
+  margin-bottom: var(--space-lg);
+}
+
+.name-input-group label {
+  display: block;
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+  color: var(--ink-brown);
+  text-align: left;
+}
+
+.name-input-group input {
+  width: 100%;
+  padding: var(--space-md);
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  background-color: var(--paper-cream);
+  border: 3px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.name-input-group input:focus {
+  outline: none;
+  border-color: var(--ink-blue);
+}
+
+.back-link {
+  background: transparent;
+  border: none;
+  color: var(--ink-blue);
+  font-family: var(--font-body);
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: var(--space-lg);
+  transition: color var(--transition-fast);
+}
+
+.back-link:hover {
+  color: var(--ink-red);
+  text-decoration: underline;
+}
+
+/* ========================================
+   Character Sheet
+   ======================================== */
+
+.character-sheet {
+  margin-bottom: var(--space-xxl);
+  animation: slideUp 0.5s ease-out;
+}
+
+.sheet-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-lg);
+}
+
+.character-name-display {
+  font-size: 2.5rem;
+  color: var(--ink-black);
+  margin-bottom: var(--space-xs);
+}
+
+.character-subtitle {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  color: var(--ink-brown);
+  text-transform: capitalize;
+}
+
+.class-icon-large {
+  font-size: 4rem;
+}
+
+.sheet-divider {
+  height: 3px;
+  background-color: var(--border-dark);
+  margin: var(--space-lg) 0;
+}
+
+.sheet-section {
+  margin-bottom: var(--space-xl);
+}
+
+.sheet-section h3 {
+  font-size: 1.5rem;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--border-dark);
+}
+
+.sheet-section h4 {
+  font-size: 1.125rem;
+  color: var(--ink-brown);
+  margin: var(--space-md) 0 var(--space-sm);
+}
+
+/* ========================================
+   Abilities Display
+   ======================================== */
+
+.abilities-display {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-md);
+}
+
+.ability-box {
+  background-color: var(--paper-cream);
+  border: 3px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.ability-name-display {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-xs);
+}
+
+.ability-score-display {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+}
+
+.ability-mod-display {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.ability-mod-display.positive {
+  color: var(--ink-blue);
+}
+
+.ability-mod-display.negative {
+  color: var(--ink-red);
+}
+
+/* ========================================
+   Combat Stats
+   ======================================== */
+
+.combat-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--space-md);
+}
+
+.stat-box {
+  background-color: var(--paper-cream);
+  border: 3px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-sm);
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+/* ========================================
+   Features & Equipment
+   ======================================== */
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.feature-item {
+  line-height: 1.6;
+}
+
+.abilities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.abilities-list li {
+  padding-left: var(--space-md);
+  margin-bottom: var(--space-sm);
+  line-height: 1.6;
+  position: relative;
+}
+
+.abilities-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--ink-blue);
+  font-weight: 700;
+}
+
+.equipment-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.equipment-item {
+  line-height: 1.6;
+}
+
+/* ========================================
+   Actions
+   ======================================== */
+
+.finalization-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-lg);
+}
+
+.finalization-footer {
+  text-align: center;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .finalization-header h1 {
+    font-size: 2rem;
+  }
+  
+  .sheet-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .character-name-display {
+    font-size: 2rem;
+  }
+  
+  .class-icon-large {
+    font-size: 3rem;
+    margin-top: var(--space-md);
+  }
+  
+  .abilities-display {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .combat-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .finalization-actions {
+    flex-direction: column;
+  }
+  
+  .finalization-actions .btn {
+    width: 100%;
+  }
+}

@@ -1,0 +1,263 @@
+.adventure-selection {
+  min-height: 100vh;
+  padding: var(--space-xl);
+  background: linear-gradient(135deg, 
+    rgba(222, 184, 135, 0.1) 0%,
+    rgba(139, 69, 19, 0.05) 100%
+  );
+}
+
+.selection-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.selection-header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+  position: relative;
+}
+
+.selection-header button {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.selection-header h1 {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-sm);
+  color: var(--ink-black);
+}
+
+.character-name {
+  font-size: 1rem;
+  color: var(--ink-brown);
+  margin-top: var(--space-sm);
+}
+
+.character-name strong {
+  color: var(--ink-black);
+  font-weight: 700;
+}
+
+/* ========================================
+   Adventures Grid
+   ======================================== */
+
+.adventures-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xl);
+}
+
+/* ========================================
+   Adventure Card
+   ======================================== */
+
+.adventure-card {
+  background: #fff;
+  border: 3px solid var(--ink-brown);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.adventure-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  border-color: var(--ink-black);
+}
+
+.adventure-card.selected {
+  border-color: var(--ink-blue);
+  border-width: 4px;
+  background: rgba(44, 74, 124, 0.05);
+  box-shadow: 0 0 0 3px rgba(44, 74, 124, 0.2);
+}
+
+.adventure-card.locked {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.adventure-card.locked:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ========================================
+   Card Content
+   ======================================== */
+
+.adventure-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto var(--space-md);
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: 50%;
+}
+
+.adventure-content h3 {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-xs);
+  color: var(--ink-black);
+  text-align: center;
+}
+
+.subtitle {
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+  text-align: center;
+  margin-bottom: var(--space-md);
+  font-style: italic;
+}
+
+/* ========================================
+   Meta Information
+   ======================================== */
+
+.adventure-meta {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 2px solid var(--ink-brown-light);
+}
+
+.difficulty {
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.difficulty.beginner {
+  background: rgba(34, 139, 34, 0.1);
+  color: #228B22;
+  border: 1px solid #228B22;
+}
+
+.difficulty.easy {
+  background: rgba(65, 105, 225, 0.1);
+  color: #4169E1;
+  border: 1px solid #4169E1;
+}
+
+.difficulty.medium {
+  background: rgba(255, 140, 0, 0.1);
+  color: #FF8C00;
+  border: 1px solid #FF8C00;
+}
+
+.difficulty.hard {
+  background: rgba(220, 20, 60, 0.1);
+  color: #DC143C;
+  border: 1px solid #DC143C;
+}
+
+.level {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+  font-weight: 600;
+}
+
+/* ========================================
+   Description & Features
+   ======================================== */
+
+.description {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-black);
+  margin-bottom: var(--space-md);
+  text-align: left;
+}
+
+.features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.features li {
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-xs);
+  padding-left: var(--space-xs);
+}
+
+/* ========================================
+   Locked Overlay
+   ======================================== */
+
+.locked-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.selection-footer {
+  text-align: center;
+  padding-top: var(--space-lg);
+  border-top: 3px solid var(--ink-brown);
+}
+
+.selection-footer button {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .adventure-selection {
+    padding: var(--space-md);
+  }
+
+  .adventures-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .selection-header h1 {
+    font-size: 2rem;
+    margin-top: var(--space-xl);
+  }
+
+  .selection-header button {
+    position: static;
+    margin-bottom: var(--space-md);
+  }
+}

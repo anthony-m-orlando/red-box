@@ -1,0 +1,195 @@
+.character-creator {
+  min-height: 100vh;
+  background-color: var(--paper-cream);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================
+   Progress Bar
+   ======================================== */
+
+.creation-progress {
+  background-color: var(--paper-aged);
+  border-bottom: 3px solid var(--border-dark);
+  padding: var(--space-lg) var(--space-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.progress-bar {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  opacity: 0.4;
+  transition: opacity var(--transition-medium);
+}
+
+.progress-step.active {
+  opacity: 1;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid var(--border-dark);
+  background-color: var(--paper-cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-numbers);
+  font-size: 1.25rem;
+  font-weight: 700;
+  transition: all var(--transition-medium);
+}
+
+.progress-step.active .step-number {
+  background-color: var(--ink-blue);
+  border-color: var(--ink-blue);
+  color: var(--paper-cream);
+  transform: scale(1.1);
+}
+
+.progress-step.complete .step-number {
+  background-color: var(--ink-black);
+  border-color: var(--ink-black);
+  color: var(--paper-cream);
+}
+
+.step-label {
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+.progress-line {
+  flex: 1;
+  height: 3px;
+  background-color: var(--border-dark);
+  opacity: 0.3;
+  margin: 0 var(--space-sm);
+  transition: all var(--transition-medium);
+}
+
+.progress-line.complete {
+  opacity: 1;
+  background-color: var(--ink-black);
+}
+
+/* ========================================
+   Content Area
+   ======================================== */
+
+.creation-content {
+  flex: 1;
+}
+
+/* ========================================
+   Coming Soon Steps
+   ======================================== */
+
+.coming-soon-step {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xxl) var(--space-md);
+}
+
+.coming-soon-content {
+  text-align: center;
+  max-width: 600px;
+}
+
+.coming-soon-content h2 {
+  font-size: 2.5rem;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-md);
+}
+
+.coming-soon-content p {
+  font-size: 1.25rem;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-lg);
+}
+
+.coming-soon-badge {
+  display: inline-block;
+  padding: var(--space-sm) var(--space-lg);
+  background-color: var(--paper-aged);
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-blue);
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.creator-footer {
+  background-color: var(--paper-aged);
+  border-top: 2px solid var(--border-dark);
+  padding: var(--space-md);
+  text-align: center;
+}
+
+.back-home-link {
+  background: transparent;
+  border: none;
+  color: var(--ink-blue);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.back-home-link:hover {
+  color: var(--ink-red);
+  text-decoration: underline;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .progress-bar {
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+  
+  .progress-line {
+    display: none;
+  }
+  
+  .step-label {
+    font-size: 0.75rem;
+  }
+  
+  .step-number {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+  }
+}

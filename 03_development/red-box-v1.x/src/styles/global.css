@@ -1,0 +1,260 @@
+/* ========================================
+   Global Styles - Old School RPG Demo
+   Analog Paper Aesthetic
+   ======================================== */
+
+:root {
+  /* Paper Colors */
+  --paper-cream: #f4f1e8;
+  --paper-aged: #e8e3d3;
+  --paper-old: #ddd8c7;
+  
+  /* Ink Colors */
+  --ink-black: #1a1a1a;
+  --ink-blue: #2c4a7c;
+  --ink-red: #8b2635;
+  --ink-brown: #4a3428;
+  
+  /* UI Colors */
+  --border-dark: #3a3428;
+  --shadow: rgba(0, 0, 0, 0.15);
+  --hover-tint: rgba(42, 35, 28, 0.05);
+  
+  /* Typography */
+  --font-body: 'Courier Prime', monospace;
+  --font-heading: 'Caveat', cursive;
+  --font-numbers: 'Special Elite', monospace;
+  --font-flavor: 'IM Fell English', serif;
+  
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-xxl: 3rem;
+  
+  /* Border Radius */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-medium: 250ms ease;
+}
+
+/* ========================================
+   Reset & Base
+   ======================================== */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--paper-cream);
+  color: var(--ink-black);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================
+   Typography
+   ======================================== */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: var(--space-md);
+}
+
+h1 {
+  font-size: 3rem;
+  color: var(--ink-red);
+}
+
+h2 {
+  font-size: 2.25rem;
+  color: var(--ink-brown);
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+p {
+  margin-bottom: var(--space-md);
+}
+
+strong, b {
+  font-weight: 700;
+}
+
+em, i {
+  font-style: italic;
+}
+
+.flavor-text {
+  font-family: var(--font-flavor);
+  font-style: italic;
+  color: var(--ink-brown);
+}
+
+.number {
+  font-family: var(--font-numbers);
+}
+
+/* ========================================
+   Links
+   ======================================== */
+
+a {
+  color: var(--ink-blue);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--ink-red);
+  text-decoration: underline;
+}
+
+/* ========================================
+   Utility Classes
+   ======================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   Paper Textures (CSS-based)
+   ======================================== */
+
+.paper-texture {
+  background-color: var(--paper-cream);
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.02) 2px,
+      rgba(0, 0, 0, 0.02) 4px
+    );
+}
+
+.paper-aged {
+  background-color: var(--paper-aged);
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(139, 38, 53, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(42, 35, 28, 0.02) 0%, transparent 50%);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn var(--transition-medium);
+}
+
+.slide-up {
+  animation: slideUp var(--transition-medium);
+}
+
+/* ========================================
+   Scrollbars
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--paper-aged);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-dark);
+  border-radius: var(--radius-sm);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ink-black);
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+  
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  h2 {
+    font-size: 2rem;
+  }
+}

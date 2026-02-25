@@ -1,0 +1,238 @@
+.spell-menu-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(42, 35, 28, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.spell-menu {
+  background-color: var(--paper-cream);
+  border: 3px solid var(--border-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 8px 24px var(--shadow);
+  max-width: 500px;
+  width: 90%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.spell-menu-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-lg);
+  border-bottom: 2px solid var(--border-dark);
+  background-color: var(--paper-aged);
+}
+
+.menu-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.menu-title svg {
+  color: var(--ink-blue);
+}
+
+.menu-title h3 {
+  margin: 0;
+  color: var(--ink-black);
+  font-size: 1.25rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-xs);
+  color: var(--ink-brown);
+  transition: color var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button:hover {
+  color: var(--ink-black);
+}
+
+/* ========================================
+   Spell Slots Info
+   ======================================== */
+
+.spell-slots-info {
+  padding: var(--space-md) var(--space-lg);
+  background-color: rgba(44, 74, 124, 0.05);
+  border-bottom: 1px solid var(--border-dark);
+  display: flex;
+  gap: var(--space-sm);
+  align-items: center;
+}
+
+.slots-label {
+  font-weight: 700;
+  color: var(--ink-brown);
+  font-size: 0.875rem;
+}
+
+.slots-value {
+  font-family: var(--font-numbers);
+  color: var(--ink-blue);
+  font-weight: 700;
+}
+
+/* ========================================
+   Spell List
+   ======================================== */
+
+.spell-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.no-spells {
+  text-align: center;
+  padding: var(--space-xxl);
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+/* ========================================
+   Spell Options
+   ======================================== */
+
+.spell-option {
+  padding: var(--space-md);
+  background-color: var(--paper-aged);
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-fast);
+}
+
+.spell-option:not(.disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px var(--shadow);
+  border-color: var(--ink-blue);
+}
+
+.spell-option.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spell-option-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-sm);
+}
+
+.spell-option-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.spell-option-title svg {
+  color: var(--ink-blue);
+  flex-shrink: 0;
+}
+
+.spell-name {
+  font-weight: 700;
+  color: var(--ink-black);
+  font-size: 1rem;
+}
+
+.spell-unavailable {
+  font-size: 0.75rem;
+  color: var(--ink-red);
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.spell-option-effect {
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-md);
+  line-height: 1.4;
+}
+
+.spell-option-actions {
+  /* Button styling handled by Button component */
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.spell-menu-footer {
+  padding: var(--space-md) var(--space-lg);
+  border-top: 2px solid var(--border-dark);
+  background-color: var(--paper-aged);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .spell-menu {
+    max-width: 95%;
+    max-height: 90vh;
+  }
+  
+  .spell-menu-header {
+    padding: var(--space-md);
+  }
+  
+  .menu-title h3 {
+    font-size: 1.125rem;
+  }
+  
+  .spell-list {
+    padding: var(--space-sm);
+  }
+}

@@ -1,0 +1,309 @@
+.spell-selector {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.selector-header {
+  text-align: center;
+  margin-bottom: var(--space-xxl);
+}
+
+.selector-header h1 {
+  color: var(--ink-red);
+  margin-bottom: var(--space-md);
+}
+
+.selector-header .flavor-text {
+  font-family: var(--font-flavor);
+  font-style: italic;
+  color: var(--ink-brown);
+  font-size: 1.125rem;
+  max-width: 600px;
+  margin: 0 auto var(--space-lg);
+}
+
+.spell-counter {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  background-color: var(--paper-aged);
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-md);
+}
+
+.counter-label {
+  font-weight: 700;
+  color: var(--ink-brown);
+}
+
+.counter-value {
+  font-family: var(--font-numbers);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink-black);
+}
+
+.counter-value.complete {
+  color: var(--ink-blue);
+}
+
+/* ========================================
+   Spells Grid
+   ======================================== */
+
+.spells-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xxl);
+}
+
+.spell-card {
+  transition: all var(--transition-medium);
+  cursor: pointer;
+  position: relative;
+}
+
+.spell-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px var(--shadow);
+}
+
+.spell-card.selected {
+  border-color: var(--ink-blue);
+  box-shadow: 0 0 0 3px rgba(44, 74, 124, 0.2);
+}
+
+.spell-card.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spell-card.disabled:hover {
+  transform: none;
+}
+
+/* ========================================
+   Spell Header
+   ======================================== */
+
+.spell-header {
+  margin-bottom: var(--space-md);
+  cursor: pointer;
+}
+
+.spell-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.spell-icon {
+  color: var(--ink-blue);
+  flex-shrink: 0;
+}
+
+.spell-title h3 {
+  font-size: 1.25rem;
+  color: var(--ink-black);
+  margin: 0;
+  flex: 1;
+}
+
+.selected-badge {
+  background-color: var(--ink-blue);
+  color: var(--paper-cream);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.spell-meta {
+  display: flex;
+  gap: var(--space-md);
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+}
+
+.spell-school {
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.spell-range {
+  color: var(--ink-brown);
+}
+
+/* ========================================
+   Spell Effect
+   ======================================== */
+
+.spell-effect {
+  padding: var(--space-sm);
+  background-color: rgba(44, 74, 124, 0.05);
+  border-left: 3px solid var(--ink-blue);
+  border-radius: var(--radius-sm);
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-md);
+}
+
+.spell-effect strong {
+  color: var(--ink-blue);
+}
+
+/* ========================================
+   Spell Details (Expanded)
+   ======================================== */
+
+.spell-details {
+  animation: slideDown 0.3s ease-out;
+  margin-bottom: var(--space-md);
+}
+
+.spell-description {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-black);
+  margin-bottom: var(--space-md);
+}
+
+.spell-mechanics {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  background-color: var(--paper-aged);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-md);
+}
+
+.mechanic-row {
+  display: flex;
+  gap: var(--space-sm);
+  font-size: 0.875rem;
+}
+
+.mechanic-label {
+  font-weight: 700;
+  color: var(--ink-brown);
+  min-width: 80px;
+}
+
+.mechanic-value {
+  color: var(--ink-black);
+}
+
+.spell-flavor {
+  font-family: var(--font-flavor);
+  font-style: italic;
+  color: var(--ink-brown);
+  padding: var(--space-sm);
+  border-left: 2px solid var(--border-dark);
+  margin-bottom: var(--space-sm);
+}
+
+.spell-note {
+  font-size: 0.875rem;
+  padding: var(--space-sm);
+  background-color: rgba(139, 38, 53, 0.05);
+  border-left: 3px solid var(--ink-red);
+  border-radius: var(--radius-sm);
+}
+
+.spell-note strong {
+  color: var(--ink-red);
+}
+
+/* ========================================
+   Spell Actions
+   ======================================== */
+
+.spell-actions {
+  margin-top: var(--space-md);
+}
+
+/* ========================================
+   Selection Hint
+   ======================================== */
+
+.selection-hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  background-color: rgba(44, 74, 124, 0.05);
+  border: 2px solid var(--ink-blue);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-xl);
+  text-align: center;
+  justify-content: center;
+}
+
+.selection-hint svg {
+  color: var(--ink-blue);
+  flex-shrink: 0;
+}
+
+.selection-hint p {
+  margin: 0;
+  color: var(--ink-brown);
+  font-weight: 500;
+}
+
+/* ========================================
+   Selector Actions
+   ======================================== */
+
+.selector-actions {
+  text-align: center;
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    max-height: 500px;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .spells-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .selector-header h1 {
+    font-size: 1.75rem;
+  }
+  
+  .selector-header .flavor-text {
+    font-size: 1rem;
+  }
+  
+  .selection-hint {
+    flex-direction: column;
+    text-align: center;
+  }
+}

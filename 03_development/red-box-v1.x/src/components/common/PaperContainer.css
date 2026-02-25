@@ -1,0 +1,65 @@
+.paper-container {
+  border-radius: var(--radius-md);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+/* Paper Variants */
+.paper-cream {
+  background-color: var(--paper-cream);
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.01) 2px,
+      rgba(0, 0, 0, 0.01) 4px
+    );
+}
+
+.paper-aged {
+  background-color: var(--paper-aged);
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(139, 38, 53, 0.02) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(42, 35, 28, 0.02) 0%, transparent 50%),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.01) 2px,
+      rgba(0, 0, 0, 0.01) 4px
+    );
+}
+
+.paper-graph {
+  background-color: var(--paper-cream);
+  background-image: 
+    linear-gradient(rgba(42, 35, 28, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(42, 35, 28, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.paper-lined {
+  background-color: var(--paper-cream);
+  background-image: 
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 23px,
+      rgba(42, 35, 28, 0.2) 23px,
+      rgba(42, 35, 28, 0.2) 24px
+    );
+  background-size: 100% 24px;
+}
+
+/* Padding Variants */
+.paper-padding-sm {
+  padding: var(--space-sm);
+}
+
+.paper-padding-md {
+  padding: var(--space-md);
+}
+
+.paper-padding-lg {
+  padding: var(--space-lg);
+}

@@ -1,0 +1,203 @@
+.character-manager {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  min-height: 100vh;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.manager-header {
+  text-align: center;
+  margin-bottom: var(--space-xxl);
+}
+
+.manager-header h1 {
+  color: var(--ink-red);
+  margin-bottom: var(--space-sm);
+}
+
+/* ========================================
+   Actions
+   ======================================== */
+
+.manager-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xxl);
+}
+
+/* ========================================
+   Character List
+   ======================================== */
+
+.character-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xxl);
+}
+
+.character-card {
+  animation: slideUp 0.3s ease-out;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 2px solid var(--border-dark);
+}
+
+.card-header h3 {
+  font-size: 1.5rem;
+  color: var(--ink-black);
+  margin-bottom: var(--space-xs);
+}
+
+.char-subtitle {
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+  text-transform: capitalize;
+  margin: 0;
+}
+
+.current-badge {
+  background-color: var(--ink-blue);
+  color: var(--paper-cream);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ========================================
+   Card Stats
+   ======================================== */
+
+.card-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.stat {
+  text-align: center;
+  padding: var(--space-sm);
+  background-color: var(--paper-aged);
+  border-radius: var(--radius-sm);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+  margin-bottom: var(--space-xs);
+  text-transform: uppercase;
+}
+
+/* ========================================
+   Card Abilities
+   ======================================== */
+
+.card-abilities {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.ability-mini {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: var(--space-xs);
+  background-color: var(--paper-aged);
+  border-radius: var(--radius-sm);
+}
+
+.ability-name-mini {
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+}
+
+/* ========================================
+   Card Actions
+   ======================================== */
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.card-actions-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.card-actions-row .btn {
+  flex: 1;
+}
+
+/* ========================================
+   Empty State
+   ======================================== */
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-xxl);
+}
+
+.empty-state svg {
+  color: var(--ink-brown);
+  margin-bottom: var(--space-lg);
+}
+
+.empty-state h3 {
+  color: var(--ink-brown);
+  margin-bottom: var(--space-md);
+}
+
+.empty-state p {
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.manager-footer {
+  text-align: center;
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .character-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .manager-actions {
+    flex-direction: column;
+  }
+  
+  .manager-actions .btn {
+    width: 100%;
+  }
+}

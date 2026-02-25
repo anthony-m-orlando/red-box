@@ -1,0 +1,429 @@
+.bestiary {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: var(--space-xl);
+  min-height: 100vh;
+}
+
+.bestiary-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.bestiary-header {
+  text-align: center;
+  padding-bottom: var(--space-xl);
+  border-bottom: 3px solid var(--border-dark);
+}
+
+.header-icon {
+  display: inline-block;
+  margin-bottom: var(--space-md);
+}
+
+.header-icon svg {
+  color: var(--ink-red);
+}
+
+.bestiary-header h1 {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--ink-black);
+}
+
+.bestiary-subtitle {
+  color: var(--ink-brown);
+  font-style: italic;
+  margin: 0 0 var(--space-md) 0;
+  font-size: 1.125rem;
+}
+
+.completion-tracker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  background-color: var(--paper-aged);
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-md);
+}
+
+.completion-label {
+  font-weight: 700;
+  color: var(--ink-brown);
+}
+
+.completion-count {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink-blue);
+}
+
+/* ========================================
+   Filters
+   ======================================== */
+
+.bestiary-filters {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ========================================
+   Monster Grid
+   ======================================== */
+
+.monster-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: var(--space-lg);
+}
+
+.no-monsters {
+  text-align: center;
+  padding: var(--space-xxl);
+  color: var(--ink-brown);
+}
+
+.no-monsters svg {
+  color: var(--ink-brown);
+  opacity: 0.5;
+  margin-bottom: var(--space-lg);
+}
+
+/* ========================================
+   Monster Card
+   ======================================== */
+
+.monster-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.monster-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px var(--shadow);
+}
+
+.monster-card.defeated {
+  opacity: 0.7;
+}
+
+.monster-card.expanded {
+  grid-column: span 1;
+}
+
+.monster-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--border-dark);
+}
+
+.monster-title {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.monster-title svg {
+  color: var(--ink-red);
+  flex-shrink: 0;
+}
+
+.monster-title h3 {
+  margin: 0;
+  color: var(--ink-black);
+  font-size: 1.25rem;
+}
+
+.monster-type {
+  text-transform: capitalize;
+  color: var(--ink-brown);
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.defeated-badge {
+  background-color: var(--ink-blue);
+  color: var(--paper-cream);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ========================================
+   Quick Stats
+   ======================================== */
+
+.monster-quick-stats {
+  display: flex;
+  justify-content: space-around;
+  padding: var(--space-md);
+  background-color: rgba(139, 38, 53, 0.05);
+  border-radius: var(--radius-md);
+}
+
+.quick-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.quick-stat .stat-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+}
+
+.quick-stat .stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink-red);
+}
+
+/* ========================================
+   Expanded Details
+   ======================================== */
+
+.monster-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 2px solid var(--border-dark);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 2000px;
+  }
+}
+
+.monster-details h4 {
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--ink-black);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.monster-details h4 svg {
+  color: var(--ink-brown);
+}
+
+/* Stats Section */
+.stats-section {
+  padding: var(--space-md);
+  background-color: rgba(92, 75, 58, 0.05);
+  border-radius: var(--radius-md);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+}
+
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-xs) 0;
+}
+
+.stat-row span:first-child {
+  color: var(--ink-brown);
+  font-weight: 600;
+}
+
+/* Attacks Section */
+.attacks-section {
+  padding: var(--space-md);
+  background-color: rgba(139, 38, 53, 0.05);
+  border-left: 3px solid var(--ink-red);
+  border-radius: var(--radius-sm);
+}
+
+.attack-entry {
+  margin-left: var(--space-md);
+  margin-top: var(--space-xs);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.attack-name {
+  font-weight: 700;
+  color: var(--ink-black);
+}
+
+.attack-damage {
+  font-family: var(--font-numbers);
+  color: var(--ink-red);
+  font-weight: 600;
+}
+
+.attack-special {
+  color: var(--ink-red);
+  font-style: italic;
+}
+
+/* Special Abilities */
+.special-section {
+  padding: var(--space-md);
+  background-color: rgba(44, 74, 124, 0.05);
+  border-left: 3px solid var(--ink-blue);
+  border-radius: var(--radius-sm);
+}
+
+.special-section ul {
+  margin: 0;
+  padding-left: var(--space-lg);
+}
+
+.special-section li {
+  margin-bottom: var(--space-xs);
+  color: var(--ink-brown);
+}
+
+/* Description & Tactics */
+.description-section,
+.tactics-section {
+  line-height: 1.6;
+}
+
+.description-section p,
+.tactics-section p {
+  margin: 0;
+  color: var(--ink-brown);
+}
+
+/* Additional Info */
+.info-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.info-item strong {
+  color: var(--ink-black);
+  font-size: 0.9375rem;
+}
+
+.info-item span {
+  color: var(--ink-brown);
+  font-size: 0.9375rem;
+}
+
+.info-item.weakness {
+  padding: var(--space-sm);
+  background-color: rgba(139, 38, 53, 0.1);
+  border-radius: var(--radius-sm);
+}
+
+.info-item.weakness strong,
+.info-item.weakness span {
+  color: var(--ink-red);
+}
+
+/* Saving Throws */
+.saves-section {
+  padding: var(--space-md);
+  background-color: rgba(92, 75, 58, 0.05);
+  border-radius: var(--radius-md);
+}
+
+.saves-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: var(--space-sm);
+}
+
+.save-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--space-xs);
+  background-color: var(--paper-cream);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-dark);
+}
+
+.save-item span:first-child {
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+}
+
+/* ========================================
+   Expand Indicator
+   ======================================== */
+
+.expand-indicator {
+  text-align: center;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-dark);
+  color: var(--ink-brown);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+
+.bestiary-footer {
+  border-top: 2px solid var(--border-dark);
+  padding-top: var(--space-lg);
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .monster-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .bestiary {
+    padding: var(--space-md);
+  }
+
+  .bestiary-filters {
+    flex-direction: column;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .saves-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

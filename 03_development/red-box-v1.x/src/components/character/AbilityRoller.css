@@ -1,0 +1,384 @@
+.ability-roller {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  min-height: 100vh;
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.roller-header {
+  text-align: center;
+  margin-bottom: var(--space-xxl);
+}
+
+.roller-header h1 {
+  color: var(--ink-red);
+  margin-bottom: var(--space-sm);
+}
+
+.roller-header .flavor-text {
+  font-family: var(--font-flavor);
+  font-style: italic;
+  color: var(--ink-brown);
+  font-size: 1.125rem;
+  max-width: 600px;
+  margin: 0 auto var(--space-md);
+}
+
+/* Debug Toggle */
+.debug-toggle {
+  background: transparent;
+  border: 2px dashed var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs) var(--space-md);
+  margin-top: var(--space-md);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.debug-toggle:hover {
+  background-color: var(--paper-aged);
+  border-style: solid;
+  color: var(--ink-black);
+}
+
+/* Debug Mode Notice */
+.debug-mode-notice {
+  text-align: center;
+  background-color: rgba(139, 38, 53, 0.1);
+  border: 2px solid var(--ink-red);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin-bottom: var(--space-xxl);
+}
+
+.debug-mode-notice h3 {
+  color: var(--ink-red);
+  margin-bottom: var(--space-sm);
+}
+
+.debug-mode-notice p {
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+/* Manual Input */
+.manual-input {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--space-md);
+}
+
+.score-input {
+  width: 80px;
+  height: 80px;
+  font-family: var(--font-numbers);
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center;
+  background-color: var(--paper-cream);
+  border: 3px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  color: var(--ink-black);
+  transition: all var(--transition-fast);
+}
+
+.score-input:focus {
+  outline: none;
+  border-color: var(--ink-blue);
+  box-shadow: 0 0 0 3px rgba(44, 74, 124, 0.1);
+}
+
+.score-input::-webkit-inner-spin-button,
+.score-input::-webkit-outer-spin-button {
+  opacity: 1;
+  height: 40px;
+}
+
+/* ========================================
+   Initial Roll Section
+   ======================================== */
+
+.initial-roll-section {
+  max-width: 600px;
+  margin: 0 auto var(--space-xxl);
+}
+
+.roll-prompt {
+  text-align: center;
+}
+
+.dice-icon {
+  color: var(--ink-blue);
+  margin-bottom: var(--space-md);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.roll-prompt h2 {
+  margin-bottom: var(--space-md);
+}
+
+.roll-prompt p {
+  margin-bottom: var(--space-lg);
+  color: var(--ink-brown);
+}
+
+/* ========================================
+   Abilities Grid
+   ======================================== */
+
+.abilities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-lg);
+  margin-bottom: var(--space-xxl);
+}
+
+.ability-card {
+  animation: slideUp 0.4s ease-out;
+}
+
+.ability-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid var(--border-dark);
+}
+
+.ability-header h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: var(--ink-black);
+}
+
+.reroll-btn {
+  background: transparent;
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs);
+  cursor: pointer;
+  color: var(--ink-brown);
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.reroll-btn:hover:not(:disabled) {
+  background-color: var(--paper-aged);
+  color: var(--ink-black);
+  transform: rotate(180deg);
+}
+
+.reroll-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   Dice Display
+   ======================================== */
+
+.ability-roll {
+  margin-bottom: var(--space-md);
+}
+
+.dice-display {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: center;
+  margin-bottom: var(--space-md);
+}
+
+.die {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-numbers);
+  font-size: 1.5rem;
+  font-weight: 700;
+  background-color: var(--paper-cream);
+  border: 3px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 2px 4px var(--shadow);
+  animation: diceAppear 0.3s ease-out;
+}
+
+@keyframes diceAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.5) rotate(-180deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+.die.rolling {
+  animation: diceRoll 0.6s ease-in-out;
+}
+
+@keyframes diceRoll {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  75% {
+    transform: rotate(270deg) scale(1.1);
+  }
+}
+
+/* ========================================
+   Total and Modifier
+   ======================================== */
+
+.ability-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-aged);
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-sm);
+}
+
+.total-label {
+  font-weight: 700;
+  color: var(--ink-brown);
+}
+
+.total-value {
+  font-size: 2rem;
+  color: var(--ink-black);
+}
+
+.ability-modifier {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 2px solid;
+}
+
+.ability-modifier.positive {
+  border-color: var(--ink-blue);
+  background-color: rgba(44, 74, 124, 0.05);
+}
+
+.ability-modifier.negative {
+  border-color: var(--ink-red);
+  background-color: rgba(139, 38, 53, 0.05);
+}
+
+.modifier-label {
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modifier-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.ability-modifier.positive .modifier-value {
+  color: var(--ink-blue);
+}
+
+.ability-modifier.negative .modifier-value {
+  color: var(--ink-red);
+}
+
+.ability-description {
+  font-size: 0.875rem;
+  color: var(--ink-brown);
+  font-style: italic;
+  margin: 0;
+  text-align: center;
+}
+
+/* ========================================
+   Actions
+   ======================================== */
+
+.roller-actions {
+  display: flex;
+  gap: var(--space-md);
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-xxl);
+}
+
+/* ========================================
+   Help Section
+   ======================================== */
+
+.roller-help {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.roller-help h4 {
+  margin-bottom: var(--space-md);
+  color: var(--ink-brown);
+  font-family: var(--font-heading);
+}
+
+.roller-help ul {
+  margin: 0;
+  padding-left: var(--space-lg);
+}
+
+.roller-help li {
+  margin-bottom: var(--space-sm);
+  line-height: 1.6;
+}
+
+.roller-help strong {
+  color: var(--ink-black);
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+
+@media (max-width: 768px) {
+  .abilities-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .roller-actions {
+    flex-direction: column;
+  }
+  
+  .roller-actions .btn {
+    width: 100%;
+  }
+}

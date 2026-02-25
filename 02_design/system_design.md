@@ -269,3 +269,22 @@ C. Dungeon Room Logic (Sample Set)Use this schema to drive the Journal Tab updat
     "playerPos": {"x": 10, "y": 12}
   }
 }
+
+# System Design: Red Box Technical Spec
+
+## 1. Data Hierarchy
+**User (Hashed PII) -> Character (Stats/Inventory) -> Adventure (World State)**
+
+## 2. Database Schema (Netlify DB / Postgres)
+* **Users**: `id (UUID), username_hash (CHAR64), email_hash (CHAR64), role (TEXT)`
+* **Characters**: `id, user_id, name, stats_json, inventory_json`
+* **Adventure_States**: `id, character_id, location_id, world_state_json`
+
+## 3. AI Behavioral Logic
+* **Monster AI**: Priority: Nearest Target. Morale: 2d6 vs ML. On Fail: Disposition (Flee/Surrender).
+* **Hireling AI**: Priority: Player Protection. Use "Cure Light Wounds" if Player HP < 30%.
+* **Loyalty**: Persistent variable (+/- modifiers) influencing the 2d6 Morale roll.
+
+## 4. Interaction Engine
+* **Dialogue Schema**: Recursive JSON structure supporting `label`, `requirement`, `success_chance`, and `on_success`.
+* **The Tithe**: `gold = Math.floor(gold * 0.85)` upon Temple Resurrection.

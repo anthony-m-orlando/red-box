@@ -1,0 +1,131 @@
+# Educational Use License
+
+## Red Box RPG - Version 0.1.0
+
+Copyright (c) 2026 Old School RPG Team
+
+---
+
+## Educational Purpose
+
+This project is a fan-created recreation of the classic 1980s Dungeons & Dragons Basic Set (Red Box Edition) created for **educational purposes only**. It demonstrates:
+
+- Classic tabletop RPG game mechanics
+- React application architecture
+- Browser-based game development
+- State management patterns
+- Turn-based combat systems
+- Data persistence techniques
+
+---
+
+## Permitted Use
+
+This software is freely available for:
+
+✅ **Personal Use** - Play and enjoy the game for personal entertainment  
+✅ **Educational Use** - Study the code to learn web development and game design  
+✅ **Academic Use** - Use as reference material in courses or research  
+✅ **Modification** - Fork and modify for your own learning projects  
+✅ **Attribution** - Share with proper attribution to the original creators  
+
+---
+
+## Prohibited Use
+
+This software may NOT be used for:
+
+❌ **Commercial Use** - No selling, licensing, or monetizing  
+❌ **Distribution** - No repackaging or redistribution for profit  
+❌ **Trademark Infringement** - No use of official D&D trademarks  
+❌ **Misrepresentation** - No claiming as official D&D product  
+
+---
+
+## Intellectual Property
+
+### Dungeons & Dragons
+
+**Dungeons & Dragons**, **D&D**, and the **Red Box** are trademarks of **Wizards of the Coast LLC**.
+
+This project is:
+- NOT affiliated with Wizards of the Coast
+- NOT endorsed by Wizards of the Coast  
+- NOT an official D&D product
+- A fan-created educational project
+
+### Game Mechanics
+
+Game mechanics and rules are based on the 1981 D&D Basic Set as published by TSR, Inc. Game mechanics themselves are not copyrightable under U.S. law, but specific expression of those rules is copyrighted by Wizards of the Coast.
+
+This implementation:
+- Uses publicly available game mechanics
+- Does not reproduce copyrighted text verbatim
+- Provides original implementations and descriptions
+- Credits the original creators and publishers
+
+### Original Content
+
+Original code, documentation, and implementation in this project are:
+- Copyright (c) 2026 Old School RPG Team
+- Made available for educational purposes
+- Subject to this license
+
+---
+
+## Attribution
+
+When sharing or modifying this project, please include:
+
+```
+Based on Red Box RPG v0.1.0
+Original repository: [your-repo-url]
+Inspired by TSR's D&D Basic Set (1981)
+```
+
+---
+
+## Disclaimer
+
+### No Warranty
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+### Limitation of Liability
+
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+### Educational Purpose
+
+This project is created solely for educational purposes and to celebrate the legacy of classic tabletop role-playing games. It is not intended to compete with or substitute for official Wizards of the Coast products.
+
+---
+
+## Contact
+
+For questions about this license:
+- Open an issue on GitHub: [repository-url]/issues
+- Contact: [your-email]
+
+---
+
+## Acknowledgments
+
+Special thanks to:
+- **Gary Gygax** and **Dave Arneson** - Creators of Dungeons & Dragons
+- **Tom Moldvay** - Author of the 1981 D&D Basic Set
+- **TSR, Inc.** - Original publisher
+- **Wizards of the Coast** - Current rights holder
+- The **Old School Renaissance (OSR)** community
+
+---
+
+## Version History
+
+- **v0.1.0** (February 23, 2026) - Initial beta release
+
+---
+
+*This license applies to Red Box RPG version 0.1.0 and may be updated in future releases.*
+
+**Last Updated**: February 23, 2026

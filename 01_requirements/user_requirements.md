@@ -36,3 +36,25 @@
 ## 5. Campaign Systems
 * **XP & Progression:** The system must automate experience point tracking and provide level-up utilities supporting a Level 1-10 progression curve.
 * **E2E Gameplay Flow:** The application must support a seamless transition from the initial Tutorial through the Town of Threshold and into the Caverns of Quasqueton.
+
+# User Requirements: Project Redbox v1.0
+
+## 1. Authentication & Privacy
+* **Invite-Only Login**: Users must be added by a designated Admin via Netlify Identity.
+* **PII Protection**: Username and Email must be normalized and hashed (SHA-256) before storage.
+
+## 2. Threshold Hub Requirements
+* **Town Map View**: A central map in the Adventures tab with 7 interactive locations.
+* **NPCS & Dialogue**: 
+    * NPCs must support branching dialogue for rumors, bribes, and recruitment.
+    * NPC "Attitude" must persist based on player interactions.
+* **The Temple Loop**: If a character dies with a hireling present, they wake at the Temple (10,10) with all loot/XP, minus a 15% tithe and the loss of the hireling.
+
+## 3. Combat & AI
+* **Hirelings**: Must be fully controllable in combat or follow autonomous "Protector" AI.
+* **Morale**: Entities check morale (2d6) under stress. Failed checks result in Fleeing or Surrendering.
+* **Collision**: Surrendered units must allow "Pass-through" movement for the player.
+
+## 4. Technical Persistence
+* **Cloud Sync**: All character and world data must sync to Netlify DB.
+* **Admin Role**: Only users with "admin" metadata can modify other user profiles.
