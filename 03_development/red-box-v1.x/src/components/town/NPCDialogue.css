@@ -1,0 +1,253 @@
+/* =============================================================================
+   NPCDialogue.css
+   Dialogue engine — NPC identity bar, speech bubble, options, back button.
+   Imported by NPCDialogue.jsx; used across all 7 location components.
+   ============================================================================= */
+
+/* =============================================================================
+   CONTAINER
+   ============================================================================= */
+
+.npc-dialogue {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.npc-dialogue-error {
+  color: var(--ink-red);
+  font-style: italic;
+  padding: var(--space-md);
+}
+
+/* =============================================================================
+   NPC IDENTITY BAR
+   ============================================================================= */
+
+.npc-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-aged);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-md);
+}
+
+.npc-portrait {
+  font-size: 2rem;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.npc-identity-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.npc-name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-black);
+  line-height: 1.2;
+}
+
+.npc-title {
+  font-size: 0.75rem;
+  color: var(--ink-brown);
+  font-style: italic;
+  font-family: var(--font-flavor);
+}
+
+/* =============================================================================
+   ATTITUDE BADGE
+   ============================================================================= */
+
+.attitude-badge {
+  flex-shrink: 0;
+  font-size: 0.68rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 1px solid;
+}
+
+.attitude-friendly {
+  color: var(--color-success, #228B22);
+  border-color: var(--color-success, #228B22);
+  background-color: rgba(34, 139, 34, 0.08);
+}
+
+.attitude-neutral {
+  color: var(--ink-brown);
+  border-color: var(--border-dark);
+  background-color: var(--paper-aged);
+}
+
+.attitude-hostile {
+  color: var(--ink-red);
+  border-color: var(--ink-red);
+  background-color: rgba(139, 38, 53, 0.07);
+}
+
+/* =============================================================================
+   SPEECH BUBBLE
+   Reuses .npc-speech from Location.css but adds the arrow detail here
+   ============================================================================= */
+
+.npc-speech {
+  background-color: var(--paper-aged);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  position: relative;
+  font-family: var(--font-flavor);
+  font-style: italic;
+  color: var(--ink-black);
+  line-height: 1.65;
+  font-size: 0.92rem;
+  /* Subtle lined-paper background */
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 23px,
+    rgba(42, 35, 28, 0.06) 23px,
+    rgba(42, 35, 28, 0.06) 24px
+  );
+  background-size: 100% 24px;
+}
+
+/* Speech bubble triangle pointing toward NPC portrait */
+.npc-speech::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: 24px;
+  border-width: 0 9px 10px;
+  border-style: solid;
+  border-color: transparent transparent var(--border-dark);
+}
+
+.npc-speech::after {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 25px;
+  border-width: 0 8px 9px;
+  border-style: solid;
+  border-color: transparent transparent var(--paper-aged);
+}
+
+/* Fade-in when text changes */
+@keyframes speech-appear {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0);   }
+}
+
+.npc-speech {
+  animation: speech-appear 220ms ease-out;
+}
+
+/* =============================================================================
+   DIALOGUE OPTIONS
+   ============================================================================= */
+
+.dialogue-options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.dialogue-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--ink-black);
+  line-height: 1.4;
+  transition:
+    background-color 140ms ease,
+    border-color     140ms ease,
+    transform        140ms ease;
+  width: 100%;
+}
+
+.dialogue-option-btn:hover:not(:disabled) {
+  background-color: var(--paper-aged);
+  border-color: var(--ink-brown);
+  transform: translateX(4px);
+}
+
+.dialogue-option-btn:active:not(:disabled) {
+  transform: translateX(2px);
+}
+
+.dialogue-option-btn.option-locked,
+.dialogue-option-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.option-label {
+  display: block;
+}
+
+.option-cost {
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 0.76rem;
+  color: #8B6914;
+  font-style: normal;
+}
+
+.option-lock-reason {
+  font-size: 0.72rem;
+  color: var(--ink-red);
+  font-style: italic;
+  display: block;
+}
+
+/* =============================================================================
+   BACK BUTTON
+   ============================================================================= */
+
+.dialogue-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  background: transparent;
+  border: none;
+  color: var(--ink-brown);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: var(--space-xs) 0;
+  opacity: 0.7;
+  transition: opacity 140ms ease, color 140ms ease;
+}
+
+.dialogue-back-btn:hover {
+  opacity: 1;
+  color: var(--ink-black);
+}

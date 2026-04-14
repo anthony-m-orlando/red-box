@@ -1,0 +1,201 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   DungeonMap.css — B1 Quasqueton SVG Map Renderer
+   Design: 1983 TSR module graph-paper cartography.
+   Thick ink walls, pale blue grid, parchment ground.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.dungeon-map-root {
+  --map-parchment:      #f4edd8;
+  --map-parchment-aged: #e8d9b8;
+  --map-ink:            #1a1410;
+  --map-ink-faint:      #4a3f30;
+  --map-grid:           #8ab0c8;
+  --map-wall:           #1a1410;
+  --map-partition:      #3a2e22;
+  --room-unexplored:    rgba(22, 16, 10, 0.74);
+  --room-entered:       #f4edd8;
+  --room-cleared:       #dff0d4;
+  --room-looted:        #d4e8f0;
+  --room-current:       #fff8e8;
+  --accent-current:     #c8430a;
+  --accent-monster:     #8b1a1a;
+  --accent-treasure:    #8b7000;
+  --accent-secret:      #5a2d8a;
+  --accent-stair:       #2a5a2a;
+  --accent-special:     #5a3a00;
+  --accent-cleared:     #2a6a2a;
+
+  display: flex;
+  flex-direction: column;
+  background: var(--map-parchment-aged);
+  border: 2px solid var(--map-ink);
+  box-shadow: inset 0 0 36px rgba(0,0,0,0.1), 4px 4px 0 rgba(0,0,0,0.22);
+  font-family: Georgia, serif;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── Header ───────────────────────────────────────────────────────── */
+.dungeon-map-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: var(--map-ink);
+  color: var(--map-parchment);
+  z-index: 5;
+}
+.dungeon-map-title {
+  font-family: Georgia, serif;
+  font-size: 0.82rem;
+  font-weight: bold;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--map-parchment-aged);
+}
+.dungeon-map-subtitle {
+  font-family: 'Courier New', monospace;
+  font-size: 0.66rem;
+  color: rgba(244,237,216,0.55);
+  letter-spacing: 0.05em;
+  margin-top: 1px;
+}
+
+/* ── Level Tabs ───────────────────────────────────────────────────── */
+.dungeon-map-level-tabs { display: flex; gap: 4px; }
+.dungeon-map-tab {
+  padding: 2px 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid rgba(244,237,216,0.3);
+  color: rgba(244,237,216,0.55);
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.12s;
+}
+.dungeon-map-tab:hover { border-color: rgba(244,237,216,0.65); color: var(--map-parchment); }
+.dungeon-map-tab.active { background: var(--map-parchment-aged); color: var(--map-ink); font-weight: bold; }
+.dungeon-map-tab:disabled { opacity: 0.3; cursor: not-allowed; }
+
+/* ── Viewport ─────────────────────────────────────────────────────── */
+.dungeon-map-viewport {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+  background: var(--map-parchment);
+  min-height: 260px;
+}
+.dungeon-map-viewport:active { cursor: grabbing; }
+.dungeon-map-svg-wrapper { transform-origin: top left; will-change: transform; }
+.dungeon-map-svg { display: block; overflow: visible; shape-rendering: crispEdges; }
+
+/* ── Room state classes (applied to SVG <g> elements) ─────────────── */
+.room-cell.navigable { cursor: pointer; }
+.room-cell.navigable:hover .room-body {
+  stroke: var(--accent-current) !important;
+  stroke-width: 2.5 !important;
+  filter: drop-shadow(0 0 3px rgba(200,67,10,0.3));
+}
+.room-cell.current .room-body {
+  filter: drop-shadow(0 0 5px rgba(200,67,10,0.4));
+}
+
+/* ── Player marker animation ──────────────────────────────────────── */
+@keyframes map-pulse {
+  0%, 100% { r: 8; opacity: 1; }
+  50%       { r: 11; opacity: 0.6; }
+}
+.player-marker-outer { fill: var(--accent-current); opacity: 0.25; animation: map-pulse 1.8s ease-in-out infinite; }
+.player-marker-inner { fill: var(--accent-current); }
+
+/* ── Zoom controls ────────────────────────────────────────────────── */
+.dungeon-map-controls {
+  position: absolute; bottom: 32px; right: 10px;
+  display: flex; flex-direction: column; gap: 2px; z-index: 20;
+}
+.map-control-btn {
+  width: 26px; height: 26px;
+  background: var(--map-ink); color: var(--map-parchment);
+  border: 1px solid rgba(244,237,216,0.35); border-radius: 2px;
+  font-size: 0.9rem; font-weight: bold;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background 0.12s; line-height: 1; padding: 0;
+  font-family: 'Courier New', monospace;
+}
+.map-control-btn:hover { background: #3a2e22; }
+.map-control-btn:active { transform: scale(0.93); }
+
+/* ── Center button ────────────────────────────────────────────────── */
+.map-center-btn {
+  position: absolute; bottom: 32px; left: 10px; z-index: 20;
+  padding: 3px 9px;
+  background: var(--map-ink); color: var(--map-parchment);
+  border: 1px solid rgba(244,237,216,0.35); border-radius: 2px;
+  font-family: 'Courier New', monospace; font-size: 0.64rem;
+  letter-spacing: 0.06em; text-transform: uppercase; cursor: pointer;
+  transition: background 0.12s;
+}
+.map-center-btn:hover { background: #3a2e22; }
+
+/* ── Tooltip ──────────────────────────────────────────────────────── */
+.map-tooltip {
+  position: absolute;
+  background: var(--map-ink); color: var(--map-parchment);
+  border: 1px solid rgba(244,237,216,0.25);
+  padding: 4px 9px;
+  font-family: 'Courier New', monospace; font-size: 0.7rem;
+  pointer-events: none; z-index: 30;
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+  white-space: nowrap; line-height: 1.45;
+}
+.tooltip-name { font-weight: bold; color: var(--map-parchment-aged); font-size: 0.72rem; }
+.tooltip-status { font-size: 0.62rem; color: rgba(244,237,216,0.58); margin-top: 1px; }
+
+/* ── Legend ───────────────────────────────────────────────────────── */
+.dungeon-map-legend {
+  display: flex; align-items: center; gap: 10px;
+  padding: 5px 12px;
+  background: rgba(26,20,16,0.07);
+  border-top: 1px solid rgba(26,20,16,0.18);
+  flex-wrap: wrap; z-index: 5;
+}
+.legend-item {
+  display: flex; align-items: center; gap: 4px;
+  font-family: 'Courier New', monospace; font-size: 0.63rem;
+  color: var(--map-ink-faint); white-space: nowrap;
+}
+.legend-swatch {
+  width: 10px; height: 10px; border: 1px solid var(--map-ink-faint);
+  flex-shrink: 0; border-radius: 1px;
+}
+.legend-swatch.current  { background: var(--room-current);  border-color: var(--accent-current); }
+.legend-swatch.entered  { background: var(--room-entered); }
+.legend-swatch.cleared  { background: var(--room-cleared); }
+.legend-swatch.looted   { background: var(--room-looted); }
+.legend-swatch.fog      { background: var(--room-unexplored); }
+
+/* ── Room reveal animation ────────────────────────────────────────── */
+@keyframes room-reveal {
+  from { opacity: 0; filter: brightness(0.3) blur(2px); }
+  to   { opacity: 1; filter: none; }
+}
+.room-cell.just-revealed .room-body { animation: room-reveal 0.4s ease-out forwards; }
+
+/* ── Special room shimmering border ──────────────────────────────── */
+@keyframes special-shimmer {
+  0%, 100% { stroke-opacity: 1; }
+  50%       { stroke-opacity: 0.45; }
+}
+.room-cell.special-room .room-body { animation: special-shimmer 3.2s ease-in-out infinite; }
+
+/* ── Responsive ───────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .dungeon-map-legend { gap: 7px; padding: 4px 8px; }
+  .legend-item { font-size: 0.57rem; }
+  .dungeon-map-title { font-size: 0.73rem; }
+}

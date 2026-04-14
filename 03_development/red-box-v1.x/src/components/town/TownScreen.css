@@ -1,0 +1,654 @@
+/* =============================================================================
+   TownScreen.css
+   Town of Threshold — map shell, header, footer, location overlay
+   Inherits CSS variables from global.css (paper-cream, ink-brown, etc.)
+   ============================================================================= */
+
+/* =============================================================================
+   SCREEN LAYOUT
+   ============================================================================= */
+
+.town-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--paper-aged);
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(139, 38, 53, 0.04) 0%, transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(42, 35, 28, 0.04) 0%, transparent 40%);
+  font-family: var(--font-body);
+  color: var(--ink-black);
+}
+
+/* =============================================================================
+   HEADER
+   ============================================================================= */
+
+.town-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--paper-cream);
+  border-bottom: 3px solid var(--border-dark);
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.town-title {
+  font-family: var(--font-heading);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--ink-black);
+  line-height: 1.1;
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.town-title-small {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-brown);
+  margin-bottom: 2px;
+}
+
+.town-subtitle {
+  font-family: var(--font-flavor);
+  font-style: italic;
+  color: var(--ink-brown);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Character strip (top-right) */
+.character-strip {
+  text-align: right;
+}
+
+.character-strip-name {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--ink-black);
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+}
+
+.character-strip-class {
+  font-size: 0.75rem;
+  font-family: var(--font-body);
+  color: var(--ink-brown);
+  font-weight: 400;
+}
+
+.character-strip-stats {
+  display: flex;
+  gap: var(--space-sm);
+  justify-content: flex-end;
+  margin-top: var(--space-xs);
+  flex-wrap: wrap;
+}
+
+.stat-chip {
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  border: 1px solid;
+  letter-spacing: 0.03em;
+}
+
+.stat-chip.hp {
+  color: var(--ink-red);
+  border-color: var(--ink-red);
+  background-color: rgba(139, 38, 53, 0.06);
+}
+
+.stat-chip.gold {
+  color: #8B6914;
+  border-color: #C4932A;
+  background-color: rgba(196, 147, 42, 0.08);
+}
+
+.stat-chip.hirelings {
+  color: var(--ink-blue);
+  border-color: var(--ink-blue);
+  background-color: rgba(44, 74, 124, 0.07);
+}
+
+/* =============================================================================
+   MAP WRAPPER + CONTAINER
+   ============================================================================= */
+
+.town-map-wrapper {
+  display: flex;
+  flex: 1;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  align-items: flex-start;
+}
+
+.town-map-container {
+  position: relative;
+  flex: 1;
+  max-width: 680px;
+  /* Aged parchment border frame */
+  border: 4px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  box-shadow:
+    0 0 0 1px var(--paper-cream),
+    0 4px 16px var(--shadow),
+    inset 0 0 40px rgba(92, 75, 58, 0.08);
+  overflow: hidden;
+}
+
+/* Decorative map edge labels */
+.map-border-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-brown);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.map-border-top    { top: 4px;    }
+.map-border-bottom { bottom: 4px; }
+
+.town-map-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* =============================================================================
+   SVG — ROADS
+   ============================================================================= */
+
+.town-roads {}
+
+.road {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.road-main {
+  stroke: rgba(92, 75, 58, 0.35);
+  stroke-width: 12;
+}
+
+.road-side {
+  stroke: rgba(92, 75, 58, 0.22);
+  stroke-width: 7;
+}
+
+/* =============================================================================
+   SVG — TOWN SQUARE / FOUNTAIN
+   ============================================================================= */
+
+.square-base {
+  fill: rgba(92, 75, 58, 0.12);
+  stroke: var(--border-dark);
+  stroke-width: 1;
+}
+
+.fountain-rim {
+  fill: none;
+  stroke: var(--ink-brown);
+  stroke-width: 1.5;
+  opacity: 0.6;
+}
+
+.fountain-water {
+  fill: rgba(44, 74, 124, 0.3);
+  stroke: var(--ink-blue);
+  stroke-width: 1;
+  opacity: 0.7;
+}
+
+.square-label {
+  font-family: var(--font-heading);
+  font-size: 6px;
+  fill: var(--ink-brown);
+  opacity: 0.5;
+  letter-spacing: 0.08em;
+}
+
+/* =============================================================================
+   SVG — COMPASS ROSE
+   ============================================================================= */
+
+.compass-bg {
+  fill: var(--paper-cream);
+  stroke: var(--border-dark);
+  stroke-width: 1.5;
+  opacity: 0.8;
+}
+
+.compass-dir {
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  fill: var(--ink-brown);
+}
+
+.compass-arrow-n { fill: var(--ink-red);   }
+.compass-arrow-s { fill: var(--ink-brown); opacity: 0.5; }
+
+/* =============================================================================
+   SVG — MAP TREES (decorative)
+   ============================================================================= */
+
+.map-tree {
+  font-size: 14px;
+  opacity: 0.55;
+}
+
+/* =============================================================================
+   SVG — LOCATION BUILDINGS
+   ============================================================================= */
+
+/* Unvisited pulse animation */
+@keyframes location-pulse {
+  0%   { r: 36; opacity: 0.35; }
+  70%  { r: 44; opacity: 0;    }
+  100% { r: 36; opacity: 0;    }
+}
+
+.location-pulse {
+  fill: none;
+  stroke: var(--ink-red);
+  stroke-width: 1.5;
+  animation: location-pulse 2.4s ease-out infinite;
+}
+
+/* Resurrection ring */
+@keyframes resurrection-pulse {
+  0%   { r: 40; opacity: 0.8; stroke-width: 2;   }
+  50%  { r: 50; opacity: 0.3; stroke-width: 1;   }
+  100% { r: 40; opacity: 0.8; stroke-width: 2;   }
+}
+
+.resurrection-ring {
+  fill: none;
+  stroke: #DAA520;
+  animation: resurrection-pulse 1.2s ease-in-out infinite;
+}
+
+.building-shadow {
+  fill: rgba(42, 35, 28, 0.2);
+}
+
+.building-body {
+  fill: var(--paper-cream);
+  stroke: var(--border-dark);
+  stroke-width: 1.5;
+  transition: fill 120ms ease;
+}
+
+.building-body.hovered {
+  fill: var(--paper-aged);
+  stroke: var(--ink-black);
+  stroke-width: 2;
+}
+
+.building-icon {
+  font-size: 22px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.building-label {
+  font-family: var(--font-heading);
+  font-size: 7.5px;
+  fill: var(--ink-brown);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+}
+
+.resurrection-badge {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 900;
+  fill: #DAA520;
+  paint-order: stroke;
+  stroke: var(--paper-cream);
+  stroke-width: 2;
+}
+
+/* Tooltip foreignObject */
+.location-tooltip-wrapper {
+  pointer-events: none;
+  z-index: 100;
+}
+
+.location-tooltip {
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--space-sm);
+  box-shadow: 2px 3px 8px var(--shadow);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  width: 168px;
+}
+
+.tooltip-name {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ink-black);
+  margin-bottom: 3px;
+}
+
+.tooltip-desc {
+  color: var(--ink-brown);
+  font-style: italic;
+  margin-bottom: var(--space-xs);
+  font-size: 0.72rem;
+}
+
+.tooltip-services {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.tooltip-service-badge {
+  font-size: 0.65rem;
+  font-family: var(--font-body);
+  background-color: var(--paper-aged);
+  border: 1px solid var(--border-dark);
+  border-radius: 3px;
+  padding: 1px 5px;
+  color: var(--ink-brown);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* =============================================================================
+   SIDEBAR LEGEND
+   ============================================================================= */
+
+.town-legend {
+  width: 192px;
+  flex-shrink: 0;
+  background-color: var(--paper-cream);
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  box-shadow: 0 2px 8px var(--shadow);
+  align-self: flex-start;
+}
+
+.legend-title {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0 0 var(--space-sm) 0;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.legend-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 var(--space-md) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+  font-size: 0.82rem;
+  color: var(--ink-brown);
+  position: relative;
+}
+
+.legend-item:hover {
+  background-color: var(--paper-aged);
+  color: var(--ink-black);
+}
+
+.legend-item.visited {
+  color: var(--ink-black);
+}
+
+.legend-item.visited::before {
+  content: '✓';
+  position: absolute;
+  right: var(--space-sm);
+  font-size: 0.65rem;
+  color: var(--color-success, #228B22);
+  opacity: 0.6;
+}
+
+.legend-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.legend-name {
+  flex: 1;
+}
+
+.legend-alert {
+  font-family: var(--font-heading);
+  font-weight: 900;
+  color: #DAA520;
+  font-size: 0.9rem;
+}
+
+/* Active contracts */
+.legend-contracts {
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-dark);
+  margin-bottom: var(--space-sm);
+}
+
+.legend-contracts-title {
+  font-family: var(--font-heading);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-brown);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.legend-contract-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.72rem;
+  color: var(--ink-brown);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+/* Rumors hint */
+.legend-rumors-hint {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-dark);
+  font-size: 0.72rem;
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+.rumors-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--ink-red);
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* =============================================================================
+   FOOTER
+   ============================================================================= */
+
+.town-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--paper-cream);
+  border-top: 3px solid var(--border-dark);
+  box-shadow: 0 -2px 8px var(--shadow);
+}
+
+.town-footer-text {
+  font-family: var(--font-flavor);
+  font-style: italic;
+  color: var(--ink-brown);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.depart-button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--space-sm) var(--space-lg);
+  background-color: var(--paper-cream);
+  color: var(--ink-black);
+  border: 2px solid var(--ink-black);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 2px 6px var(--shadow);
+  transition:
+    background-color 150ms ease,
+    transform        150ms ease,
+    box-shadow       150ms ease;
+}
+
+.depart-button:hover {
+  background-color: var(--ink-black);
+  color: var(--paper-cream);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.depart-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px var(--shadow);
+}
+
+/* =============================================================================
+   LOCATION OVERLAY
+   ============================================================================= */
+
+.location-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: stretch;
+  background-color: rgba(42, 35, 28, 0.55);
+  backdrop-filter: blur(2px);
+  transition: opacity 280ms ease;
+}
+
+.location-overlay.overlay-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.location-overlay.overlay-visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Location components render as a panel sliding in from the right */
+.location-overlay > * {
+  margin-left: auto;
+  width: min(640px, 100%);
+  background-color: var(--paper-cream);
+  box-shadow: -4px 0 24px rgba(42, 35, 28, 0.35);
+  overflow-y: auto;
+  transform: translateX(0);
+  transition: transform 280ms ease;
+}
+
+.location-overlay.overlay-hidden > * {
+  transform: translateX(48px);
+}
+
+/* =============================================================================
+   RESPONSIVE
+   ============================================================================= */
+
+@media (max-width: 900px) {
+  .town-map-wrapper {
+    flex-direction: column;
+    padding: var(--space-sm);
+  }
+
+  .town-legend {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .legend-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: var(--space-xs);
+  }
+}
+
+@media (max-width: 600px) {
+  .town-header {
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .character-strip {
+    text-align: left;
+  }
+
+  .character-strip-name {
+    justify-content: flex-start;
+  }
+
+  .character-strip-stats {
+    justify-content: flex-start;
+  }
+
+  .town-footer {
+    flex-direction: column;
+    gap: var(--space-sm);
+    text-align: center;
+  }
+
+  .depart-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

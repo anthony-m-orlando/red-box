@@ -1,0 +1,404 @@
+/* =============================================================================
+   HirelingPanel.css
+   Hireling recruitment, party view, stats, AI mode toggle, dismiss.
+   ============================================================================= */
+
+/* =============================================================================
+   PANEL SHELL
+   ============================================================================= */
+
+.hireling-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* =============================================================================
+   TAB BAR
+   ============================================================================= */
+
+.hireling-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border-dark);
+  gap: 0;
+}
+
+.hireling-tab {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--ink-brown);
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.hireling-tab:hover {
+  color: var(--ink-black);
+}
+
+.hireling-tab.tab-active {
+  color: var(--ink-black);
+  border-bottom-color: var(--ink-black);
+}
+
+/* =============================================================================
+   FEEDBACK
+   ============================================================================= */
+
+.hireling-feedback {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  font-size: 0.82rem;
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
+  animation: feedback-appear 180ms ease-out;
+}
+
+@keyframes feedback-appear {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.hireling-feedback-success {
+  color: var(--color-success, #228B22);
+  background-color: rgba(34, 139, 34, 0.07);
+}
+
+.hireling-feedback-error {
+  color: var(--ink-red);
+  background-color: rgba(139, 38, 53, 0.07);
+}
+
+/* =============================================================================
+   EMPTY STATES
+   ============================================================================= */
+
+.hireling-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl);
+  color: var(--ink-brown);
+  text-align: center;
+}
+
+.hireling-empty p {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.hireling-empty-hint {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+/* =============================================================================
+   HIRELING CARD (party view)
+   ============================================================================= */
+
+.hireling-party,
+.hireling-roster {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.hireling-card {
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  transition: background-color 120ms ease;
+}
+
+.hireling-card:hover {
+  background-color: var(--paper-aged);
+}
+
+.hireling-dead {
+  opacity: 0.55;
+  background-color: var(--paper-aged);
+}
+
+/* Header row */
+.hcard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.hcard-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.hcard-role-icon {
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+.hcard-name {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-black);
+  line-height: 1.2;
+}
+
+.hcard-role {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+.hcard-deceased {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-red);
+}
+
+/* Action buttons */
+.hcard-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.hcard-mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 3px 8px;
+  background-color: var(--paper-aged);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--ink-brown);
+  transition: background-color 120ms ease, border-color 120ms ease;
+}
+
+.hcard-mode-btn:hover {
+  background-color: var(--ink-brown);
+  border-color: var(--ink-brown);
+  color: var(--paper-cream);
+}
+
+.hcard-dismiss-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: transparent;
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--ink-red);
+  transition: background-color 120ms ease;
+}
+
+.hcard-dismiss-btn:hover {
+  background-color: rgba(139, 38, 53, 0.1);
+  border-color: var(--ink-red);
+}
+
+/* Stats row */
+.hcard-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.hcard-stat {
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 0.72rem;
+  color: var(--ink-brown);
+  background-color: var(--paper-aged);
+  border: 1px solid var(--border-dark);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+/* Loyalty colours */
+.hcard-loyalty { font-weight: 700; }
+.loyalty-positive { color: var(--color-success, #228B22); border-color: var(--color-success, #228B22); }
+.loyalty-negative { color: var(--ink-red);                border-color: var(--ink-red);                }
+.loyalty-neutral  { color: var(--ink-brown);              border-color: var(--border-dark);             }
+
+.hcard-desc {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--ink-brown);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* =============================================================================
+   ROSTER CARD (hire view)
+   ============================================================================= */
+
+.roster-card {
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: background-color 120ms ease;
+}
+
+.roster-card:hover:not(.roster-card-broke) {
+  background-color: var(--paper-aged);
+}
+
+.roster-card-broke {
+  opacity: 0.6;
+}
+
+.rcard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.rcard-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.rcard-role-icon { font-size: 1.4rem; line-height: 1; }
+
+.rcard-name {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink-black);
+}
+
+.rcard-role {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+.rcard-wage {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.rcard-wage-amount {
+  display: block;
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #8B6914;
+}
+
+.wage-cant-afford {
+  color: var(--ink-red);
+}
+
+.rcard-wage-label {
+  display: block;
+  font-size: 0.65rem;
+  color: var(--ink-brown);
+  white-space: nowrap;
+}
+
+.rcard-desc {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--ink-brown);
+  margin: 0;
+  line-height: 1.4;
+}
+
+.rcard-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.rcard-stat {
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 0.7rem;
+  color: var(--ink-brown);
+  background-color: var(--paper-aged);
+  border: 1px solid var(--border-dark);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.rcard-combat { color: var(--ink-red);  border-color: var(--ink-red);  }
+.rcard-spells { color: var(--ink-blue); border-color: var(--ink-blue); }
+
+.rcard-hire-btn {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: var(--space-xs) var(--space-md);
+  background-color: var(--paper-cream);
+  color: var(--ink-black);
+  border: 2px solid var(--ink-black);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  align-self: flex-start;
+  transition:
+    background-color 140ms ease,
+    color            140ms ease,
+    transform        140ms ease;
+}
+
+.rcard-hire-btn:hover:not(:disabled) {
+  background-color: var(--ink-black);
+  color: var(--paper-cream);
+  transform: translateY(-1px);
+}
+
+.rcard-hire-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* Roster footer note */
+.roster-note {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--ink-brown);
+  opacity: 0.7;
+  margin: var(--space-xs) 0 0;
+  text-align: center;
+}

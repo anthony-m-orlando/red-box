@@ -1,0 +1,238 @@
+/* ==========================================================================
+   TurnCounter.css
+   Light source + turn clock HUD widget
+   ========================================================================== */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Container
+   ────────────────────────────────────────────────────────────────────────── */
+
+.turn-counter {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px 10px;
+  background-color: var(--paper-aged);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  color: var(--ink-brown);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+/* Urgency variants */
+.turn-counter--warning {
+  background-color: #f5e9d5;
+  border-color: var(--warning-orange);
+}
+
+.turn-counter--critical {
+  background-color: #f5ddd5;
+  border-color: var(--danger-red);
+  animation: counter-pulse 1.6s ease-in-out infinite;
+}
+
+.turn-counter--dark {
+  background-color: #2b2520;
+  border-color: #4a3020;
+  color: #a08060;
+}
+
+@keyframes counter-pulse {
+  0%, 100% { border-color: var(--danger-red); }
+  50%       { border-color: var(--ink-red);   }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Rows
+   ────────────────────────────────────────────────────────────────────────── */
+
+.turn-counter__row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1.3;
+}
+
+.turn-counter__label {
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.6rem;
+  color: var(--pencil-gray);
+}
+
+.turn-counter__value {
+  font-weight: 700;
+  color: var(--ink-black);
+}
+
+.turn-counter__value--mono {
+  font-family: var(--font-numbers);
+  font-size: 0.85rem;
+}
+
+.turn-counter__sublabel {
+  font-size: 0.6rem;
+  color: var(--pencil-gray);
+  font-style: italic;
+  margin-left: auto;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Icons
+   ────────────────────────────────────────────────────────────────────────── */
+
+.turn-counter__icon {
+  flex-shrink: 0;
+  color: var(--ink-brown);
+}
+
+.turn-counter__icon--alert {
+  color: var(--danger-red);
+  flex-shrink: 0;
+}
+
+.turn-counter__icon--dark {
+  color: #a08060;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Light row
+   ────────────────────────────────────────────────────────────────────────── */
+
+.turn-counter__light {
+  flex-wrap: wrap;
+  row-gap: 3px;
+}
+
+.turn-counter__light-text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.turn-counter__light--dark .turn-counter__light-text {
+  color: #c08060;
+  font-weight: 700;
+}
+
+.turn-counter__light--critical .turn-counter__light-text {
+  color: var(--danger-red);
+  font-weight: 700;
+}
+
+.turn-counter__light--warning .turn-counter__light-text {
+  color: var(--warning-orange);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Light bar (fuel gauge)
+   ────────────────────────────────────────────────────────────────────────── */
+
+.turn-counter__light-bar {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(42,35,28,0.12);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 1px;
+}
+
+.turn-counter__light-bar-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+  background-color: #c8a84b;   /* warm amber — safe default */
+}
+
+.turn-counter__light-bar--warning .turn-counter__light-bar-fill {
+  background-color: var(--warning-orange);
+}
+
+.turn-counter__light-bar--critical .turn-counter__light-bar-fill {
+  background-color: var(--danger-red);
+  animation: bar-flicker 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes bar-flicker {
+  from { opacity: 1; }
+  to   { opacity: 0.55; }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Dark warning + relight button
+   ────────────────────────────────────────────────────────────────────────── */
+
+.turn-counter__dark-warning {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #c08060;
+  font-weight: 700;
+  font-size: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.turn-counter__relight-btn {
+  margin-left: auto;
+  padding: 2px 8px;
+  font-family: var(--font-numbers);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--paper-cream);
+  background-color: var(--ink-brown);
+  border: 1px solid #6b4c30;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.turn-counter__relight-btn:hover {
+  background-color: var(--ink-red);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Wandering monster alert
+   ────────────────────────────────────────────────────────────────────────── */
+
+.turn-counter__wander-alert {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-style: italic;
+  color: var(--ink-red);
+  font-weight: 700;
+  font-size: 0.65rem;
+  animation: wander-alert-flash 1s ease-in-out infinite alternate;
+}
+
+@keyframes wander-alert-flash {
+  from { opacity: 1; }
+  to   { opacity: 0.6; }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Next wander check countdown
+   ────────────────────────────────────────────────────────────────────────── */
+
+.turn-counter__wander-clock {
+  justify-content: flex-end;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Reduced motion
+   ────────────────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .turn-counter--critical,
+  .turn-counter__light-bar--critical .turn-counter__light-bar-fill,
+  .turn-counter__wander-alert {
+    animation: none;
+  }
+}

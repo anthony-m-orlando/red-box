@@ -1,110 +1,105 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { UserPlus, Users, Download, Upload, Trash2, Play } from 'lucide-react';
-import { useCharacter } from '../../contexts/CharacterContext';
+import { UserPlus, Download, Upload, Trash2, Play } from 'lucide-react';
+import {
+  useCharacter,
+  loadAllCharacters,
+  addToCharacterIndex,
+  removeFromCharacterIndex
+} from '../../contexts/CharacterContext';
 import Button from '../common/Button';
 import PaperContainer from '../common/PaperContainer';
 import './CharacterManager.css';
 
 /**
- * CharacterManager - Manage multiple characters in localStorage
+ * CharacterManager — load, save, import, export, and delete characters.
+ *
+ * Changes vs original:
+ *  - FIX: loadCharacters() no longer calls Object.keys(localStorage) and
+ *    filters by prefix. That approach scans every key in storage, which
+ *    degrades as localStorage grows. It's replaced by loadAllCharacters()
+ *    from CharacterContext, which reads a compact index key instead.
+ *  - Save / import / delete all go through addToCharacterIndex /
+ *    removeFromCharacterIndex so the index stays consistent.
  */
 export function CharacterManager() {
   const navigate = useNavigate();
-  const { character, importCharacter, resetCharacter } = useCharacter();
+  const { character, importCharacter, resetCharacter, saveCharacterSlot } = useCharacter();
   const [characters, setCharacters] = useState([]);
   const [selectedChar, setSelectedChar] = useState(null);
 
-  // Load all characters from localStorage
-  useEffect(() => {
-    loadCharacters();
-  }, []);
-
+  // ── Load using the index, not a full localStorage scan ───────────────────
   const loadCharacters = () => {
-    const keys = Object.keys(localStorage);
-    const charKeys = keys.filter(key => key.startsWith('rpg-character-'));
-    
-    const chars = charKeys.map(key => {
-      try {
-        const data = JSON.parse(localStorage.getItem(key));
-        return {
-          id: key,
-          ...data
-        };
-      } catch (error) {
-        return null;
-      }
-    }).filter(Boolean);
-    
-    // Also include current character if not in list
+    const saved = loadAllCharacters(); // reads rpg-character-index
+
+    // Prepend the active character if it isn't in the saved list
     if (character.isCreated) {
-      const currentExists = chars.some(c => c.name === character.name);
-      if (!currentExists) {
-        chars.unshift({
-          id: 'rpg-character',
-          ...character,
-          isCurrent: true
-        });
+      const alreadyListed = saved.some(c => c.name === character.name);
+      if (!alreadyListed) {
+        saved.unshift({ id: 'rpg-character', ...character, isCurrent: true });
       }
     }
-    
-    setCharacters(chars);
+
+    setCharacters(saved);
   };
+
+  useEffect(() => {
+    loadCharacters();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // ── Actions ───────────────────────────────────────────────────────────────
 
   const handleLoadCharacter = (char) => {
     const result = importCharacter(JSON.stringify(char));
     if (result.success) {
-      // Update main character storage
       localStorage.setItem('rpg-character', JSON.stringify(char));
       navigate('/');
     }
   };
 
   const handleDeleteCharacter = (charId) => {
-    if (window.confirm('Are you sure you want to delete this character?')) {
-      localStorage.removeItem(charId);
-      loadCharacters();
-    }
+    if (!window.confirm('Are you sure you want to delete this character?')) return;
+    localStorage.removeItem(charId);
+    removeFromCharacterIndex(charId); // keep index in sync
+    loadCharacters();
   };
 
   const handleExportCharacter = (char) => {
-    const data = JSON.stringify(char, null, 2);
-    const blob = new Blob([data], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
+    const blob = new Blob([JSON.stringify(char, null, 2)], { type: 'application/json' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
     a.download = `${char.name || 'character'}.json`;
     a.click();
     URL.revokeObjectURL(url);
   };
 
   const handleImportCharacter = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
+    const input  = document.createElement('input');
+    input.type   = 'file';
     input.accept = '.json';
-    
+
     input.onchange = (e) => {
       const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          try {
-            const char = JSON.parse(event.target.result);
-            
-            // Generate unique ID for imported character
-            const uniqueId = `rpg-character-${Date.now()}`;
-            localStorage.setItem(uniqueId, JSON.stringify(char));
-            
-            loadCharacters();
-            alert(`Character "${char.name}" imported successfully!`);
-          } catch (error) {
-            alert('Error importing character: Invalid file format');
-          }
-        };
-        reader.readAsText(file);
-      }
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const char    = JSON.parse(event.target.result);
+          const key     = `rpg-character-${Date.now()}`;
+          localStorage.setItem(key, JSON.stringify(char));
+          addToCharacterIndex(key); // keep index in sync
+          loadCharacters();
+          alert(`Character "${char.name}" imported successfully!`);
+        } catch {
+          alert('Error importing character: Invalid file format');
+        }
+      };
+      reader.readAsText(file);
     };
-    
+
     input.click();
   };
 
@@ -113,12 +108,13 @@ export function CharacterManager() {
       alert('No character to save!');
       return;
     }
-    
-    const uniqueId = `rpg-character-${Date.now()}`;
-    localStorage.setItem(uniqueId, JSON.stringify(character));
+    const key = `rpg-character-${Date.now()}`;
+    saveCharacterSlot(key); // writes data + updates index
     loadCharacters();
     alert(`Character "${character.name}" saved!`);
   };
+
+  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
     <div className="character-manager">
@@ -129,13 +125,11 @@ export function CharacterManager() {
         </p>
       </div>
 
-      {/* Action Buttons */}
       <div className="manager-actions">
         <Button
           variant="primary"
           icon={<UserPlus />}
           onClick={() => {
-            // Reset character state before creating new
             resetCharacter();
             localStorage.removeItem('rpg-character');
             navigate('/character/create');
@@ -144,155 +138,79 @@ export function CharacterManager() {
           Create New Character
         </Button>
 
-        <Button
-          variant="secondary"
-          icon={<Upload />}
-          onClick={handleImportCharacter}
-        >
+        <Button variant="secondary" icon={<Upload />} onClick={handleImportCharacter}>
           Import Character
         </Button>
 
         {character.isCreated && (
-          <Button
-            variant="secondary"
-            icon={<Download />}
-            onClick={handleSaveCurrentCharacter}
-          >
+          <Button variant="secondary" icon={<Download />} onClick={handleSaveCurrentCharacter}>
             Save Current Character
           </Button>
         )}
       </div>
 
-      {/* Character List */}
       <div className="character-list">
         {characters.length === 0 ? (
-          <PaperContainer variant="aged" padding="lg">
-            <div className="empty-state">
-              <Users size={64} />
-              <h3>No Characters Found</h3>
-              <p>Create a new character to begin your adventure!</p>
-            </div>
+          <PaperContainer variant="aged">
+            <p style={{ textAlign: 'center', color: 'var(--ink-brown)', padding: '2rem' }}>
+              No characters found. Create your first hero!
+            </p>
           </PaperContainer>
         ) : (
-          characters.map(char => (
-            <CharacterCard
+          characters.map((char) => (
+            <PaperContainer
               key={char.id}
-              character={char}
-              onLoad={() => handleLoadCharacter(char)}
-              onDelete={() => handleDeleteCharacter(char.id)}
-              onExport={() => handleExportCharacter(char)}
-              isCurrent={char.id === 'rpg-character'}
-            />
+              variant={selectedChar === char.id ? 'graph' : 'cream'}
+              className={`character-card ${selectedChar === char.id ? 'selected' : ''}`}
+              onClick={() => setSelectedChar(char.id === selectedChar ? null : char.id)}
+            >
+              <div className="character-card-header">
+                <div>
+                  <h3>{char.name || 'Unnamed Hero'}</h3>
+                  <p className="character-subtitle">
+                    Level {char.level || 1} {char.class || 'Unknown'}{char.isCurrent ? ' (Active)' : ''}
+                  </p>
+                </div>
+                <div className="character-card-stats">
+                  <span>HP: {char.hp?.current ?? '?'}/{char.hp?.max ?? '?'}</span>
+                  <span>AC: {char.ac ?? '?'}</span>
+                  <span>XP: {char.xp ?? 0}</span>
+                </div>
+              </div>
+
+              {selectedChar === char.id && (
+                <div className="character-card-actions">
+                  <Button
+                    variant="primary"
+                    size="sm"
+                    icon={<Play />}
+                    onClick={(e) => { e.stopPropagation(); handleLoadCharacter(char); }}
+                  >
+                    Load & Play
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    icon={<Download />}
+                    onClick={(e) => { e.stopPropagation(); handleExportCharacter(char); }}
+                  >
+                    Export
+                  </Button>
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    icon={<Trash2 />}
+                    onClick={(e) => { e.stopPropagation(); handleDeleteCharacter(char.id); }}
+                  >
+                    Delete
+                  </Button>
+                </div>
+              )}
+            </PaperContainer>
           ))
         )}
       </div>
-
-      {/* Back Button */}
-      <div className="manager-footer">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/')}
-        >
-          ← Back to Home
-        </Button>
-      </div>
     </div>
-  );
-}
-
-/**
- * CharacterCard - Individual character display
- */
-function CharacterCard({ character, onLoad, onDelete, onExport, isCurrent }) {
-  const navigate = useNavigate();
-  
-  const handleLoadAndPlay = () => {
-    onLoad(); // Load the character
-    setTimeout(() => {
-      navigate('/adventure'); // Navigate to adventure
-    }, 100);
-  };
-  
-  return (
-    <PaperContainer className="character-card">
-      <div className="card-header">
-        <div>
-          <h3>{character.name}</h3>
-          <p className="char-subtitle">
-            Level {character.level} {character.class} • {character.alignment}
-          </p>
-        </div>
-        {isCurrent && <span className="current-badge">Current</span>}
-      </div>
-
-      <div className="card-stats">
-        <div className="stat">
-          <span className="stat-label">HP:</span>
-          <span className="number">{character.hp.current}/{character.hp.max}</span>
-        </div>
-        <div className="stat">
-          <span className="stat-label">AC:</span>
-          <span className="number">{character.ac}</span>
-        </div>
-        <div className="stat">
-          <span className="stat-label">XP:</span>
-          <span className="number">{character.xp}</span>
-        </div>
-        <div className="stat">
-          <span className="stat-label">Gold:</span>
-          <span className="number">{character.gold}</span>
-        </div>
-      </div>
-
-      <div className="card-abilities">
-        {Object.entries(character.abilities).map(([ability, score]) => (
-          <div key={ability} className="ability-mini">
-            <span className="ability-name-mini">{ability.substring(0, 3).toUpperCase()}</span>
-            <span className="number">{score}</span>
-          </div>
-        ))}
-      </div>
-
-      <div className="card-actions">
-        <Button
-          variant="primary"
-          size="sm"
-          icon={<Play />}
-          onClick={handleLoadAndPlay}
-          fullWidth
-        >
-          Load & Begin Adventure
-        </Button>
-
-        <div className="card-actions-row">
-          <Button
-            variant="secondary"
-            size="sm"
-            onClick={onLoad}
-          >
-            Load Only
-          </Button>
-          
-          <Button
-            variant="ghost"
-            size="sm"
-            icon={<Download />}
-            onClick={onExport}
-          >
-            Export
-          </Button>
-
-          <Button
-            variant="danger"
-            size="sm"
-            icon={<Trash2 />}
-            onClick={onDelete}
-          >
-            Delete
-          </Button>
-        </div>
-      </div>
-    </PaperContainer>
   );
 }
 

@@ -1,290 +1,134 @@
-Gemini said
-Markdown
-# Red Box: Comprehensive System Design & Data Specification (v1.0)
-
-## 1. Architectural Vision
-**Red Box** is a high-fidelity, client-side web application designed to emulate the tactile experience of a 1980s "Trapper Keeper" adventure folder. The system uses an **N-Tab Modular Architecture**, allowing for independent scaling of the Character, Adventure, and Reference engines.
+This revised **System Design Document** consolidates the pivot from the "Trapper Keeper" UI to a professional, cloud-based architecture. It integrates the **Identity & Persistence (Phase 4)** requirements, the **Quasqueton Engine** logic for Module B1, and the future-proofing needed for **AI Integration**.
 
 ---
 
-## 2. Global UI & Navigation (The Folder Shell)
-### N-Tab Layout
-* **Characters**: Paged sub-view (Sheet → Inventory → Spells).
-* **Adventures**: Dual-mode view (Town Hub / Dungeon Explorer).
-* **Dice Roller**: Global utility overlay or dedicated tab.
-* **Reference**: Searchable archive (Rules & Bestiary).
+# 🏗️ System Design Document: Version 1.0.0 (The Gold Box)
 
-### Visual Standards
-* **Architectural Weighting**: 
-    * `border-outer`: 4px solid #1a1a1a (Foundation walls).
-    * `border-inner`: 1px solid #4a4a4a (Room partitions).
-* **Environmental FX**: CSS `mask-image` with noise textures for "Stippled Rock" cavern edges.
-* **Dynamic Lighting**: Radial CSS gradients centered on player coordinates to simulate torchlight falloff (radius: 30ft/3 squares).
+**Project**: Old School RPG Service
+
+**Version**: 1.0.0 (Unified Specification)
+
+**Last Updated**: March 5, 2026
+
+**Status**: Finalized for Implementation
 
 ---
 
-## 3. Data Schemas (JSON Specification)
+## 1. Architectural Evolution
 
-### A. Bestiary (Module B1 Specific)
-```json
-[
-  {
-    "id": "orc",
-    "name": "Orc",
-    "description": "Nasty, nocturnal humanoids that hate light.",
-    "stats": {
-      "ac": 6,
-      "hd": "1",
-      "hp_range": [1, 8],
-      "atk": 1,
-      "damage": "1d8",
-      "move": 120,
-      "save": "F1"
-    },
-    "xp": 10
-  },
-  {
-    "id": "troglodyte",
-    "name": "Troglodyte",
-    "description": "Reptilian sub-humans with a sickening stench.",
-    "stats": {
-      "ac": 5,
-      "hd": "2",
-      "hp_range": [2, 16],
-      "atk": 3,
-      "damage": "1d4/1d4/1d4",
-      "move": 120,
-      "save": "F2"
-    },
-    "special": "Stench: Save vs Poison or lose 2 points of Strength.",
-    "xp": 20
-  },
-  {
-    "id": "giant_rat",
-    "name": "Giant Rat",
-    "description": "Three-foot long rodents with filthy fur.",
-    "stats": {
-      "ac": 7,
-      "hd": "1/2",
-      "hp_range": [1, 4],
-      "atk": 1,
-      "damage": "1d3",
-      "move": 120,
-      "save": "F1"
-    },
-    "special": "5% chance of disease on successful bite.",
-    "xp": 5
-  }
-]
-B. Standard Equipment & Inventory
-JSON
-{
-  "weapons": [
-    {"id": "sword", "name": "Sword", "damage": "1d8", "weight": 60, "cost": 10},
-    {"id": "dagger", "name": "Dagger", "damage": "1d4", "weight": 10, "cost": 3}
-  ],
-  "gear": [
-    {"id": "pole_10", "name": "10' Pole", "weight": 100, "cost": 1, "desc": "Used to poke ceilings and floors."},
-    {"id": "spikes_iron", "name": "Iron Spikes (12)", "weight": 60, "cost": 1, "desc": "Used to wedge doors shut."},
-    {"id": "torch", "name": "Torch (6)", "weight": 20, "cost": 1, "desc": "Provides light for 6 turns each."},
-    {"id": "oil_flask", "name": "Flask of Oil", "weight": 10, "cost": 2, "desc": "Fuel for lanterns or fire traps."}
-  ]
-}
-C. Combat & THAC0 Reference
-JSON
-{
-  "thac0_tables": {
-    "fighter": [19, 19, 19, 17, 17, 17, 14, 14, 14, 12],
-    "cleric": [20, 20, 20, 20, 18, 18, 18, 18, 16, 16],
-    "magic_user": [20, 20, 20, 20, 20, 19, 19, 19, 19, 19]
-  },
-  "attack_matrix": "Target AC = THAC0 - Roll"
-}
-4. Adventure Engine Logic (Module B1)
-The "Threshold to B1" Loop
-Town State: Initialize NPC dialogue nodes for "The Gold Dragon Inn."
+The system is transitioning from a **Client-Side SPA** (v0.1.0) to a **Cloud-Synced Service**.
 
-Dungeon Transition: Map coordinates shift to the Caverns of Quasqueton.
+* **v0.1.0 Architecture**: React + LocalStorage (Decoupled & Ephemeral).
+* **v1.0.0 Architecture**: React + Node/Serverless + Cloud Database (Identity-Centric & Persistent).
 
-Room Discovery Logic:
+### 1.1 High-Level Data Flow
 
-Every movement step checks exploredCoordinates.
-
-If coordinate has room_id, fetch description from B1 room database.
-
-Roll for secret_doors based on Character Wisdom/Class.
-
-Map Tile Schema
-JSON
-{
-  "x": 10,
-  "y": 20,
-  "type": "room",
-  "room_id": "36",
-  "wall_top": "foundation",
-  "wall_left": "partition",
-  "has_stairs": true,
-  "label": "Laboratory"
-}
-5. Persistence & State Management
-The system must serialize the following state to localStorage on every meaningful action:
-
-JavaScript
-const redBoxState = {
-  character: {
-    name: "Orlando the Bold",
-    class: "Fighter",
-    level: 1,
-    hp: { current: 8, max: 8 },
-    inventory: ["sword", "pole_10", "spikes_iron"],
-    xp: 0
-  },
-  adventure: {
-    currentLocation: "Quasqueton_Level_1",
-    playerPos: { x: 5, y: 5 },
-    mapHistory: ["5,5", "5,6", "6,6"],
-    journal: ["Entered the caverns.", "Heard orcs in the distance."]
-  }
-};
+1. **Auth Layer**: User authenticates via Netlify Identity/OAuth.
+2. **State Hydration**: On login, the system fetches the User Profile and active Character JSON from the cloud database.
+3. **The "Quasqueton" Loop**:
+* Player actions trigger local state updates.
+* Significant events (Combat end, Room discovery, Resting) trigger an asynchronous "Save Sync" to the database.
+* The engine checks for "Wandering Monster" and "Torch Depletion" every 2 exploration turns.
 
 
-Markdown# Red Box: Module B1 - In Search of the Unknown
-## Development Specification & Comprehensive Data Asset Pack
-
-This document contains the full structural logic, JSON datasets, and CSS implementation instructions required to build the Module B1 expansion within the **Red Box** application.
 
 ---
 
-## 1. Development Instructions: "The Enriched Explorer"
+## 2. Database Schema (Persistence Layer)
 
-### A. Architectural Weighting (CSS)
-To match the "Enriched State" map requirements, implement the following CSS logic in your grid component. This distinguishes between the thick outer foundations and thin interior walls seen in classic TSR modules.
+We will utilize a relational structure (PostgreSQL) with JSONB columns to allow for the flexible expansion of D&D rulesets.
 
-```css
-/* Container for the 10' Square Grid */
-.dungeon-grid {
-  display: grid;
-  grid-template-columns: repeat(var(--map-width), 40px);
-  background-image: 
-    linear-gradient(to right, #d1d5db 1px, transparent 1px),
-    linear-gradient(to bottom, #d1d5db 1px, transparent 1px);
-  background-size: 40px 40px; /* Represents 10' scale */
-  background-color: #fdfaf3; /* Aged paper hex */
-}
+### 2.1 Users Table
 
-/* Wall Fidelity Logic */
-.cell-border-foundation { border: 4px solid #1a1a1a; }
-.cell-border-partition { border: 1px solid #4a4a4a; }
+| Column | Type | Description |
+| --- | --- | --- |
+| `id` | UUID | Primary Key |
+| `username_hash` | CHAR(64) | Normalized SHA-256 hash for privacy |
+| `email_hash` | CHAR(64) | Normalized SHA-256 hash for privacy |
+| `role` | TEXT | Admin, Player, or Beta_Tester |
 
-/* Environmental Stippling (Solid Earth) */
-.rock-fill {
-  background-color: #e5e7eb;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='[http://www.w3.org/2000/svg'%3E%3Cfilter](http://www.w3.org/2000/svg'%3E%3Cfilter) id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-  opacity: 0.4;
-}
-B. Dynamic Fog of War (Torchlight Falloff)Instead of a binary "on/off" visibility, use a radial gradient mask centered on the playerPos coordinates.Full Visibility: 2-cell radius (20').Dim Light (Partial Fog): 3-cell radius (30').Total Darkness: Beyond 3 cells.2. Core JSON Data AssetsA. The B1 BestiaryPopulate the Reference Tab with these entries. These stats include THAC0-compliant AC and XP values for progression.JSON{
-  "bestiary": [
-    {
-      "id": "orc",
-      "name": "Orc",
-      "ac": 6,
-      "hd": "1",
-      "hp": 5,
-      "atk": "1 weapon",
-      "dmg": "1d8",
-      "thac0": 19,
-      "xp": 10,
-      "description": "Nasty, nocturnal humanoids. They prefer attacking in darkness and hate the light."
-    },
-    {
-      "id": "troglodyte",
-      "name": "Troglodyte",
-      "ac": 5,
-      "hd": "2",
-      "hp": 9,
-      "atk": "2 claws/1 bite",
-      "dmg": "1d4/1d4/1d4",
-      "thac0": 18,
-      "xp": 20,
-      "special": "Stench: Save vs Poison or lose 2 Strength points due to nausea.",
-      "description": "Reptilian sub-humans. They can change color to hide in the shadows of Quasqueton."
-    },
-    {
-      "id": "giant_rat",
-      "name": "Giant Rat",
-      "ac": 7,
-      "hd": "1/2",
-      "hp": 3,
-      "atk": "1 bite",
-      "dmg": "1d3",
-      "thac0": 20,
-      "xp": 5,
-      "special": "5% chance of disease on hit.",
-      "description": "Filthy, three-foot long rodents that swarm in the lower corridors."
-    }
-  ]
-}
-B. Inventory & Gear (The Threshold Shop)Data for the Inventory sub-page within the Characters tab.JSON{
-  "shop_inventory": [
-    {"id": "pole_10", "name": "10' Pole", "cost": 1, "weight": 100, "type": "gear"},
-    {"id": "iron_spikes", "name": "Iron Spikes (12)", "cost": 1, "weight": 60, "type": "gear"},
-    {"id": "torch_bundle", "name": "Torches (6)", "cost": 1, "weight": 20, "type": "light"},
-    {"id": "lantern", "name": "Lantern", "cost": 10, "weight": 30, "type": "light"},
-    {"id": "oil_flask", "name": "Oil Flask", "cost": 2, "weight": 10, "type": "fuel"},
-    {"id": "rations_standard", "name": "Rations (7 days)", "cost": 5, "weight": 70, "type": "food"}
-  ]
-}
-C. Dungeon Room Logic (Sample Set)Use this schema to drive the Journal Tab updates when a user enters a specific coordinate in the Adventures tab.JSON{
-  "quasqueton_rooms": [
-    {
-      "room_id": "1",
-      "name": "Entry Alcove",
-      "description": "Steps lead down into a cold, damp alcove. The air smells of wet stone and ancient dust.",
-      "entities": [],
-      "features": ["Secret door on North wall (DC 15 Wisdom check)"]
-    },
-    {
-      "room_id": "36",
-      "name": "The Laboratory",
-      "description": "Benches are covered in cracked glass vials and stained parchment. A faint chemical odor lingers.",
-      "entities": ["giant_rat", "giant_rat"],
-      "loot": ["20gp", "Silver Stirring Rod (15gp)"]
-    }
-  ]
-}
-3. System Logic ImplementationsA. THAC0 Calculation (Reference Tab Utility)Use this lookup table to automate the Dice Roller success/fail feedback during combat.Attacker LevelFighter/Dwarf/ElfCleric/HalflingMagic-User/ThiefLevel 1-3192020Level 4172020Level 5171820Formula: Target AC Hit = THAC0 - Roll.Example: A Level 1 Fighter (THAC0 19) rolls a 14. They hit AC 5 or higher.B. Encumbrance Logic (Inventory Page)The system must calculate a "Movement Rate" penalty based on total weight in the Inventory page:0 - 400 coins: 120' per turn.401 - 600 coins: 90' per turn.601 - 800 coins: 60' per turn.801+ coins: 30' per turn (Overencumbered).4. End-to-End Persistence StateWhen saving to localStorage, the data must follow this structure to ensure the N-Tab System reloads the correct "Paged View."JSON{
-  "session": {
-    "activeTab": "Adventures",
-    "activePage": "Map",
-    "lastSaved": "2026-02-23T20:30:00Z"
-  },
-  "characterState": {
-    "hp": 8,
-    "xp": 45,
-    "inventoryIds": ["sword", "torch_bundle", "pole_10"]
-  },
-  "mapState": {
-    "currentModule": "B1",
-    "exploredTiles": ["10,10", "10,11", "10,12"],
-    "playerPos": {"x": 10, "y": 12}
-  }
-}
+### 2.2 Characters Table
 
-# System Design: Red Box Technical Spec
+| Column | Type | Description |
+| --- | --- | --- |
+| `id` | UUID | Primary Key |
+| `user_id` | UUID | Foreign Key (Users) |
+| `data_json` | JSONB | Stats, Class, HP, XP, and Spells |
+| `inventory_json` | JSONB | Current equipment and encumbrance |
+| `is_alive` | BOOLEAN | If false, triggers the "Temple Loop" logic |
 
-## 1. Data Hierarchy
-**User (Hashed PII) -> Character (Stats/Inventory) -> Adventure (World State)**
+### 2.3 Adventure_State Table (World State)
 
-## 2. Database Schema (Netlify DB / Postgres)
-* **Users**: `id (UUID), username_hash (CHAR64), email_hash (CHAR64), role (TEXT)`
-* **Characters**: `id, user_id, name, stats_json, inventory_json`
-* **Adventure_States**: `id, character_id, location_id, world_state_json`
+| Column | Type | Description |
+| --- | --- | --- |
+| `id` | UUID | Primary Key |
+| `character_id` | UUID | Foreign Key (Characters) |
+| `module_id` | TEXT | e.g., "B1_QUASQUETON" |
+| `fog_of_war` | JSONB | Map coordinates revealed by player |
+| `stocking_map` | JSONB | Dynamic placement of monsters/treasure for this instance |
 
-## 3. AI Behavioral Logic
-* **Monster AI**: Priority: Nearest Target. Morale: 2d6 vs ML. On Fail: Disposition (Flee/Surrender).
-* **Hireling AI**: Priority: Player Protection. Use "Cure Light Wounds" if Player HP < 30%.
-* **Loyalty**: Persistent variable (+/- modifiers) influencing the 2d6 Morale roll.
+---
 
-## 4. Interaction Engine
-* **Dialogue Schema**: Recursive JSON structure supporting `label`, `requirement`, `success_chance`, and `on_success`.
-* **The Tithe**: `gold = Math.floor(gold * 0.85)` upon Temple Resurrection.
+## 3. The Quasqueton Engine (Module B1 Logic)
+
+### 3.1 Dynamic Stocking Logic
+
+The engine must implement a `DungeonPopulator` service that runs once per adventure start:
+
+* **Input**: `B1_Master_Tables.json` (Monsters and Treasures).
+* **Logic**: Iterates through all "Unkeyed" rooms in the B1 Map JSON.
+* **Output**: A `stocking_map` object saved to the database.
+
+### 3.2 Environmental Event System
+
+A centralized `TimeManager` tracks "Turns" (100 tiles moved or 1 combat encounter).
+
+* **Turn % 2 == 0**: Trigger `WanderingMonsterCheck` (1-in-6).
+* **Torch State**: Reduce `active_light_duration`. At 0, vision radius drops to 1 tile unless the player has *Infravision*.
+* **Special Triggers**: Room-specific scripts (e.g., Room 38 "Pool of Wonders") are handled via a `RoomEffectContainer` that updates character stats directly.
+
+---
+
+## 4. UI & Presentation Layer
+
+*Removing the folder/skeuomorphic UI in favor of a clean, high-contrast professional RPG interface.*
+
+### 4.1 The "Tabbed" Interface
+
+1. **Town/Adventure Tab**: High-fidelity map rendering using HTML5 Canvas or SVG.
+2. **Character Tab**: Modernized "Stat Block" view with interactive equipment toggles.
+3. **Reference Tab**: Searchable rules for THAC0, Saving Throws, and Monster Manual.
+
+### 4.2 Visual Standards
+
+* **Map Aesthetic**: Weathered parchment textures with hand-drawn tile overlays.
+* **Typography**: Serif fonts for narrative/descriptions; Monospace for combat logs and stats.
+* **Animations**: CSS typewriter effects for DM descriptions; subtle "flicker" on the Fog of War edges.
+
+---
+
+## 5. Future AI Integration Spec (v2.0 Preview)
+
+The system is designed to support the following hooks for OpenAI/LLM integration:
+
+* **`NarrativeService`**: A middleware that sends `[Room_ID, Stocking_Data, Character_History]` to an API to generate a unique sensory description (Smell, Sound, Visual).
+* **`NPCDialogueService`**: Context-aware chat with NPCs in the Town of Threshold based on the player's current gold, class, and dungeon progress.
+* **`TacticalAIService`**: API-driven decision making for boss-level monsters (e.g., Zelligar).
+
+---
+
+## 6. Security & Infrastructure
+
+* **Identity Provider**: Netlify Identity (using JWT for session security).
+* **API Layer**: Netlify Functions (Serverless) to handle database R/W and prevent client-side data manipulation.
+* **Hosting**: Netlify (Frontend) + Supabase (Database).
+
+---
+
+**Document Version**: 2.0
+
+**Next Review**: Implementation of Phase 4 (Cloud Sync)
+
+**Approved By**: Lead Dev
+
+**Date**: March 5, 2026

@@ -1,0 +1,942 @@
+/* =============================================================================
+   Location.css — shared by all 7 town location components
+   Covers: panel shell, header, tabs, notices, body scroll,
+           and all service-specific layouts used across locations.
+   ============================================================================= */
+
+/* =============================================================================
+   PANEL SHELL
+   ============================================================================= */
+
+.location-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--paper-cream);
+  font-family: var(--font-body);
+  color: var(--ink-black);
+  overflow: hidden;
+}
+
+/* =============================================================================
+   HEADER
+   ============================================================================= */
+
+.location-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background-color: var(--paper-aged);
+  border-bottom: 3px solid var(--border-dark);
+  flex-shrink: 0;
+}
+
+.location-header-left {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+}
+
+.location-header-icon {
+  font-size: 2.2rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.location-header-title {
+  font-family: var(--font-heading);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--ink-black);
+  margin: 0 0 3px 0;
+  line-height: 1.15;
+}
+
+.location-header-desc {
+  font-family: var(--font-flavor);
+  font-style: italic;
+  color: var(--ink-brown);
+  font-size: 0.85rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.location-close-btn {
+  flex-shrink: 0;
+  background: transparent;
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  padding: var(--space-xs);
+  cursor: pointer;
+  color: var(--ink-brown);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 150ms ease;
+}
+
+.location-close-btn:hover {
+  background-color: var(--paper-cream);
+  color: var(--ink-black);
+  border-color: var(--ink-black);
+}
+
+/* =============================================================================
+   TAB STRIP  (.loc-tabs / .loc-tab)
+   ============================================================================= */
+
+.loc-tabs {
+  display: flex;
+  border-bottom: 2px solid var(--border-dark);
+  background-color: var(--paper-cream);
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+
+.loc-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: var(--space-sm) var(--space-md);
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--ink-brown);
+  white-space: nowrap;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.loc-tab:hover    { color: var(--ink-black); }
+.loc-tab-active   {
+  color: var(--ink-black);
+  border-bottom-color: var(--ink-black);
+}
+
+/* =============================================================================
+   NOTICE BAR
+   ============================================================================= */
+
+.loc-notice {
+  flex-shrink: 0;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: 0.82rem;
+  font-weight: 500;
+  animation: notice-appear 200ms ease-out;
+}
+
+@keyframes notice-appear {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.loc-notice-success {
+  background-color: rgba(34, 139, 34, 0.08);
+  color: var(--color-success, #228B22);
+  border-bottom: 1px solid rgba(34, 139, 34, 0.2);
+}
+
+.loc-notice-error {
+  background-color: rgba(139, 38, 53, 0.08);
+  color: var(--ink-red);
+  border-bottom: 1px solid rgba(139, 38, 53, 0.2);
+}
+
+/* =============================================================================
+   BODY SCROLL AREA
+   ============================================================================= */
+
+.location-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.location-body::-webkit-scrollbar       { width: 8px; }
+.location-body::-webkit-scrollbar-track { background: var(--paper-aged); }
+.location-body::-webkit-scrollbar-thumb {
+  background: var(--border-dark);
+  border-radius: var(--radius-sm);
+}
+
+/* =============================================================================
+   RUMOR LIST  (ThresholdArms)
+   ============================================================================= */
+
+.rumor-list {
+  background-color: var(--paper-aged);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.rumor-list-title {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-brown);
+  margin: 0 0 var(--space-sm) 0;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-dark);
+}
+
+.rumor-item {
+  display: flex;
+  gap: var(--space-sm);
+  padding: var(--space-xs) 0;
+}
+
+.rumor-bullet {
+  color: var(--ink-red);
+  font-size: 0.6rem;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.rumor-text {
+  font-family: var(--font-flavor);
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--ink-black);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* =============================================================================
+   STORAGE PANEL  (ThresholdArms)
+   ============================================================================= */
+
+.storage-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.storage-intro {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink-brown);
+  margin: 0;
+}
+
+.storage-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl);
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+.storage-empty p { margin: 0; font-size: 0.88rem; }
+
+.storage-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.storage-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+}
+
+.storage-item-name {
+  flex: 1;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.storage-item-qty {
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 0.75rem;
+  color: var(--ink-brown);
+}
+
+.storage-retrieve-btn {
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  background: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 120ms ease;
+}
+
+.storage-retrieve-btn:hover {
+  background-color: var(--ink-black);
+  color: var(--paper-cream);
+  border-color: var(--ink-black);
+}
+
+/* =============================================================================
+   IDENTIFY PANEL  (MagesTower)
+   ============================================================================= */
+
+.identify-panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.identify-intro {
+  font-size: 0.85rem;
+  color: var(--ink-brown);
+  font-style: italic;
+  margin: 0;
+}
+
+.identify-pending {
+  background-color: var(--paper-aged);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+
+.identify-pending-title {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-brown);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.identify-pending-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.82rem;
+  color: var(--ink-brown);
+  padding: var(--space-xs) 0;
+}
+
+.identify-status {
+  margin-left: auto;
+  font-style: italic;
+  opacity: 0.6;
+}
+
+.identify-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xl);
+  color: var(--ink-brown);
+  text-align: center;
+}
+.identify-empty p { margin: 0; font-size: 0.88rem; font-style: italic; }
+
+.identify-list { display: flex; flex-direction: column; gap: var(--space-xs); }
+
+.identify-list-title {
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-brown);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+.identify-item-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+}
+
+.identify-item-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.identify-item-name { font-weight: 700; font-size: 0.88rem; }
+.identify-item-type { font-size: 0.72rem; color: var(--ink-brown); font-style: italic; }
+
+.identify-btn {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--paper-cream);
+  color: var(--ink-black);
+  border: 1.5px solid var(--ink-black);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.identify-btn:hover:not(:disabled) {
+  background-color: var(--ink-black);
+  color: var(--paper-cream);
+}
+
+.identify-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* =============================================================================
+   TEMPLE SERVICES  (Temple)
+   ============================================================================= */
+
+.resurrection-banner {
+  flex-shrink: 0;
+  padding: var(--space-sm) var(--space-lg);
+  background-color: rgba(218, 165, 32, 0.12);
+  border-bottom: 1.5px solid #C4932A;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #8B6914;
+}
+
+.temple-services { display: flex; flex-direction: column; gap: var(--space-md); }
+
+.temple-services-intro {
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--ink-brown);
+  margin: 0;
+  line-height: 1.55;
+}
+
+/* HP bar */
+.temple-hp-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-aged);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-md);
+}
+
+.temple-hp-label {
+  font-size: 0.75rem;
+  color: var(--ink-brown);
+  font-family: var(--font-body);
+  white-space: nowrap;
+}
+
+.temple-hp-track {
+  flex: 1;
+  height: 10px;
+  background-color: var(--paper-cream);
+  border: 1px solid var(--border-dark);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.temple-hp-fill {
+  height: 100%;
+  background-color: var(--ink-red);
+  border-radius: 20px;
+  transition: width 400ms ease;
+}
+
+.temple-hp-value {
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 0.78rem;
+  color: var(--ink-red);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Service cards */
+.temple-service-list { display: flex; flex-direction: column; gap: var(--space-sm); }
+
+.temple-service-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  transition: background-color 120ms ease;
+}
+
+.temple-service-card:hover:not(.service-disabled) {
+  background-color: var(--paper-aged);
+}
+
+.service-disabled { opacity: 0.5; }
+
+.service-card-left {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  flex: 1;
+}
+
+.service-card-icon {
+  color: var(--ink-brown);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.service-card-name {
+  display: block;
+  font-weight: 700;
+  font-size: 0.88rem;
+  color: var(--ink-black);
+}
+
+.service-card-desc {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--ink-brown);
+  font-style: italic;
+  line-height: 1.4;
+  margin-top: 2px;
+}
+
+.service-card-btn {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--paper-cream);
+  color: var(--ink-black);
+  border: 2px solid var(--ink-black);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.service-card-btn:hover:not(:disabled) {
+  background-color: var(--ink-black);
+  color: var(--paper-cream);
+  transform: translateY(-1px);
+}
+
+.service-card-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.temple-footer-note {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--ink-brown);
+  opacity: 0.7;
+  margin: var(--space-xs) 0 0;
+  text-align: center;
+}
+
+/* =============================================================================
+   BANK PANEL  (TownHall)
+   ============================================================================= */
+
+.bank-panel { display: flex; flex-direction: column; gap: var(--space-md); }
+
+.bank-summary {
+  background-color: var(--paper-aged);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.bank-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.bank-summary-row--total {
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--border-dark);
+  font-weight: 700;
+}
+
+.bank-label {
+  font-size: 0.85rem;
+  color: var(--ink-brown);
+}
+
+.bank-value {
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #8B6914;
+}
+
+.bank-mode-tabs {
+  display: flex;
+  gap: var(--space-xs);
+}
+
+.bank-mode-btn {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: var(--space-xs) var(--space-sm);
+  background: var(--paper-aged);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--ink-brown);
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.bank-mode-btn:hover    { color: var(--ink-black); }
+.bank-mode-active {
+  background-color: var(--ink-black);
+  color: var(--paper-cream);
+  border-color: var(--ink-black);
+}
+
+.bank-transaction { display: flex; flex-direction: column; gap: var(--space-sm); }
+
+.bank-input-label {
+  font-size: 0.82rem;
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+.bank-input-row {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+.bank-input {
+  flex: 1;
+  font-family: var(--font-mono, 'Courier New', monospace);
+  font-size: 1rem;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--paper-cream);
+  border: 2px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+  color: var(--ink-black);
+  transition: border-color 140ms ease;
+}
+
+.bank-input:focus {
+  outline: none;
+  border-color: var(--ink-brown);
+}
+
+.bank-confirm-btn {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.88rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--paper-cream);
+  color: var(--ink-black);
+  border: 2px solid var(--ink-black);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.bank-confirm-btn:hover:not(:disabled) {
+  background-color: var(--ink-black);
+  color: var(--paper-cream);
+}
+
+.bank-confirm-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.bank-note {
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--ink-brown);
+  margin: 0;
+}
+
+/* =============================================================================
+   CONTRACT BOARD  (TownHall + GuildHall)
+   ============================================================================= */
+
+.contract-board { display: flex; flex-direction: column; gap: var(--space-md); }
+
+.board-unregistered {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  background-color: rgba(139, 38, 53, 0.05);
+  border: 1.5px solid rgba(139, 38, 53, 0.2);
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+.board-unregistered p { margin: 0; line-height: 1.5; }
+
+.contract-list { display: flex; flex-direction: column; gap: var(--space-sm); }
+
+.contract-card {
+  background-color: var(--paper-cream);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.contract-accepted { opacity: 0.8; }
+
+.contract-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.contract-icon { font-size: 1.5rem; flex-shrink: 0; }
+
+.contract-header-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contract-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink-black);
+}
+
+.contract-giver {
+  font-size: 0.72rem;
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+.contract-status {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.contract-status-active    { color: var(--ink-blue);  background: rgba(44,74,124,0.1);  border: 1px solid var(--ink-blue); }
+.contract-status-completed { color: var(--color-success, #228B22); background: rgba(34,139,34,0.08); border: 1px solid var(--color-success, #228B22); }
+.contract-status-failed    { color: var(--ink-red);   background: rgba(139,38,53,0.08); border: 1px solid var(--ink-red); }
+
+.contract-objective {
+  font-size: 0.85rem;
+  color: var(--ink-black);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.contract-footer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  padding-top: var(--space-xs);
+  border-top: 1px solid var(--border-dark);
+}
+
+.contract-reward {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #8B6914;
+  font-family: var(--font-mono, 'Courier New', monospace);
+  flex: 1;
+}
+
+.contract-difficulty {
+  font-size: 0.72rem;
+  color: var(--ink-brown);
+  font-style: italic;
+}
+
+.contract-accept-btn {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: var(--space-xs) var(--space-md);
+  background: var(--paper-cream);
+  color: var(--ink-black);
+  border: 2px solid var(--ink-black);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.contract-accept-btn:hover:not(:disabled) {
+  background-color: var(--ink-black);
+  color: var(--paper-cream);
+}
+
+.contract-accept-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* =============================================================================
+   GUILD BENEFITS  (GuildHall)
+   ============================================================================= */
+
+.guild-benefits { display: flex; flex-direction: column; gap: var(--space-md); }
+
+.guild-member-banner {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-lg);
+  background-color: rgba(34, 139, 34, 0.07);
+  border-bottom: 1.5px solid rgba(34, 139, 34, 0.2);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-success, #228B22);
+}
+
+.guild-join-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  background-color: var(--paper-aged);
+  border: 1.5px solid var(--border-dark);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+
+.guild-join-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: var(--ink-black);
+  margin: 0;
+}
+
+.guild-join-desc {
+  font-size: 0.85rem;
+  color: var(--ink-brown);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.guild-join-btn {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  padding: var(--space-sm) var(--space-lg);
+  background: var(--paper-cream);
+  color: var(--ink-black);
+  border: 2px solid var(--ink-black);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.guild-join-btn:hover:not(:disabled) {
+  background-color: var(--ink-black);
+  color: var(--paper-cream);
+  transform: translateY(-1px);
+}
+
+.guild-join-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.guild-perk-list { display: flex; flex-direction: column; gap: var(--space-xs); }
+
+.guild-perk-title {
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-brown);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.guild-perk {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border-dark);
+}
+
+.perk-active { background-color: rgba(34, 139, 34, 0.05); border-color: rgba(34, 139, 34, 0.25); }
+.perk-locked { background-color: var(--paper-aged); opacity: 0.6; }
+
+.perk-icon { font-size: 1.2rem; flex-shrink: 0; }
+
+.guild-perk > div { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+
+.perk-name {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--ink-black);
+}
+
+.perk-desc {
+  font-size: 0.75rem;
+  color: var(--ink-brown);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.perk-coming { opacity: 0.6; }
+
+.perk-active-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-success, #228B22);
+  border: 1px solid currentColor;
+  border-radius: 20px;
+  padding: 1px 6px;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+/* =============================================================================
+   RESPONSIVE
+   ============================================================================= */
+
+@media (max-width: 600px) {
+  .location-header  { padding: var(--space-sm) var(--space-md); }
+  .location-header-icon { font-size: 1.6rem; }
+  .location-header-title { font-size: 1.1rem; }
+  .location-body    { padding: var(--space-md); }
+  .loc-tab          { padding: var(--space-xs) var(--space-sm); font-size: 0.7rem; }
+  .bank-input-row   { flex-direction: column; }
+  .bank-confirm-btn { width: 100%; }
+  .temple-service-card { flex-direction: column; align-items: flex-start; }
+  .service-card-btn { align-self: flex-start; }
+}

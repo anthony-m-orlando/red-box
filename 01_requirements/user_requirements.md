@@ -1,60 +1,72 @@
-# User Requirements: Red Box (v1.0)
+Based on the updated roadmap and the synthesis of the existing beta requirements and the target goals for the "Red Box" release, here is the new **User Requirements Document for Version 1.0.0**.
 
-## 1. Navigation & UI Architecture (The "N-Tab" System)
-* **Tactile Folder Shell:** The application must utilize a persistent UI wrapper mimicking a physical "Trapper Keeper" or weathered folder, featuring paper textures and tactile tab-based navigation.
-* **Dynamic Tab Logic:** The UI must support a scalable "N-tab" system to allow for the dynamic addition of future modules or gameplay tools.
-* **Home Page Arrangement:** The primary navigation must be organized into the following tabs:
-    1.  **Characters:** Central management for all player heroes.
-    2.  **Adventures:** The active gateway to the game world (Town and Dungeon).
-    3.  **Dice Roller:** Dedicated utility for tactical rolls.
-    4.  **Reference:** Comprehensive library for rules and creature data.
+This document removes the "Trapper Keeper" UI constraints, incorporates the cloud-based persistence model, and integrates the specific gameplay needs for the **B1 - In Search of the Unknown** module.
 
-## 2. Character Management
-* **Paged Character View:** Within the Characters tab, data must be organized into distinct pages:
-    * **Sheet:** Interactive display of ability scores, hit points, and saving throws.
-    * **Inventory:** List-based tracking for gear with automated weight and encumbrance calculations.
-    * **Spells:** A "Spellbook" interface for managing known spells and tracking daily slots.
-* **Persistence:** Character states, including HP and equipment changes, must be saved to `localStorage` to persist between sessions.
+---
 
-## 3. Adventures & Exploration (The Quasqueton Engine)
-* **High-Fidelity Map Rendering:** The dungeon explorer must utilize modern CSS to mimic classic module cartography:
-    * **Architectural Weight:** Use visual logic to distinguish between 4px "Outer Foundation" walls and 1px "Inner Partition" dividers.
-    * **Environmental Texturing:** Implementation of "Stippled Rock" effects and cavernous edge rendering to represent solid earth.
-    * **Tactical Annotations:** Scaling room numbers and descriptive labels (e.g., "Dungeon Entrance") integrated directly onto the grid.
+# 📜 User Requirements: Version 1.0.0 (The Red Box Edition)
 
-* **Dynamic Fog of War:** Visibility must transition from a binary "hidden/revealed" state to a gradient-driven system that simulates torchlight falloff.
-* **The "Threshold" Loop:** The Adventures tab must support a non-combat hub featuring:
-    * **The Gold Dragon Inn:** For recovery of HP and spells.
-    * **The Shop:** For purchasing expedition-critical gear (oil, spikes, 10' poles).
+## 1. Project Vision & Architecture
 
-## 4. Tactical Utilities & Reference
-* **Integrated Dice Roller:** A functional utility supporting standard RPG dice (d4, d6, d8, d10, d12, d20, d100) with a results history log.
-* **Searchable Reference Archive:**
-    * **Rules:** Quick access to combat maneuvers, movement rates, and THAC0 (To Hit Armor Class 0) reference tables.
-    * **Bestiary:** A data-driven archive of creatures (e.g., Orcs, Troglodytes, Giant Rats) including Armor Class, Hit Dice, and XP values.
+* **Vision**: A persistent, browser-based recreation of the 1981 D&D Basic Set, transitioning from a local-only tool to a cloud-synced RPG service.
+* **Architecture**:
+* **Cloud Persistence**: Migration from `localStorage` to a centralized database (e.g., Netlify DB or PostgreSQL).
+* **Cross-Device Support**: Users must be able to access their characters and world state from any modern browser via secure login.
+* **Invite-Only Access**: Initial Version 1 access will be managed via Admin-controlled invites to ensure server stability.
 
-## 5. Campaign Systems
-* **XP & Progression:** The system must automate experience point tracking and provide level-up utilities supporting a Level 1-10 progression curve.
-* **E2E Gameplay Flow:** The application must support a seamless transition from the initial Tutorial through the Town of Threshold and into the Caverns of Quasqueton.
 
-# User Requirements: Project Redbox v1.0
 
-## 1. Authentication & Privacy
-* **Invite-Only Login**: Users must be added by a designated Admin via Netlify Identity.
-* **PII Protection**: Username and Email must be normalized and hashed (SHA-256) before storage.
+## 2. Authentication & Identity (Phase 4 Integration)
 
-## 2. Threshold Hub Requirements
-* **Town Map View**: A central map in the Adventures tab with 7 interactive locations.
-* **NPCS & Dialogue**: 
-    * NPCs must support branching dialogue for rumors, bribes, and recruitment.
-    * NPC "Attitude" must persist based on player interactions.
-* **The Temple Loop**: If a character dies with a hireling present, they wake at the Temple (10,10) with all loot/XP, minus a 15% tithe and the loss of the hireling.
+* **Secure Accounts**: Implementation of user authentication (OAuth or Email/Password).
+* **PII Normalization**: To ensure privacy, all usernames and emails must be normalized and hashed (SHA-256) before database storage.
+* **Character Chronicles**: The system must track and store a persistent history of "Heroic Deeds," monsters slain, and total gold earned across the account’s lifetime.
 
-## 3. Combat & AI
-* **Hirelings**: Must be fully controllable in combat or follow autonomous "Protector" AI.
-* **Morale**: Entities check morale (2d6) under stress. Failed checks result in Fleeing or Surrendering.
-* **Collision**: Surrendered units must allow "Pass-through" movement for the player.
+## 3. The Threshold Hub (Phase 1 Integration)
 
-## 4. Technical Persistence
-* **Cloud Sync**: All character and world data must sync to Netlify DB.
-* **Admin Role**: Only users with "admin" metadata can modify other user profiles.
+* **Interactive Town Map**: A central navigation hub for the "Town of Threshold" featuring at least 7 interactive locations.
+* **The Threshold Arms (Inn)**: A primary recovery location where players can rest to restore HP and spells.
+* **NPC Interaction**:
+* **Branching Dialogue**: NPCs must support complex dialogue trees for rumors, bribes, and hiring.
+* **Persistence**: NPC "Attitude" (Friendly, Neutral, Hostile) must persist based on previous player interactions.
+
+
+* **The Temple Loop**: A "safety net" mechanic where a character who dies (with a hireling present) wakes at the Town Temple at coordinates (10,10) with their loot, minus a 15% tithe and the permanent loss of that hireling.
+
+## 4. Exploration & Cartography (Phase 2 & 3 Integration)
+
+* **The Quasqueton Engine**: Full implementation of the **B1 - In Search of the Unknown** module.
+* **Enhanced Maps**:
+* **Parchment Rendering**: Dungeon maps must utilize a high-fidelity, weathered paper aesthetic.
+* **Annotation System**: Players must be able to mark maps with custom notes or discover automated annotations for secret doors.
+
+
+* **Procedural Hazards**: Implementation of traps and hazards described in Module B1, including pits, poison gas, and interactive room features like the "Pool of Wonders".
+* **Auto-Mapper**: A real-time mini-map that tracks player position and updates the "Fog of War" as rooms are explored.
+
+## 5. Combat & Advanced Mechanics
+
+* **Tactical AI**:
+* **Morale Checks**: All entities (monsters and hirelings) must perform 2d6 Morale checks when under stress (e.g., leader death or 50% HP loss).
+* **Surrender Logic**: Surrendered units must switch to a "Pass-through" collision state, allowing the player to move through their space.
+
+
+* **Hirelings**:
+* **Recruitment**: Hirelings can be found in the Threshold Arms.
+* **Control Modes**: Players can toggle between full manual control or an autonomous "Protector" AI mode for hirelings in combat.
+
+
+
+## 6. Technical Requirements
+
+* **JSON Serialization**: All game data—including inventory, spellbooks, and world flags—must be serialized into JSON format for cloud syncing.
+* **Performance**: The engine must support large-scale dungeons (40+ rooms) with no degradation in browser performance.
+* **E2E Gameplay Flow**: The system must support a seamless transition from the initial Tutorial through the Town of Threshold and into the Caverns of Quasqueton.
+
+---
+
+**Document Version**: 2.0 (Post-Trapper Keeper Pivot)
+
+**Status**: Approved for Version 1 Development
+
+**Last Updated**: March 5, 2026

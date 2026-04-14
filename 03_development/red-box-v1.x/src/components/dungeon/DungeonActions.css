@@ -1,0 +1,393 @@
+/* ==========================================================================
+   DungeonActions.css
+   Exploration action panel — right column of DungeonScreen
+   ========================================================================== */
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Container
+   ────────────────────────────────────────────────────────────────────────── */
+
+.dungeon-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-family: var(--font-body);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Character status
+   ────────────────────────────────────────────────────────────────────────── */
+
+.char-status {
+  padding: 8px 10px;
+  background-color: var(--paper-cream);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+}
+
+.char-status__name {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.char-status__hp-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.char-status__hp-bar {
+  flex: 1;
+  height: 7px;
+  background: rgba(42,35,28,0.12);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.char-status__hp-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+
+.hp-bar--healthy  { background-color: var(--success-green); }
+.hp-bar--wounded  { background-color: var(--warning-orange); }
+.hp-bar--critical {
+  background-color: var(--danger-red);
+  animation: hp-pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes hp-pulse {
+  from { opacity: 1; }
+  to   { opacity: 0.55; }
+}
+
+.char-status__hp-label {
+  font-family: var(--font-numbers);
+  font-size: 0.72rem;
+  color: var(--ink-brown);
+  white-space: nowrap;
+}
+
+.char-status__meta {
+  display: flex;
+  gap: 10px;
+  font-size: 0.68rem;
+  color: var(--pencil-gray);
+  text-transform: capitalize;
+}
+
+.char-status__gold {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+  color: #8a6a00;
+  font-weight: 700;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Room info
+   ────────────────────────────────────────────────────────────────────────── */
+
+.dungeon-actions__room-info {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 5px 8px;
+  background-color: var(--paper-cream);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+}
+
+.room-info__number {
+  font-family: var(--font-numbers);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--pencil-gray);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.room-info__name {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ink-brown);
+  flex: 1;
+}
+
+/* ── State badge ──────────────────────────────────────────────────────────── */
+
+.room-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.room-badge--cleared {
+  background-color: rgba(74,120,86,0.15);
+  color: var(--success-green);
+  border: 1px solid var(--success-green);
+}
+
+.room-badge--looted {
+  background-color: rgba(200,168,75,0.15);
+  color: #8a6a00;
+  border: 1px solid #c8a84b;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Warnings
+   ────────────────────────────────────────────────────────────────────────── */
+
+.dungeon-actions__warning {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 700;
+  border: 1px solid;
+}
+
+.dungeon-actions__warning--danger {
+  background-color: rgba(162,60,60,0.1);
+  color: var(--danger-red);
+  border-color: var(--danger-red);
+  animation: warn-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes warn-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.7; }
+}
+
+.dungeon-actions__warning--trap {
+  background-color: rgba(184,111,63,0.1);
+  color: var(--warning-orange);
+  border-color: var(--warning-orange);
+}
+
+.dungeon-actions__warning--dark {
+  background-color: #2b2520;
+  color: #c08060;
+  border-color: #4a3020;
+}
+
+.dungeon-actions__warning--info {
+  background-color: rgba(44,74,124,0.08);
+  color: var(--ink-blue);
+  border-color: var(--ink-blue);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Action groups
+   ────────────────────────────────────────────────────────────────────────── */
+
+.dungeon-actions__group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dungeon-actions__group-label {
+  font-family: var(--font-numbers);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--pencil-gray);
+  margin: 0 0 2px 0;
+  padding-bottom: 3px;
+  border-bottom: 1px solid rgba(42,35,28,0.15);
+}
+
+/* Movement button grid */
+.dungeon-actions__move-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Action stack */
+.dungeon-actions__action-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* Fight button */
+.dungeon-actions__fight-btn {
+  animation: fight-appear 0.3s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+@keyframes fight-appear {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1);   }
+}
+
+/* Exit badges */
+.exit-badge {
+  font-size: 0.58rem;
+  font-weight: 700;
+  opacity: 0.75;
+}
+
+.exit-badge--secret { color: var(--ink-brown); }
+.exit-badge--door   { color: var(--pencil-gray); }
+
+/* Secret-door button (slightly muted) */
+.btn--secret {
+  opacity: 0.85;
+  border-style: dashed !important;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Treasure group
+   ────────────────────────────────────────────────────────────────────────── */
+
+.dungeon-actions__group--treasure .dungeon-actions__group-label {
+  color: #8a6a00;
+}
+
+.dungeon-actions__treasure-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.treasure-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 5px 8px;
+  background-color: rgba(200,168,75,0.1);
+  border: 1px solid rgba(200,168,75,0.4);
+  border-radius: var(--radius-sm);
+  animation: treasure-appear 0.35s ease-out forwards;
+}
+
+@keyframes treasure-appear {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0);    }
+}
+
+.treasure-item__summary {
+  font-size: 0.72rem;
+  color: var(--ink-brown);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Special features group
+   ────────────────────────────────────────────────────────────────────────── */
+
+.dungeon-actions__group--features .dungeon-actions__group-label {
+  color: var(--ink-blue);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Quest stats
+   ────────────────────────────────────────────────────────────────────────── */
+
+.dungeon-actions__stats {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: auto;
+  padding: 8px 10px;
+  background-color: var(--paper-cream);
+  border: 1px solid var(--border-dark);
+  border-radius: var(--radius-sm);
+}
+
+.quest-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.68rem;
+}
+
+.quest-stat__label {
+  color: var(--pencil-gray);
+}
+
+.quest-stat__value {
+  font-family: var(--font-numbers);
+  font-weight: 700;
+  color: var(--ink-brown);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Responsive
+   ────────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 900px) {
+  .dungeon-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .dungeon-actions__char-status,
+  .dungeon-actions__room-info {
+    width: 100%;
+  }
+
+  .dungeon-actions__group {
+    flex: 1 1 140px;
+    min-width: 0;
+  }
+
+  .dungeon-actions__stats {
+    width: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px 20px;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .dungeon-actions {
+    flex-direction: column;
+  }
+
+  .dungeon-actions__group {
+    flex: none;
+    width: 100%;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Reduced motion
+   ────────────────────────────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .dungeon-actions__warning--danger,
+  .hp-bar--critical,
+  .dungeon-actions__fight-btn,
+  .treasure-item {
+    animation: none;
+  }
+}

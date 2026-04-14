@@ -1,101 +1,110 @@
+/**
+ * AdventureScreen.jsx
+ * Legacy adventure screen — tutorial, goblin_warren, haunted_crypt
+ *
+ * Patched for Sprint 3 AdventureContext shape:
+ *   - `adventure` is now the legacy adventure object OR null on fresh load.
+ *   - `dungeonState` is the canonical state; currentRoomId, narrationHistory,
+ *     isVictorious, isDefeated all live there.
+ *   - `adventure.currentRoomId` → `dungeonState.currentRoomId`
+ *   - `adventure.narrationHistory` → `dungeonState.narrationHistory`
+ *   - `adventure.isVictorious`    → `dungeonState.isVictorious`
+ *   - `adventure.isDefeated`      → `dungeonState.isDefeated`
+ *
+ * Everything else (MapDisplay, ActionPanel, NarrationPanel, CombatUI) is
+ * unchanged — those components read from context directly.
+ */
+
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Home, Swords } from 'lucide-react';
+import { Home } from 'lucide-react';
 import { useCharacter } from '../../contexts/CharacterContext';
-import { useAdventure } from '../../contexts/AdventureContext';
-import NarrationPanel from './NarrationPanel';
-import MapDisplay from './MapDisplay';
-import ActionPanel from './ActionPanel';
-import Button from '../common/Button';
+import { useAdventure }  from '../../contexts/AdventureContext';
+import NarrationPanel    from './NarrationPanel';
+import MapDisplay        from './MapDisplay';
+import ActionPanel       from './ActionPanel';
+import Button            from '../common/Button';
 import './AdventureScreen.css';
 
-/**
- * AdventureScreen - Main adventure gameplay screen
- * Layout: Narration (top) | Map (bottom-left) | Actions (bottom-right)
- */
 export function AdventureScreen() {
   const navigate = useNavigate();
   const { character, rest: restoreCharacter } = useCharacter();
-  const { adventure, getCurrentRoom, addNarration, resetAdventure } = useAdventure();
+  const {
+    adventure,
+    dungeonState,
+    getCurrentRoom,
+    addNarration,
+    resetAdventure,
+    setAdventure,
+  } = useAdventure();
+
   const hasInitialized = useRef(false);
   const characterIdRef = useRef(null);
-  
-  // Scroll to top when adventure first loads
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []); // Run once on mount
-  
+
+  // ── Pull state from dungeonState (Sprint 3 canonical location) ──────────
+  const currentRoomId  = dungeonState?.currentRoomId  ?? null;
+  const narrationLen   = dungeonState?.narrationHistory?.length ?? 0;
+  const isVictorious   = dungeonState?.isVictorious   ?? false;
+  const isDefeated     = dungeonState?.isDefeated     ?? false;
+
+  // Scroll to top on mount
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+
   // Scroll to top when room changes
+  useEffect(() => { window.scrollTo(0, 0); }, [currentRoomId]);
+
+  // Guard: redirect to character creation if no character
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [adventure.currentRoomId]);
-  
-  // Check if player has a character
-  useEffect(() => {
-    if (!character.isCreated) {
-      navigate('/character/create');
-    }
+    if (!character.isCreated) navigate('/character/create');
   }, [character.isCreated, navigate]);
-  
-  // Reset adventure when entering with a NEW or DIFFERENT character
+
+  // Reset adventure when a NEW or DIFFERENT character is detected
   useEffect(() => {
-    if (character.isCreated) {
-      // If this is a different character than last time, reset everything
-      if (characterIdRef.current !== character.name) {
-        characterIdRef.current = character.name;
-        resetAdventure();
-        restoreCharacter(); // Restore character to full HP and spells
-        hasInitialized.current = false;
-      }
+    if (!character.isCreated) return;
+    if (characterIdRef.current !== character.name) {
+      characterIdRef.current = character.name;
+      resetAdventure();
+      restoreCharacter();
+      hasInitialized.current = false;
     }
   }, [character.isCreated, character.name, resetAdventure, restoreCharacter]);
-  
+
   // Add initial narration ONCE when entering a fresh adventure
   useEffect(() => {
-    // Only run if not already initialized and no narration exists
-    if (!hasInitialized.current && adventure.narrationHistory.length === 0 && character.isCreated) {
-      const room = getCurrentRoom();
-      if (room) {
-        addNarration('room_description', room.description);
-        addNarration('system_message', 'Your adventure begins! Explore the dungeon and defeat all monsters to win.');
-        hasInitialized.current = true;
-      }
+    if (hasInitialized.current) return;
+    if (narrationLen > 0) { hasInitialized.current = true; return; }
+    if (!character.isCreated) return;
+
+    const room = getCurrentRoom();
+    if (room) {
+      addNarration(room.description, 'room');
+      addNarration('Your adventure begins! Explore the dungeon and defeat all monsters to win.', 'system');
+      hasInitialized.current = true;
     }
-  }, [adventure.narrationHistory.length, character.isCreated, getCurrentRoom, addNarration]); // Add deps
-  
-  // Check for victory or defeat
-  if (adventure.isVictorious) {
-    return <VictoryScreen />;
-  }
-  
-  if (adventure.isDefeated) {
-    return <DefeatScreen />;
-  }
-  
+  }, [narrationLen, character.isCreated, getCurrentRoom, addNarration]);
+
+  // ── Outcome screens ───────────────────────────────────────────────────────
+  if (isVictorious) return <VictoryScreen />;
+  if (isDefeated)   return <DefeatScreen />;
+
   return (
     <div className="adventure-screen">
-      {/* Narration Panel (top) */}
       <NarrationPanel />
-      
-      {/* Main Content Area */}
+
       <div className="adventure-content">
-        {/* Map (left) */}
         <div className="adventure-map-section">
           <MapDisplay />
         </div>
-        
-        {/* Actions (right) */}
         <div className="adventure-action-section">
           <ActionPanel />
         </div>
       </div>
-      
-      {/* Footer */}
+
       <div className="adventure-footer">
         <Button
           variant="ghost"
           size="sm"
-          icon={<Home />}
+          icon={<Home size={16} />}
           onClick={() => navigate('/')}
         >
           Return to Home
@@ -105,194 +114,96 @@ export function AdventureScreen() {
   );
 }
 
-/**
- * VictoryScreen - Shown when player wins
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// VictoryScreen
+// ─────────────────────────────────────────────────────────────────────────────
+
 function VictoryScreen() {
   const navigate = useNavigate();
-  const { character, addXP, exportCharacter } = useCharacter();
-  const { adventure, resetAdventure } = useAdventure();
+  const { character, exportCharacter } = useCharacter();
+  const { dungeonState, resetAdventure } = useAdventure();
   const [saved, setSaved] = useState(false);
-  
-  // Don't award XP again (already awarded in combat)
-  // Just display final stats
-  
-  const handleSaveCharacter = () => {
-    // Export character to file
-    exportCharacter();
-    setSaved(true);
-  };
-  
-  const handlePlayAgain = () => {
-    // Reset adventure but keep character progress
-    resetAdventure();
-    navigate('/adventure');
-  };
-  
+
+  const defeatedCount  = dungeonState?.defeatedMonsters?.length  ?? 0;
+  const collectedCount = dungeonState?.collectedTreasure?.length ?? 0;
+  const visitedCount   = dungeonState?.visitedRooms?.[1]?.length ?? 0;
+
   return (
     <div className="adventure-screen victory-screen">
       <div className="victory-content">
         <div className="victory-header">
           <h1>🎉 Victory! 🎉</h1>
-          <p className="victory-subtitle">
-            You have completed "Your First Adventure"!
-          </p>
+          <p className="victory-subtitle">You have completed the adventure!</p>
         </div>
-        
+
         <div className="victory-stats">
-          <h2>Adventure Summary</h2>
-          <div className="stats-grid">
-            <div className="stat-item">
-              <span className="stat-label">Monsters Defeated:</span>
-              <span className="stat-value number">{adventure.defeatedMonsters.length}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Rooms Explored:</span>
-              <span className="stat-value number">{adventure.visitedRooms.length}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Final HP:</span>
-              <span className="stat-value number">{character.hp.current}/{character.hp.max}</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-label">Gold Collected:</span>
-              <span className="stat-value number">{character.gold} GP</span>
-            </div>
+          <div className="stat-item">
+            <span className="stat-label">Character</span>
+            <span className="stat-value number">{character.name}</span>
           </div>
-          
-          <div className="character-progress">
-            <h3>{character.name} - Level {character.level} {character.class}</h3>
-            <div className="progress-detail">
-              <span>Experience: {character.xp} XP</span>
-              <span>Items: {character.inventory.length}</span>
-            </div>
+          <div className="stat-item">
+            <span className="stat-label">Monsters Defeated</span>
+            <span className="stat-value number">{defeatedCount}</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Treasure Collected</span>
+            <span className="stat-value number">{collectedCount} items</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-label">Rooms Explored</span>
+            <span className="stat-value number">{visitedCount}</span>
           </div>
         </div>
-        
-        <div className="victory-message">
-          <p>
-            Congratulations, {character.name}! You have proven yourself a capable adventurer.
-            You've learned the basics of dungeon exploration, combat, and treasure hunting.
-          </p>
-          <p>
-            Your character has been saved with all XP, gold, and items earned during this adventure.
-            You can continue adventuring or save your character for future quests!
-          </p>
-        </div>
-        
+
         <div className="victory-actions">
           <Button
             variant="primary"
             size="lg"
-            onClick={handleSaveCharacter}
-            disabled={saved}
+            onClick={() => { resetAdventure(); navigate('/adventure'); }}
           >
-            {saved ? '✓ Character Saved!' : 'Save Character to File'}
+            Play Again
           </Button>
-          
-          <Button
-            variant="primary"
-            onClick={handlePlayAgain}
-          >
-            Play Tutorial Again
-          </Button>
-          
           <Button
             variant="secondary"
-            onClick={() => {
-              resetAdventure();
-              navigate('/character/create');
-            }}
+            size="lg"
+            onClick={() => { if (!saved) { exportCharacter(); setSaved(true); } }}
+            disabled={saved}
           >
-            Create New Character
+            {saved ? 'Character Saved!' : 'Save Character'}
           </Button>
-          
-          <Button
-            variant="ghost"
-            onClick={() => navigate('/')}
-          >
+          <Button variant="ghost" size="lg" onClick={() => navigate('/')}>
             Return to Home
           </Button>
         </div>
-        
-        {saved && (
-          <div className="save-confirmation">
-            <p>✓ Character exported successfully! Your progress has been saved.</p>
-          </div>
-        )}
       </div>
     </div>
   );
 }
 
-/**
- * DefeatScreen - Shown when player dies
- */
+// ─────────────────────────────────────────────────────────────────────────────
+// DefeatScreen
+// ─────────────────────────────────────────────────────────────────────────────
+
 function DefeatScreen() {
   const navigate = useNavigate();
-  const { character, heal, updateHP } = useCharacter();
   const { resetAdventure } = useAdventure();
-  
-  const handleTryAgain = () => {
-    // Restore character to full HP FIRST
-    updateHP(character.hp.max, character.hp.max);
-    
-    // Small delay to ensure HP is updated in state
-    setTimeout(() => {
-      // Reset adventure to beginning
-      resetAdventure();
-      
-      // Navigate away and back to force component remount
-      navigate('/');
-      setTimeout(() => {
-        navigate('/adventure');
-      }, 100);
-    }, 100);
-  };
-  
+
   return (
     <div className="adventure-screen defeat-screen">
       <div className="defeat-content">
         <div className="defeat-header">
-          <h1>💀 Defeat 💀</h1>
-          <p className="defeat-subtitle">
-            {character.name} has fallen in the dungeon...
-          </p>
+          <h1>💀 Defeated</h1>
+          <p className="defeat-subtitle">You have fallen in battle…</p>
         </div>
-        
-        <div className="defeat-message">
-          <p>
-            Your adventure has come to a tragic end. The dungeon has claimed another brave soul.
-          </p>
-          <p>
-            But fear not! In the world of D&D, death is not always the end.
-            You can try again with {character.name}, or create a new character!
-          </p>
-        </div>
-        
         <div className="defeat-actions">
           <Button
             variant="primary"
             size="lg"
-            onClick={handleTryAgain}
+            onClick={() => { resetAdventure(); navigate('/adventure'); }}
           >
-            Try Again (Restore {character.name})
+            Try Again
           </Button>
-          
-          <Button
-            variant="danger"
-            onClick={() => {
-              resetAdventure();
-              navigate('/character/create');
-            }}
-          >
-            Create New Character
-          </Button>
-          
-          <Button
-            variant="secondary"
-            onClick={() => navigate('/')}
-          >
+          <Button variant="ghost" size="lg" onClick={() => navigate('/')}>
             Return to Home
           </Button>
         </div>
