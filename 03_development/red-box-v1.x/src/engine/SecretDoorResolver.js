@@ -151,7 +151,10 @@ export function resolveSearch(mod, dungeonState, character) {
     searchedRooms: newSearchedRooms,
   };
 
-  return results;
+  return {
+    ...results,
+    narration: results.narrationLines.join('\n'),
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

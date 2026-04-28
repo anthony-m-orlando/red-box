@@ -69,7 +69,9 @@ export function handleCastSpell(spellId, context) {
   if (addLogEntry) {
     addLogEntry(`✨ You cast ${spell.name}!`);
   }
-  addNarration('combat_action', `You cast ${spell.name}!`, { emphasis: true });
+  if (addNarration) {
+    addNarration('combat_action', `You cast ${spell.name}!`, { emphasis: true });
+  }
   
   // Play spell sound
   soundManager.play('spell');
@@ -77,12 +79,16 @@ export function handleCastSpell(spellId, context) {
   // Apply effects based on type
   switch (result.type) {
     case 'healing':
-      heal(result.healAmount);
-      soundManager.play('heal');
+      if (heal) {
+        heal(result.healAmount);
+        soundManager.play('heal');
+      }
       if (addLogEntry) {
         addLogEntry(`💚 ${spell.name} heals ${result.healAmount} HP!`);
       }
-      addNarration('combat_action', `${spell.name} restores ${result.healAmount} hit points!`);
+      if (addNarration) {
+        addNarration('combat_action', `${spell.name} restores ${result.healAmount} hit points!`);
+      }
       break;
       
     case 'damage':
@@ -92,24 +98,30 @@ export function handleCastSpell(spellId, context) {
         if (addLogEntry) {
           addLogEntry(`⚡ ${spell.name} deals ${result.damage} damage!`);
         }
-        addNarration('combat_action', `${spell.name} strikes for ${result.damage} damage!`, { emphasis: true });
+        if (addNarration) {
+          addNarration('combat_action', `${spell.name} strikes for ${result.damage} damage!`, { emphasis: true });
+        }
       }
       break;
       
     case 'buff':
       // Apply buff to character
-      const buff = {
-        spellId: spell.id,
-        stat: result.stat,
-        bonus: result.bonus,
-        duration: result.duration,
-        turnApplied: round
-      };
-      addBuff(buff);
+      if (addBuff) {
+        const buff = {
+          spellId: spell.id,
+          stat: result.stat,
+          bonus: result.bonus,
+          duration: result.duration,
+          turnApplied: round
+        };
+        addBuff(buff);
+      }
       if (addLogEntry) {
         addLogEntry(`🛡️ ${spell.name} grants ${result.bonus > 0 ? '+' : ''}${result.bonus} ${result.stat.toUpperCase()}!`);
       }
-      addNarration('combat_action', result.message);
+      if (addNarration) {
+        addNarration('combat_action', result.message);
+      }
       break;
     
     case 'condition':
@@ -165,7 +177,9 @@ export function handleCastSpell(spellId, context) {
         if (addLogEntry) {
           addLogEntry(`✨ ${result.message}`);
         }
-        addNarration('combat_action', result.message);
+        if (addNarration) {
+          addNarration('combat_action', result.message);
+        }
       }
       break;
       
@@ -173,11 +187,15 @@ export function handleCastSpell(spellId, context) {
       if (addLogEntry) {
         addLogEntry(`✨ ${result.message}`);
       }
-      addNarration('combat_action', result.message);
+      if (addNarration) {
+        addNarration('combat_action', result.message);
+      }
   }
   
   // Use spell slot
-  useSpellSlot(spell.level);
+  if (useSpellSlot) {
+    useSpellSlot(spell.level);
+  }
   
   // Enemy turn next (combat only)
   if (setCombatState) {

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { expect, vi } from 'vitest';
 import {
   rollDie,
   rollDice,
@@ -130,3 +130,4 @@ describe('Dice Utilities', () => {
     });
   });
 });
+

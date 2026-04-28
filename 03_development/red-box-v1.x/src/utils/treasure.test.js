@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { expect } from 'vitest';
 import {
   generateTreasure,
   formatTreasureMessage,
@@ -152,3 +152,4 @@ describe('Treasure Utilities', () => {
     });
   });
 });
+

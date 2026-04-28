@@ -299,6 +299,16 @@ export function getMonsterInstance(mod, instanceId) {
   return null;
 }
 
+export function isMonsterDefeated(dungeonState, instanceId) {
+  const defeated = new Set(dungeonState.defeatedMonsters || []);
+  return defeated.has(instanceId);
+}
+
+export function isTreasureCollected(dungeonState, treasureId) {
+  const collected = new Set(dungeonState.collectedTreasure || []);
+  return collected.has(treasureId);
+}
+
 /**
  * Get the monster type definition for an instance.
  * @param {object} mod
@@ -696,6 +706,8 @@ export default {
   getLivingMonstersInCurrentRoom,
   roomHasLivingMonsters,
   getMonsterInstance,
+  isMonsterDefeated,
+  isTreasureCollected,
   getMonsterTypeForInstance,
   getUncollectedTreasure,
   roomHasVisibleTreasure,

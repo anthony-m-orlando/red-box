@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest';
+import { expect } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 import { CharacterProvider, useCharacter } from '../contexts/CharacterContext';
 
@@ -311,3 +311,4 @@ describe('CharacterContext', () => {
     expect(dwarfCheck.allowed).toBe(false);
   });
 });
+

@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import PaperContainer from './PaperContainer';
 
@@ -57,3 +57,4 @@ describe('PaperContainer Component', () => {
     expect(container.querySelector('.paper-padding-md')).toBeInTheDocument();
   });
 });
+
