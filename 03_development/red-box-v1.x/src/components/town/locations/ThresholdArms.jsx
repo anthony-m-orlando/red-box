@@ -21,7 +21,7 @@ import { X, Bed, Users, Archive } from 'lucide-react';
 
 import { useCharacter } from '../../../contexts/CharacterContext';
 import { useTown }      from '../../../contexts/TownContext';
-import { NPCDialogue }  from '../NPCDialogue';
+import NPCDialogue from '../NPCDialogue';
 import { HirelingPanel } from '../HirelingPanel';
 
 import './Location.css';

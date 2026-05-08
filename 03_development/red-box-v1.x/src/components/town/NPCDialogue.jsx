@@ -26,7 +26,7 @@
  * The stack is reset when the dialogue is closed and re-opened.
  */
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { ChevronLeft, MessageSquare }      from 'lucide-react';
 
 import { useCharacter }    from '../../contexts/CharacterContext';
@@ -41,7 +41,7 @@ import './NPCDialogue.css';
 
 // ---------------------------------------------------------------------------
 
-export function NPCDialogue({ npcId, onEffect }) {
+function NPCDialogue({ npcId, onEffect }) {
   const { character }           = useCharacter();
   const { town, getAttitude }   = useTown();
 
@@ -68,16 +68,20 @@ export function NPCDialogue({ npcId, onEffect }) {
 
   // ---- Fire node-level effect on mount when node has a direct `effect`
   // (e.g. the priest's greeting resolves the resurrection automatically)
-  // We use a ref so it only fires once per node visit.
   const [firedNodeEffect, setFiredNodeEffect] = useState(false);
-  if (node?.effect && !firedNodeEffect && typeof node.effect !== 'function') {
-    setFiredNodeEffect(true);
-    // Defer to avoid setState-during-render
-    setTimeout(() => onEffect?.(node.effect), 0);
-  }
-  // Reset when node changes
-  const prevNodeId = useMemo(() => currentNodeId, []); // eslint-disable-line
-  if (currentNodeId !== prevNodeId) setFiredNodeEffect(false);
+
+  useEffect(() => {
+    setFiredNodeEffect(false);
+  }, [currentNodeId]);
+
+  useEffect(() => {
+    if (node?.effect && !firedNodeEffect && typeof node.effect !== 'function') {
+      setFiredNodeEffect(true);
+      const timer = setTimeout(() => onEffect?.(node.effect), 0);
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, [node, firedNodeEffect, onEffect]);
 
   // ---- Handle option selection
   const handleOption = useCallback((option) => {
@@ -213,4 +217,5 @@ function AttitudeBadge({ attitude }) {
   );
 }
 
+export { NPCDialogue };
 export default NPCDialogue;

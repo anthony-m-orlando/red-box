@@ -889,6 +889,10 @@ export function AdventureProvider({ children }) {
     const mod = getModule();
     const level = targetLevel ?? ds.currentLevel;
 
+    if (targetRoomId === ds.currentRoomId && level === ds.currentLevel) {
+      return;
+    }
+
     if (!mod) {
       // Legacy path — simple dispatch
       dispatch({
@@ -936,10 +940,9 @@ export function AdventureProvider({ children }) {
       },
     });
 
-    // Post-entry effects (fire in sequence after state settles)
-    setTimeout(() => {
-      _postEntryEffects(targetRoomId, level, targetRoom, isFirstVisit, turnEvents);
-    }, 0);
+    // Post-entry effects can run immediately after dispatch; the reducer
+    // will process the queued enter action before the follow-up effects.
+    _postEntryEffects(targetRoomId, level, targetRoom, isFirstVisit, turnEvents);
   }, [state.dungeonState, getModule]);
 
   /**
@@ -1244,10 +1247,9 @@ export function AdventureProvider({ children }) {
       ? `The ${instance.name} is defeated!`
       : 'The enemy is defeated!';
 
-    dispatch({ type: ACTIONS.DEFEAT_MONSTER, payload: { instanceId, narration, xp } });
-
     // Check if room is now clear — compute synchronously using the CURRENT state
     // plus the monster we just defeated (don't rely on post-dispatch state).
+    let nextEnemy = null;
     if (mod) {
       const alreadyDefeated = new Set([...(ds.defeatedMonsters || []), instanceId]);
       const roomMonsters = mod.rooms?.[ds.currentLevel]?.[ds.currentRoomId]
@@ -1256,13 +1258,25 @@ export function AdventureProvider({ children }) {
       const stillAlive = roomMonsters.filter(
         id => !alreadyDefeated.has(id) && allInstances[id] && !allInstances[id].isDefeated
       );
-      if (stillAlive.length === 0) {
-        // Small delay so DEFEAT_MONSTER reducer runs first, then end combat
-        setTimeout(() => endCombat(true, xp), 50);
+      
+      // Find the next alive monster if combat continues
+      if (stillAlive.length > 0) {
+        nextEnemy = allInstances[stillAlive[0]];
       }
+    }
+
+    dispatch({ type: ACTIONS.DEFEAT_MONSTER, payload: { instanceId, narration, xp } });
+
+    // Either end combat (room cleared) or start the next combat (more enemies remain)
+    if (!nextEnemy) {
+      endCombat(true, xp);
     } else {
-      // Legacy / no module — always end combat on monster defeat
-      setTimeout(() => endCombat(true, xp), 50);
+      // Start combat with the next monster (don't call endCombat first)
+      const nextNarration = `The ${nextEnemy.name} advances!`;
+      dispatch({
+        type: ACTIONS.START_COMBAT,
+        payload: { enemy: nextEnemy, narration: nextNarration },
+      });
     }
   }, [state.dungeonState, getModule, endCombat]);
 

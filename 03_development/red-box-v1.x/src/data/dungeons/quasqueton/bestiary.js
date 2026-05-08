@@ -629,10 +629,15 @@ export function createMonsterInstance(monsterId, instanceId, fixedHp) {
     : type.hpMin + Math.floor(Math.random() * (type.hpMax - type.hpMin + 1));
 
   return {
+    id: instanceId,                    // Unique identifier
+    type: monsterId,                   // Monster type (e.g., 'kobold', 'giant_lizard')
+    maxHp: hp,                         // Maximum HP (canonical value)
+    hp: hp,                            // Current HP (starts at maxHp)
+    isDefeated: false,                 // Defeat status
+    // Keep existing properties for compatibility
     instanceId,
     typeId: monsterId,
     name: type.name,
-    hp: { current: hp, max: hp },
     ac: type.ac,
     thac0: type.thac0,
     damage: type.damage,
@@ -645,7 +650,6 @@ export function createMonsterInstance(monsterId, instanceId, fixedHp) {
     alwaysLast: type.alwaysLast || false,
     special: type.special || [],
     conditions: [],     // runtime: 'paralyzed', 'asleep', 'engulfed', etc.
-    isDefeated: false,
   };
 }
 

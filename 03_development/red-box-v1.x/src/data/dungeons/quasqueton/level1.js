@@ -86,6 +86,8 @@ const MONSTERS = {
   q1_29_rat_3:     createMonsterInstance('giant_rat','q1_29_rat_3',     4),
   // Room 33 — Gray Ooze
   q1_33_ooze_1:    createMonsterInstance('gray_ooze','q1_33_ooze_1',    15),
+  // Room 34 — Giant Lizard
+  q1_34_lizard_1:  createMonsterInstance('giant_lizard','q1_34_lizard_1', 18),
   // Room 36 — Giant Rats (2) — The Laboratory
   q1_36_rat_1:     createMonsterInstance('giant_rat','q1_36_rat_1',     3),
   q1_36_rat_2:     createMonsterInstance('giant_rat','q1_36_rat_2',     2),
@@ -1267,7 +1269,7 @@ Then it opens one yellow eye.`,
       },
     ],
     contents: {
-      monsters: [createMonsterInstance('giant_lizard', 'q1_34_lizard_1', 18)],
+      monsters: ['q1_34_lizard_1'],
       treasure: [
         treasure('q1_34_nest', 60,
           [

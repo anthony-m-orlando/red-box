@@ -50,7 +50,7 @@ export function CombatUI({ enemy, onVictory, onDefeat }) {
   const previousRoomId = dungeonState?.previousRoomId ?? null;
 
   const [combatState,     setCombatState]     = useState('initiative');
-  const [enemyHP,         setEnemyHP]         = useState(enemy.hp.current);
+  const [enemyHP,         setEnemyHP]         = useState(typeof enemy.hp === 'object' ? enemy.hp.current : enemy.hp);
   const [round,           setRound]           = useState(1);
   const [combatLog,       setCombatLog]       = useState([]);
   const [showSpellMenu,   setShowSpellMenu]   = useState(false);
@@ -77,7 +77,23 @@ export function CombatUI({ enemy, onVictory, onDefeat }) {
   // Scroll to top on mount
   useEffect(() => { window.scrollTo(0, 0); }, []);
 
-  // Roll initiative once
+  // Reset combat state when a new enemy is encountered (multi-enemy rooms)
+  // This ensures CombatUI doesn't get stuck on a victory message when moving
+  // to the next enemy in a room with multiple creatures.
+  useEffect(() => {
+    if (hasInitialized.current) {
+      // Reset for the next enemy in a multi-enemy combat scenario
+      setEnemyHP(typeof enemy.hp === 'object' ? enemy.hp.current : enemy.hp);
+      setCombatState('initiative');
+      setRound(1);
+      setCombatLog([]);
+      setEnemyConditions([]);
+      hasInitialized.current = false;
+      return;
+    }
+  }, [enemy.id, enemy.instanceId]);
+
+  // Roll initiative once per enemy
   useEffect(() => {
     if (hasInitialized.current) return;
     hasInitialized.current = true;
@@ -98,7 +114,7 @@ export function CombatUI({ enemy, onVictory, onDefeat }) {
       addLogEntry('Tied initiative! You go first.');
       setCombatState('playerTurn');
     }
-  }, []);
+  }, [enemy.id, enemy.instanceId]);
 
   // Victory / defeat watchers
   useEffect(() => {
@@ -226,7 +242,7 @@ export function CombatUI({ enemy, onVictory, onDefeat }) {
       return;
     }
 
-    if (enemyHP < enemy.hp.max * 0.25 && checkMorale(enemy.morale || 9)) {
+    if (enemyHP < (enemy.maxHp || enemy.hp?.max || 1) * 0.25 && checkMorale(enemy.morale || 9)) {
       addLogEntry(`${enemy.name} flees in terror!`);
       addNarration(`The ${enemy.name} flees!`, 'combat');
       handleVictory();
@@ -328,8 +344,8 @@ export function CombatUI({ enemy, onVictory, onDefeat }) {
           <h3>{enemy.name} {enemyConditions.includes('asleep') && '💤'}</h3>
           <div className="enemy-hp-bar">
             <div className="enemy-hp-fill"
-              style={{ width: `${(enemyHP / enemy.hp.max) * 100}%` }} />
-            <span className="enemy-hp-text number">{enemyHP}/{enemy.hp.max} HP</span>
+              style={{ width: `${(enemyHP / (enemy.maxHp || enemy.hp?.max || 1)) * 100}%` }} />
+            <span className="enemy-hp-text number">{enemyHP}/{enemy.maxHp || enemy.hp?.max || 1} HP</span>
           </div>
           <div className="enemy-stats">
             <span>AC: {enemy.ac}</span>

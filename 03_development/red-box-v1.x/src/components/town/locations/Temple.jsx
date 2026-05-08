@@ -41,7 +41,7 @@ import { X, Heart, Shield, Zap } from 'lucide-react';
 
 import { useCharacter } from '../../../contexts/CharacterContext';
 import { useTown }      from '../../../contexts/TownContext';
-import { NPCDialogue }  from '../NPCDialogue';
+import NPCDialogue from '../NPCDialogue';
 
 import './Location.css';
 

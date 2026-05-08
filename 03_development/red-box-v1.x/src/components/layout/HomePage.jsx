@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Swords, BookOpen, Dices, Scroll, Users } from 'lucide-react';
+import { Swords, BookOpen, Dices, Scroll, Users, MapPin } from 'lucide-react';
+import { useCharacter } from '../../contexts/CharacterContext';
 import Button from '../common/Button';
 import './HomePage.css';
 import dragonCover from '../../assets/images/dragon-cover.png';
@@ -11,6 +12,7 @@ import dragonCover from '../../assets/images/dragon-cover.png';
  */
 export const HomePage = () => {
   const navigate = useNavigate();
+  const { character } = useCharacter();
 
   const features = [
     {
@@ -32,6 +34,20 @@ export const HomePage = () => {
       description: 'View, import, export, and switch between heroes',
       action: () => navigate('/character/manage'),
       color: 'var(--ink-brown)'
+    },
+    {
+      id: 'travel-threshold',
+      icon: <MapPin size={48} />,
+      title: 'Travel to Threshold',
+      description: 'Visit the Town of Threshold and prepare for adventure',
+      action: () => {
+        if (!character.isCreated) {
+          alert('You must create a character before traveling to Threshold.');
+          return;
+        }
+        navigate('/town');
+      },
+      color: 'var(--ink-green)'
     },
     {
       id: 'continue',

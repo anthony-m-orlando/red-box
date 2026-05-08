@@ -441,4 +441,5 @@ describe('DungeonEngine - Monster Queries', () => {
     });
   });
 });
+});
 

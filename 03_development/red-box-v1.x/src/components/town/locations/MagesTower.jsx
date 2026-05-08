@@ -24,7 +24,7 @@ import { X, Search, ScrollText } from 'lucide-react';
 
 import { useCharacter }     from '../../../contexts/CharacterContext';
 import { useTown }          from '../../../contexts/TownContext';
-import { NPCDialogue }      from '../NPCDialogue';
+import NPCDialogue      from '../NPCDialogue';
 import { ShopInterface }    from '../ShopInterface';
 
 import './Location.css';

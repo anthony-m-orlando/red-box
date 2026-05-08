@@ -6,6 +6,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.1] - 2026-04-29
+
+### Bug Fixes
+- 🐛 **Fixed Combat Victory State Bug**: Resolved issue where combat victory message would get stuck on screen after defeating monsters in certain rooms
+  - Root cause: Monster instances created inline in room definitions were not being registered in the module's instance lookup table
+  - Solution: Moved inline monster instance creation to pre-defined MONSTERS object in level definition files
+  - Affected: Quasqueton B1 Module (Room 34 Giant Lizard)
+  - Impact: Combat now properly ends and returns to exploration for all monster encounters
+
+### Added
+- ✨ **Home Page Enhancement**: Added "Travel to Threshold" feature card
+  - Allows players to visit the Town of Threshold from the home page
+  - Character validation ensures player has created a character before accessing town
+  - Improves navigation flow and player guidance
+  - Includes MapPin icon and green ink styling to match UI theme
+
+### Changed
+- 📝 **Monster Instance Architecture**: Standardized monster instance registration in dungeon modules
+  - All monster instances now pre-defined in MONSTERS object for consistency
+  - Improved instance lookup reliability in combat system
+  - Better pattern for future adventure module development
+
+---
+
 ## [0.1.0] - 2026-02-23
 
 ### 🎉 Initial Beta Release - "Red Box Edition"

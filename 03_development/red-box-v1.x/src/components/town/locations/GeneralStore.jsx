@@ -16,7 +16,7 @@ import { useState, useCallback } from 'react';
 import { X, ShoppingBag } from 'lucide-react';
 
 import { useTown }         from '../../../contexts/TownContext';
-import { NPCDialogue }     from '../NPCDialogue';
+import NPCDialogue     from '../NPCDialogue';
 import { ShopInterface }   from '../ShopInterface';
 
 import './Location.css';
