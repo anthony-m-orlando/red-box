@@ -43,7 +43,8 @@ src/
 │   ├── dice.js
 │   ├── dice.test.js          # Unit tests for dice utilities
 │   ├── calculations.js
-│   └── calculations.test.js  # Unit tests for calculations
+│   ├── calculations.test.js  # Unit tests for calculations
+│   └── items.test.js         # Unit tests for inventory and equipment logic
 ├── components/
 │   └── common/
 │       ├── Button.jsx
@@ -63,6 +64,7 @@ src/
 Test individual functions in isolation:
 - `dice.test.js` - Dice rolling utilities
 - `calculations.test.js` - D&D calculations (HP, AC, THAC0, etc.)
+- `items.test.js` - Inventory and equipment logic, including item use, equip validation, shields, and two-handed weapon rules
 
 ### Component Tests
 Test React components:
@@ -174,6 +176,7 @@ All tests must pass before merging code.
 ### Critical (Must Always Pass)
 - Dice rolling (randomness validation)
 - Character calculations (HP, AC, THAC0)
+- Item/equipment rules (inventory use, equip validation, AC updates)
 - Class requirements
 - State management
 

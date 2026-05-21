@@ -54,7 +54,7 @@ We will utilize a relational structure (PostgreSQL) with JSONB columns to allow 
 | `id` | UUID | Primary Key |
 | `user_id` | UUID | Foreign Key (Users) |
 | `data_json` | JSONB | Stats, Class, HP, XP, and Spells |
-| `inventory_json` | JSONB | Current equipment and encumbrance |
+| `inventory_json` | JSONB | Current equipment, equipped weapon/shield state, item quantities, and AC modifiers |
 | `is_alive` | BOOLEAN | If false, triggers the "Temple Loop" logic |
 
 ### 2.3 Adventure_State Table (World State)
@@ -104,6 +104,12 @@ A centralized `TimeManager` tracks "Turns" (100 tiles moved or 1 combat encounte
 * **Map Aesthetic**: Weathered parchment textures with hand-drawn tile overlays.
 * **Typography**: Serif fonts for narrative/descriptions; Monospace for combat logs and stats.
 * **Animations**: CSS typewriter effects for DM descriptions; subtle "flicker" on the Fog of War edges.
+
+### 4.3 Inventory & Equipment UI
+
+* **Unified Inventory Access**: The player may open the `Inventory` interface from Town, Dungeon, and Combat screens.
+* **Equipment Toggles**: The Character Tab includes interactive equipment toggles for weapons, shields, and armor.
+* **D&D Equip Rules**: Shield and two-handed weapon logic must be enforced by the UI, with incompatible off-hand gear disabled and AC recalculated immediately when equipment changes.
 
 ---
 

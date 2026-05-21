@@ -364,10 +364,12 @@ const aleenaDialogue: DialogueTree = {
 │      MAP         │      ACTIONS            │
 │   (Visual Grid)  │   [⚔ Attack]           │
 │                  │   [🪄 Cast Spell]      │
-│                  │   [🎒 Use Item]        │
+│                  │   [🎒 Inventory]       │
 │                  │   [🏃 Flee]            │
 └──────────────────┴─────────────────────────┘
 ```
+
+* `Inventory` opens a unified item browser in exploration, town, and combat. Equipment changes must follow D&D equip rules (shield vs two-handed weapon restrictions) and immediately update the player's AC and gear status.
 
 ### 7.2 Narration Text Types
 

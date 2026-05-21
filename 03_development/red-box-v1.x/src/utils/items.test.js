@@ -35,9 +35,71 @@ describe('Item Utilities', () => {
       const result = canUseItem(null, 'exploration');
       expect(result.canUse).toBe(false);
     });
+
+    it('allows exploration/combat items to be viewed in town', () => {
+      const townResult = canUseItem(healingPotion, 'town');
+      expect(townResult.canUse).toBe(true);
+    });
+
+    it('prevents equipping a shield while wielding a two-handed weapon', () => {
+      const shield = {
+        name: 'Iron Shield',
+        type: 'tool',
+        effect: { type: 'equip_shield', narrative: 'You equip a shield.' }
+      };
+      const character = { weaponTwoHanded: true, hasShield: false };
+      const result = canUseItem(shield, 'exploration', character);
+      expect(result.canUse).toBe(false);
+      expect(result.reason).toContain('two-handed weapon');
+    });
+
+    it('prevents equipping a two-handed weapon while a shield is equipped', () => {
+      const greatsword = {
+        name: 'Greatsword',
+        type: 'weapon',
+        effect: { type: 'equip_weapon', twoHanded: true }
+      };
+      const character = { weapon: 'Shortsword', weaponTwoHanded: false, hasShield: true };
+      const result = canUseItem(greatsword, 'exploration', character);
+      expect(result.canUse).toBe(false);
+      expect(result.reason).toContain('shield');
+    });
+
+    it('allows unequipping an equipped weapon', () => {
+      const sword = {
+        name: 'Longsword',
+        type: 'weapon',
+        effect: { type: 'equip_weapon', twoHanded: false }
+      };
+      const character = { weapon: 'Longsword', weaponTwoHanded: false };
+      const result = canUseItem(sword, 'exploration', character);
+      expect(result.canUse).toBe(true);
+    });
+
+    it('allows unequipping equipped armor', () => {
+      const armor = {
+        name: 'Chain Mail',
+        type: 'armor',
+        effect: { type: 'equip_armor', acValue: 5 }
+      };
+      const character = { armor: 'Chain Mail' };
+      const result = canUseItem(armor, 'exploration', character);
+      expect(result.canUse).toBe(true);
+    });
+
+    it('allows unequipping an equipped shield', () => {
+      const shield = {
+        name: 'Iron Shield',
+        type: 'tool',
+        effect: { type: 'equip_shield' }
+      };
+      const character = { hasShield: true, shield: 'Iron Shield' };
+      const result = canUseItem(shield, 'exploration', character);
+      expect(result.canUse).toBe(true);
+    });
   });
 
-  describe('useHealingItem', () => {
+  describe('applyItemEffect', () => {
     const healingPotion = {
       name: 'Healing Potion',
       type: 'consumable',
@@ -154,6 +216,87 @@ describe('Item Utilities', () => {
       const result = applyItemEffect(rope, character, 'exploration');
       expect(result.type).toBe('utility');
     });
+
+    it('applies equipment effect for weapons', () => {
+      const weapon = {
+        name: 'Longsword',
+        type: 'weapon',
+        effect: { type: 'equip_weapon', twoHanded: false, narrative: 'You wield the longsword.' }
+      };
+      const result = applyItemEffect(weapon, character, 'combat');
+      expect(result.type).toBe('equipment');
+      expect(result.equipment).toBeDefined();
+      expect(result.equipment.weapon).toBe('Longsword');
+      expect(result.equipment.weaponTwoHanded).toBe(false);
+    });
+
+    it('equips a shield and updates shield state', () => {
+      const shield = {
+        name: 'Iron Shield',
+        type: 'tool',
+        effect: { type: 'equip_shield', narrative: 'You strap on the shield.' }
+      };
+      const result = applyItemEffect(shield, character, 'town');
+      expect(result.type).toBe('equipment');
+      expect(result.equipment.hasShield).toBe(true);
+      expect(result.equipment.shield).toBe('Iron Shield');
+    });
+
+    it('equips two-handed weapons and removes shields', () => {
+      const greatsword = {
+        name: 'Greatsword',
+        type: 'weapon',
+        effect: { type: 'equip_weapon', twoHanded: true }
+      };
+      const currentCharacter = { ...character, hasShield: true, shield: 'Iron Shield' };
+      const result = applyItemEffect(greatsword, currentCharacter, 'combat');
+      expect(result.type).toBe('equipment');
+      expect(result.equipment.weaponTwoHanded).toBe(true);
+      expect(result.equipment.hasShield).toBe(false);
+      expect(result.equipment.shield).toBe(null);
+    });
+
+    it('unequips a weapon', () => {
+      const weapon = {
+        name: 'Longsword',
+        type: 'weapon',
+        effect: { type: 'equip_weapon', twoHanded: false }
+      };
+      const currentCharacter = { ...character, weapon: 'Longsword' };
+      const result = applyItemEffect(weapon, currentCharacter, 'combat');
+      expect(result.type).toBe('equipment');
+      expect(result.equipment.weapon).toBe(null);
+      expect(result.equipment.weaponTwoHanded).toBe(false);
+      expect(result.message).toBe('You unequip the Longsword.');
+    });
+
+    it('unequips armor', () => {
+      const armor = {
+        name: 'Chain Mail',
+        type: 'armor',
+        effect: { type: 'equip_armor', acValue: 5 }
+      };
+      const currentCharacter = { ...character, armor: 'Chain Mail', armorClass: 5 };
+      const result = applyItemEffect(armor, currentCharacter, 'town');
+      expect(result.type).toBe('equipment');
+      expect(result.equipment.armor).toBe('none');
+      expect(result.equipment.armorClass).toBe(9);
+      expect(result.message).toBe('You unequip the Chain Mail.');
+    });
+
+    it('unequips a shield', () => {
+      const shield = {
+        name: 'Iron Shield',
+        type: 'tool',
+        effect: { type: 'equip_shield' }
+      };
+      const currentCharacter = { ...character, hasShield: true, shield: 'Iron Shield' };
+      const result = applyItemEffect(shield, currentCharacter, 'town');
+      expect(result.type).toBe('equipment');
+      expect(result.equipment.hasShield).toBe(false);
+      expect(result.equipment.shield).toBe(null);
+      expect(result.message).toBe('You unequip the Iron Shield.');
+    });
   });
 
   describe('getItemIcon', () => {
@@ -184,6 +327,10 @@ describe('Item Utilities', () => {
       expect(items.length).toBeGreaterThan(0);
       expect(items.some(i => i.id === 'backpack')).toBe(true);
       expect(items.some(i => i.id === 'healing_potion')).toBe(true);
+      expect(items.some(i => i.id === 'chain_mail')).toBe(true);
+      expect(items.some(i => i.id === 'shield')).toBe(true);
+      expect(items.some(i => i.id === 'sword')).toBe(true);
+      expect(items.some(i => i.id === 'dagger')).toBe(true);
     });
 
     it('returns items for Cleric', () => {

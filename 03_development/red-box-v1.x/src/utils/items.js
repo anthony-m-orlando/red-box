@@ -3,6 +3,8 @@
  */
 
 import { rollDice, rollDiceSum } from './dice';
+import { calculateAC } from './calculations';
+import { getStartingEquipment } from '../data/classes';
 
 /**
  * Check if an item can be used in the current context
@@ -10,14 +12,66 @@ import { rollDice, rollDiceSum } from './dice';
  * @param {string} context - 'combat' or 'exploration'
  * @returns {object} { canUse: boolean, reason: string }
  */
-export function canUseItem(item, context = 'exploration') {
+const EQUIP_TYPES = ['equip_weapon', 'equip_armor', 'equip_shield'];
+
+export function isEquipableItem(item) {
+  return !!item?.effect?.type && EQUIP_TYPES.includes(item.effect.type);
+}
+
+export function canEquipItem(item, character = {}) {
+  const { effect = {} } = item;
+  const { type } = effect;
+  const { weapon, weaponTwoHanded, hasShield, shield } = character;
+
+  if (type === 'equip_shield') {
+    if (weaponTwoHanded) {
+      return { canUse: false, reason: 'Cannot equip a shield while wielding a two-handed weapon.' };
+    }
+    // Allow unequipping if already equipped, but prevent equipping different shield if one is equipped
+    if (hasShield && shield !== item.name) {
+      return { canUse: false, reason: 'A shield is already equipped.' };
+    }
+  }
+
+  if (type === 'equip_weapon') {
+    if (effect.twoHanded && hasShield) {
+      return { canUse: false, reason: 'Cannot equip a two-handed weapon while a shield is equipped.' };
+    }
+    // Allow unequipping if already equipped, but prevent equipping different weapon if one is equipped
+    if (weapon && weapon !== item.name) {
+      return { canUse: false, reason: 'A weapon is already equipped.' };
+    }
+  }
+
+  if (type === 'equip_armor') {
+    // Allow unequipping if already equipped, but prevent equipping different armor if one is equipped
+    if (character.armor && character.armor !== item.name && character.armor !== item.name.toLowerCase()) {
+      return { canUse: false, reason: 'Armor is already equipped.' };
+    }
+  }
+
+  return { canUse: true, reason: '' };
+}
+
+export function canUseItem(item, context = 'exploration', character = null) {
   if (!item) {
     return { canUse: false, reason: 'Item not found' };
   }
 
+  if (isEquipableItem(item)) {
+    return canEquipItem(item, character);
+  }
+
   // Check if item is usable in this context
   const usableIn = item.usableIn || ['exploration', 'combat'];
-  
+  if (context === 'town') {
+    // Town inventory acts like an item browser, but only exploration/combat items can be actively used.
+    if (usableIn.includes('exploration') || usableIn.includes('combat')) {
+      return { canUse: true, reason: '' };
+    }
+    return { canUse: false, reason: `Cannot use ${item.name} here` };
+  }
+
   if (!usableIn.includes(context)) {
     return { 
       canUse: false, 
@@ -107,13 +161,95 @@ export function useUtilityItem(item, context = 'exploration') {
  * @returns {object} { effect: string, message: string, equipped: boolean }
  */
 export function useCombatItem(item, character) {
-  // Equipping weapons/armor would change character stats
-  // For now, just return a message
-  
+  const equipResult = equipItem(item, character);
   return {
     effect: 'equip',
-    message: `You ready the ${item.name}.`,
-    equipped: true
+    ...equipResult
+  };
+}
+
+export function equipItem(item, character) {
+  const { effect = {} } = item;
+  const armorClass = character.armorClass ?? 9;
+  const currentWeapon = character.weapon || null;
+  const currentWeaponTwoHanded = character.weaponTwoHanded || false;
+  const currentShield = character.shield || null;
+
+  let newArmor = character.armor || 'none';
+  let newArmorClass = armorClass;
+  let newWeapon = currentWeapon;
+  let newWeaponTwoHanded = currentWeaponTwoHanded;
+  let newShield = currentShield;
+  let newHasShield = character.hasShield || false;
+
+  // Check if item is already equipped (for unequipping)
+  const isEquipped = (
+    (effect.type === 'equip_weapon' && currentWeapon === item.name) ||
+    (effect.type === 'equip_armor' && (character.armor === item.name || character.armor === item.name.toLowerCase())) ||
+    (effect.type === 'equip_shield' && currentShield === item.name)
+  );
+
+  if (isEquipped) {
+    // Unequip the item
+    switch (effect.type) {
+      case 'equip_armor':
+        newArmor = 'none';
+        newArmorClass = 9;
+        break;
+      case 'equip_shield':
+        newShield = null;
+        newHasShield = false;
+        break;
+      case 'equip_weapon':
+        newWeapon = null;
+        newWeaponTwoHanded = false;
+        break;
+    }
+  } else {
+    // Equip the item
+    switch (effect.type) {
+      case 'equip_armor':
+        newArmor = item.name;
+        newArmorClass = effect.acValue || 9;
+        break;
+
+      case 'equip_shield':
+        newShield = item.name;
+        newHasShield = true;
+        break;
+
+      case 'equip_weapon':
+        newWeapon = item.name;
+        newWeaponTwoHanded = !!effect.twoHanded;
+        if (newWeaponTwoHanded) {
+          newShield = null;
+          newHasShield = false;
+        }
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  const armorBonus = (newArmorClass - 9) + (newHasShield ? -1 : 0);
+  const ac = calculateAC(9, character.abilities?.dexterity ?? 10, armorBonus);
+
+  return {
+    message: isEquipped 
+      ? `You unequip the ${item.name}.`
+      : (effect.narrative || `You equip the ${item.name}.`),
+    equipped: !isEquipped,
+    equipment: {
+      armor: newArmor,
+      armorClass: newArmorClass,
+      hasShield: newHasShield,
+      shield: newShield,
+      weapon: newWeapon,
+      weaponTwoHanded: newWeaponTwoHanded,
+      ac,
+      inventory: character.inventory || [],
+    }
   };
 }
 
@@ -140,6 +276,9 @@ export function applyItemEffect(item, character, context = 'exploration') {
         ...useLightSource(item)
       };
 
+    case 'equip_weapon':
+    case 'equip_armor':
+    case 'equip_shield':
     case 'weapon':
     case 'armor':
       return {
@@ -241,6 +380,63 @@ export function formatItemUseMessage(characterName, item, result) {
  * @returns {array} Array of item objects
  */
 export function getStartingItems(className) {
+  const equipment = getStartingEquipment(className);
+  const items = [];
+
+  // Add armor if not none
+  if (equipment.armor && equipment.armor !== 'none') {
+    items.push({
+      id: equipment.armor.replace(' ', '_'),
+      name: equipment.armor.charAt(0).toUpperCase() + equipment.armor.slice(1),
+      type: 'armor',
+      weight: equipment.armor === 'chain mail' ? 5 : equipment.armor === 'leather' ? 2 : 1,
+      quantity: 1,
+      effect: { type: 'equip_armor', acValue: equipment.armor === 'chain mail' ? 5 : equipment.armor === 'leather' ? 7 : 9 },
+      usableIn: []
+    });
+  }
+
+  // Add shield if available
+  if (equipment.shield) {
+    items.push({
+      id: 'shield',
+      name: 'Shield',
+      type: 'armor',
+      weight: 1,
+      quantity: 1,
+      effect: { type: 'equip_shield', acBonus: 1 },
+      usableIn: []
+    });
+  }
+
+  // Add weapons
+  equipment.weapons.forEach(weapon => {
+    const weaponData = {
+      sword: { name: 'Sword', weight: 3, damage: '1d8', type: 'melee' },
+      dagger: { name: 'Dagger', weight: 1, damage: '1d4', type: 'melee' },
+      mace: { name: 'Mace', weight: 3, damage: '1d6', type: 'melee' },
+      sling: { name: 'Sling', weight: 0, damage: '1d4', type: 'ranged' },
+      staff: { name: 'Staff', weight: 4, damage: '1d6', type: 'melee' },
+      'war hammer': { name: 'War Hammer', weight: 3, damage: '1d6', type: 'melee' },
+      'hand axe': { name: 'Hand Axe', weight: 1, damage: '1d6', type: 'melee' }
+    }[weapon] || { name: weapon.charAt(0).toUpperCase() + weapon.slice(1), weight: 1, damage: '1d6', type: 'melee' };
+
+    items.push({
+      id: weapon.replace(' ', '_'),
+      name: weaponData.name,
+      type: 'weapon',
+      weight: weaponData.weight,
+      quantity: 1,
+      effect: { 
+        type: 'equip_weapon', 
+        damage: weaponData.damage, 
+        weaponType: weaponData.type,
+        twoHanded: weapon === 'staff' || weapon === 'war hammer' || weapon === 'spear' // Add two-handed weapons as needed
+      },
+      usableIn: []
+    });
+  });
+
   const baseItems = [
     {
       id: 'backpack',
@@ -510,7 +706,7 @@ export function getStartingItems(className) {
     ]
   };
 
-  return [...baseItems, ...(classItems[className] || classItems.fighter)];
+  return [...items, ...baseItems, ...(classItems[className] || classItems.fighter)];
 }
 
 export default {

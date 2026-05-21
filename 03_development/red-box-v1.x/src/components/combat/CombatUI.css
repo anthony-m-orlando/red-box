@@ -61,6 +61,32 @@
   color: var(--ink-brown);
 }
 
+.combat-equipment-summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.equipment-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background-color: rgba(255,255,255,0.92);
+  border: 1px solid rgba(42,35,28,0.12);
+  font-size: 0.85rem;
+  color: var(--ink-black);
+}
+
+.equipment-chip.equipment-ac {
+  background-color: rgba(44,74,124,0.08);
+  color: var(--ink-blue);
+  border-color: rgba(44,74,124,0.2);
+}
+
 /* ========================================
    Combat Divider
    ======================================== */

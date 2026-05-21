@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Package } from 'lucide-react';
-import { canUseItem, getItemIcon } from '../../utils/items';
+import { canUseItem, getItemIcon, isEquipableItem } from '../../utils/items';
 import Button from '../common/Button';
 import './ItemMenu.css';
 
@@ -14,17 +14,26 @@ import './ItemMenu.css';
  */
 export function ItemMenu({ character, onUseItem, onClose, context = 'exploration' }) {
   const handleItemClick = (item) => {
-    const { canUse } = canUseItem(item, context);
+    const { canUse } = canUseItem(item, context, character);
+    const equipable = isEquipable(item);
+    const isEquipped = equipable && (
+      (item.effect?.type === 'equip_weapon' && character.weapon === item.name) ||
+      (item.effect?.type === 'equip_armor' && character.armor === item.name) ||
+      (item.effect?.type === 'equip_shield' && character.shield === item.name)
+    );
     
-    if (canUse) {
+    if (canUse || isEquipped) {
       onUseItem(item);
     }
   };
 
-  // Filter items by context (only show usable items)
-  const usableItems = character.inventory.filter(item => {
-    const { canUse } = canUseItem(item, context);
-    return canUse || item.usableIn?.includes(context);
+  const isEquipable = (item) => isEquipableItem(item);
+
+  // Filter items by context — in town inventory mode, show all items.
+  const inventoryItems = character.inventory.filter(item => {
+    if (context === 'town') return true;
+    const { canUse } = canUseItem(item, context, character);
+    return canUse || item.usableIn?.includes(context) || isEquipable(item);
   });
 
   return (
@@ -34,7 +43,7 @@ export function ItemMenu({ character, onUseItem, onClose, context = 'exploration
         <div className="item-menu-header">
           <div className="menu-title">
             <Package size={24} />
-            <h3>Use an Item</h3>
+            <h3>Inventory</h3>
           </div>
           <button className="close-button" onClick={onClose}>
             <X size={24} />
@@ -56,21 +65,42 @@ export function ItemMenu({ character, onUseItem, onClose, context = 'exploration
               <Package size={48} />
               <p>Your inventory is empty!</p>
             </div>
-          ) : usableItems.length === 0 ? (
+          ) : inventoryItems.length === 0 ? (
             <div className="no-items">
               <Package size={48} />
-              <p>No usable items in {context}.</p>
-              <p className="hint">Some items can only be used during exploration or combat.</p>
+              <p>No inventory items to display.</p>
+              <p className="hint">Use the action buttons to gain items or return later.</p>
             </div>
           ) : (
-            usableItems.map((item, index) => {
-              const { canUse, reason } = canUseItem(item, context);
+            inventoryItems.map((item, index) => {
+              const { canUse, reason } = canUseItem(item, context, character);
               const icon = getItemIcon(item);
+              const equipable = isEquipable(item);
+              let actionLabel = 'Use Item';
+              let disableAction = !canUse;
+
+              if (equipable) {
+                if (item.effect?.type === 'equip_weapon') {
+                  actionLabel = character.weapon === item.name ? 'Unequip' : 'Equip';
+                } else if (item.effect?.type === 'equip_armor') {
+                  actionLabel = character.armor === item.name ? 'Unequip' : 'Equip';
+                } else if (item.effect?.type === 'equip_shield') {
+                  actionLabel = character.shield === item.name ? 'Unequip' : 'Equip';
+                } else {
+                  actionLabel = 'Equip';
+                }
+              } else {
+                actionLabel = canUse ? 'Use Item' : 'Unavailable';
+              }
+
+              if (equipable && !canUse && actionLabel !== 'Unequip') {
+                disableAction = true;
+              }
 
               return (
                 <div
                   key={`${item.id}-${index}`}
-                  className={`item-option ${!canUse ? 'disabled' : ''}`}
+                  className={`item-option ${disableAction ? 'disabled' : ''}`}
                 >
                   <div className="item-option-header">
                     <div className="item-option-title">
@@ -101,13 +131,13 @@ export function ItemMenu({ character, onUseItem, onClose, context = 'exploration
 
                   <div className="item-option-actions">
                     <Button
-                      variant={canUse ? 'primary' : 'secondary'}
+                      variant={disableAction ? 'secondary' : 'primary'}
                       size="sm"
                       onClick={() => handleItemClick(item)}
-                      disabled={!canUse}
+                      disabled={disableAction}
                       fullWidth
                     >
-                      {canUse ? 'Use Item' : 'Unavailable'}
+                      {actionLabel}
                     </Button>
                   </div>
                 </div>

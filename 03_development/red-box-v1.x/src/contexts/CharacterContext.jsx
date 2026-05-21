@@ -109,7 +109,11 @@ const initialState = {
   inventory: [],
   gold: 0,
   armor: 'none',
+  armorClass: 9,
   hasShield: false,
+  shield: null,
+  weapon: null,
+  weaponTwoHanded: false,
 
   spells: [],
   spellSlots: { 1: 0, 2: 0, 3: 0 },
@@ -156,13 +160,26 @@ function characterReducer(state, action) {
       };
 
     case 'SET_EQUIPMENT': {
-      const { armor, hasShield, inventory } = action.payload;
+      const {
+        armor,
+        armorClass = state.armorClass,
+        hasShield,
+        shield = state.shield,
+        weapon = state.weapon,
+        weaponTwoHanded = state.weaponTwoHanded,
+        ac,
+        inventory,
+      } = action.payload;
       return {
         ...state,
         armor,
+        armorClass,
         hasShield,
+        shield,
+        weapon,
+        weaponTwoHanded,
+        ac: ac ?? calculateAC(9, state.abilities.dexterity, (armorClass - 9) + (hasShield ? -1 : 0)),
         inventory,
-        ac: calculateAC(9, state.abilities.dexterity),
         creationStep: 5,
       };
     }
@@ -249,7 +266,7 @@ function characterReducer(state, action) {
     }
 
     case 'LOAD_CHARACTER':
-      return { ...action.payload, isCreated: true };
+      return { ...action.payload, isCreated: true, inventory: action.payload.inventory || [] };
 
     case 'RESET_CHARACTER':
       return initialState;

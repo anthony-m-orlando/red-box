@@ -113,10 +113,42 @@
   background-color: rgba(196, 147, 42, 0.08);
 }
 
+.stat-chip.ac {
+  color: var(--ink-brown);
+  border-color: var(--ink-brown);
+  background-color: rgba(92,75,58,0.08);
+}
+
+.stat-chip.weapon,
+.stat-chip.armor,
+.stat-chip.shield {
+  color: var(--ink-black);
+  border-color: rgba(42,35,28,0.16);
+  background-color: rgba(42,35,28,0.06);
+}
+
 .stat-chip.hirelings {
   color: var(--ink-blue);
   border-color: var(--ink-blue);
   background-color: rgba(44, 74, 124, 0.07);
+}
+
+.town-header-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: var(--space-xs);
+}
+
+.town-inventory-notice {
+  margin-top: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  background-color: rgba(44, 74, 124, 0.08);
+  border: 1px solid var(--ink-blue);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  color: var(--ink-blue);
+  text-align: right;
 }
 
 /* =============================================================================

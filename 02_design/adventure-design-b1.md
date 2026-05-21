@@ -22,6 +22,7 @@ Before entering the dungeon, the player must interact with the **Town of Thresho
 
 * **Rumor Table Integration**: Upon starting the module, the engine must roll 1d20 three times to pull from the "Background Rumors" table (B1, Page 4).
 * **Rumor Integrity**: Rumors marked as "False" must be presented with the same UI weight as "True" rumors.
+* **Inventory Access**: The player must be able to open the `Inventory` system from the Town hub, while exploring the dungeon, and during combat. Equipping shields or two-handed weapons must update the character's AC and disable incompatible off-hand equipment.
 
 ### 1.2 The Legend of Quasqueton
 

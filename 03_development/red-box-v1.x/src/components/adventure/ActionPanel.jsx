@@ -16,7 +16,7 @@
  */
 
 import React, { useState } from 'react';
-import { Sword, Scroll, Package, ArrowRight, Bed, Sparkles } from 'lucide-react';
+import { Shield, Sword, Scroll, Package, ArrowRight, Bed, Sparkles } from 'lucide-react';
 import { useCharacter }    from '../../contexts/CharacterContext';
 import { useAdventure }    from '../../contexts/AdventureContext';
 import { getTutorialMonster } from '../../data/tutorialAdventure';
@@ -43,6 +43,7 @@ export function ActionPanel() {
     rest,
     useSpellSlot,
     addBuff,
+    setEquipment,
   } = useCharacter();
 
   const adventure = useAdventure();
@@ -110,6 +111,10 @@ export function ActionPanel() {
         adventure.lightNewSource?.('torch');
         addNarration('Light source activated!', 'system');
         break;
+      case 'equipment':
+        setEquipment(result.equipment);
+        addNarration(`You equip ${item.name}.`, 'system');
+        break;
       default:
         break;
     }
@@ -173,6 +178,22 @@ export function ActionPanel() {
               <div className="status-compact">
                 <span className="status-label">Gold:</span>
                 <span className="number">{character.gold}</span>
+              </div>
+            </div>
+            <div className="status-row status-equipment">
+              <div className="status-compact">
+                <span className="status-label">Weapon:</span>
+                <span className="number">
+                  {character.weapon || 'None'}{character.weaponTwoHanded ? ' (2H)' : ''}
+                </span>
+              </div>
+              <div className="status-compact">
+                <span className="status-label">Armor:</span>
+                <span className="number">{character.armor || 'None'}</span>
+              </div>
+              <div className="status-compact">
+                <span className="status-label">Shield:</span>
+                <span className="number">{character.shield || 'None'}</span>
               </div>
             </div>
           </div>
@@ -242,7 +263,7 @@ export function ActionPanel() {
                 Search Room
               </Button>
 
-              {/* Use Item */}
+              {/* Inventory */}
               <Button
                 variant="secondary"
                 size="sm"
@@ -250,7 +271,7 @@ export function ActionPanel() {
                 fullWidth
                 onClick={() => setShowItemMenu(true)}
               >
-                Use Item
+                Inventory
               </Button>
 
               {/* Cast Spell */}

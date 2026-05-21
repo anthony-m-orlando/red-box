@@ -26,6 +26,7 @@ This document removes the "Trapper Keeper" UI constraints, incorporates the clou
 
 * **Interactive Town Map**: A central navigation hub for the "Town of Threshold" featuring at least 7 interactive locations.
 * **The Threshold Arms (Inn)**: A primary recovery location where players can rest to restore HP and spells.
+* **Inventory Management**: Players must be able to access a consistent `Inventory` UI from Town, Dungeon, and Combat screens. The interface supports item use, equipment changes, and real-time AC updates when equipping shields or two-handed weapons.
 * **NPC Interaction**:
 * **Branching Dialogue**: NPCs must support complex dialogue trees for rumors, bribes, and hiring.
 * **Persistence**: NPC "Attitude" (Friendly, Neutral, Hostile) must persist based on previous player interactions.

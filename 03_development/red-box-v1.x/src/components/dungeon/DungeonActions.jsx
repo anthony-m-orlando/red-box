@@ -73,7 +73,7 @@ export function DungeonActions({
   onCollectTreasure,
 }) {
   const { heal, removeItem, decrementItemQuantity, rest: charRest,
-          useSpellSlot, addBuff, addXP, updateGold } = useCharacter();
+          useSpellSlot, addBuff, addXP, updateGold, setEquipment } = useCharacter();
 
   const adventure = useAdventure();
   const {
@@ -144,9 +144,10 @@ export function DungeonActions({
     addNarration(`You use ${item.name}. ${result.message}`, 'action');
     if (result.type === 'healing') heal(result.healAmount);
     if (result.type === 'light')   lightNewSource('torch');
+    if (result.type === 'equipment') setEquipment(result.equipment);
     if (result.removeOnUse)        removeItem(item.id);
     else                           decrementItemQuantity(item.id);
-  }, [character, addNarration, heal, lightNewSource, removeItem, decrementItemQuantity]);
+  }, [character, addNarration, heal, lightNewSource, removeItem, decrementItemQuantity, setEquipment]);
 
   // Spell casting (delegates to shared handleCastSpell util)
   const handleCastSpellLocal = useCallback((spellId) => {
@@ -230,11 +231,24 @@ export function DungeonActions({
 
       {/* ── 2. Room info ─────────────────────────────────────────────────── */}
       {currentRoom && (
-        <div className="dungeon-actions__room-info">
-          <span className="room-info__number">Room {currentRoom.number}</span>
-          <span className="room-info__name">{currentRoom.label || currentRoom.name}</span>
-          <RoomStateBadge state={roomState} />
-        </div>
+        <>
+          <div className="dungeon-actions__room-info">
+            <span className="room-info__number">Room {currentRoom.number}</span>
+            <span className="room-info__name">{currentRoom.label || currentRoom.name}</span>
+            <RoomStateBadge state={roomState} />
+          </div>
+          <div className="dungeon-actions__equipment-summary">
+            <span className="equipment-chip">
+              ⚔ {character.weapon || 'None'}{character.weaponTwoHanded ? ' (2H)' : ''}
+            </span>
+            <span className="equipment-chip">
+              🛡 {character.armor || 'None'}
+            </span>
+            <span className="equipment-chip">
+              ⛨ {character.shield || 'None'}
+            </span>
+          </div>
+        </>
       )}
 
       {/* ── Danger / trap warnings ───────────────────────────────────────── */}
@@ -342,7 +356,7 @@ export function DungeonActions({
             </Button>
           )}
 
-          {/* Use Item */}
+          {/* Inventory */}
           <Button
             variant="secondary"
             size="sm"
@@ -351,7 +365,7 @@ export function DungeonActions({
             onClick={() => setShowItemMenu(true)}
             disabled={inCombat}
           >
-            Use Item
+            Inventory
           </Button>
 
           {/* Cast Spell */}

@@ -79,6 +79,11 @@
   gap: var(--space-md);
 }
 
+.status-row.status-equipment {
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
 .status-compact {
   flex: 1;
   display: flex;
@@ -87,6 +92,10 @@
   padding: var(--space-sm);
   background-color: var(--paper-aged);
   border-radius: var(--radius-sm);
+}
+
+.status-compact + .status-compact {
+  min-width: 120px;
 }
 
 /* ========================================

@@ -34,6 +34,10 @@ import { useTown }        from '../../contexts/TownContext';
 import { useCharacter }   from '../../contexts/CharacterContext';
 import { townLocations }  from '../../data/townData';
 import { TownLocation }   from './TownLocation';
+import { applyItemEffect } from '../../utils/items';
+import ItemMenu          from '../adventure/ItemMenu';
+import Button            from '../common/Button';
+import { Package }      from 'lucide-react';
 
 // Location components — lazy-loadable but kept direct for v1
 import ThresholdArms  from './locations/ThresholdArms';
@@ -59,8 +63,11 @@ const LOCATION_COMPONENTS = {
 
 export function TownScreen() {
   const navigate                              = useNavigate();
-  const { character }                         = useCharacter();
+  const { character, heal, setEquipment, removeItem, decrementItemQuantity } = useCharacter();
   const { town, initTown, markLocationVisited } = useTown();
+
+  const [showInventory, setShowInventory]     = useState(false);
+  const [inventoryNotice, setInventoryNotice] = useState('');
 
   // Which location overlay is open, if any
   const [activeLocation, setActiveLocation]   = useState(null);
@@ -99,6 +106,27 @@ export function TownScreen() {
     navigate('/adventure/select');
   }, [navigate]);
 
+  const handleUseTownItem = useCallback((item) => {
+    setShowInventory(false);
+    const result = applyItemEffect(item, character, 'town');
+
+    if (result.type === 'healing') {
+      heal(result.healAmount);
+    }
+    if (result.type === 'equipment') {
+      setEquipment(result.equipment);
+    }
+    if (result.consumed) {
+      if (item.quantity !== undefined && item.quantity > 1) decrementItemQuantity(item.id, 1);
+      else removeItem(item.id);
+    }
+
+    if (result.message) {
+      setInventoryNotice(result.message);
+      window.setTimeout(() => setInventoryNotice(''), 4000);
+    }
+  }, [character, heal, setEquipment, decrementItemQuantity, removeItem]);
+
   // ---- Render active location overlay
   const LocationComponent = activeLocation
     ? LOCATION_COMPONENTS[activeLocation]
@@ -125,6 +153,16 @@ export function TownScreen() {
         </div>
 
         <div className="town-header-right">
+          <div className="town-header-actions">
+            <Button
+              variant="secondary"
+              size="sm"
+              icon={<Package size={14} />}
+              onClick={() => setShowInventory(true)}
+            >
+              Inventory
+            </Button>
+          </div>
           <div className="character-strip">
             <div className="character-strip-name">
               {character.name}
@@ -142,6 +180,18 @@ export function TownScreen() {
               <span className="stat-chip gold">
                 ✦ {character.gold ?? 0} gp
               </span>
+              <span className="stat-chip ac">
+                🛡 AC {character.ac ?? 9}
+              </span>
+              <span className="stat-chip weapon">
+                ⚔ {character.weapon || 'None'}
+              </span>
+              <span className="stat-chip armor">
+                🛡 {character.armor || 'None'}
+              </span>
+              <span className="stat-chip shield">
+                ⛨ {character.shield || 'None'}
+              </span>
               {town.hirelings.filter(h => h.isAlive).length > 0 && (
                 <span className="stat-chip hirelings">
                   ⚔ {town.hirelings.filter(h => h.isAlive).length} hireling{town.hirelings.filter(h => h.isAlive).length > 1 ? 's' : ''}
@@ -150,6 +200,11 @@ export function TownScreen() {
             </div>
           </div>
         </div>
+        {inventoryNotice && (
+          <div className="town-inventory-notice">
+            {inventoryNotice}
+          </div>
+        )}
       </header>
 
       {/* ================================================================
@@ -310,6 +365,14 @@ export function TownScreen() {
       {/* ================================================================
           LOCATION OVERLAY
       ================================================================ */}
+      {showInventory && (
+        <ItemMenu
+          character={character}
+          onUseItem={handleUseTownItem}
+          onClose={() => setShowInventory(false)}
+          context="town"
+        />
+      )}
       {LocationComponent && (
         <div
           className={`location-overlay ${overlayVisible ? 'overlay-visible' : 'overlay-hidden'}`}

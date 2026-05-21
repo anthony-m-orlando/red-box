@@ -125,6 +125,29 @@
   flex: 1;
 }
 
+.dungeon-actions__equipment-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 8px;
+  background-color: rgba(42,35,28,0.05);
+  border: 1px solid rgba(42,35,28,0.12);
+  border-radius: var(--radius-sm);
+  margin-top: 6px;
+}
+
+.equipment-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  border-radius: 999px;
+  background-color: rgba(255,255,255,0.85);
+  border: 1px solid rgba(42,35,28,0.12);
+}
+
 /* ── State badge ──────────────────────────────────────────────────────────── */
 
 .room-badge {

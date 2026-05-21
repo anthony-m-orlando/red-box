@@ -39,7 +39,7 @@ export function CombatUI({ enemy, onVictory, onDefeat }) {
   const {
     character, takeDamage, heal, addXP, updateGold,
     useSpellSlot, addItem, addBuff, decrementBuffDurations,
-    removeItem, decrementItemQuantity,
+    removeItem, decrementItemQuantity, setEquipment,
   } = useCharacter();
 
   const adventure = useAdventure();
@@ -66,6 +66,10 @@ export function CombatUI({ enemy, onVictory, onDefeat }) {
     if (result.type === 'healing') {
       heal(result.healAmount);
       addLogEntry(`💊 ${item.name} restores ${result.healAmount} HP!`);
+    }
+    if (result.type === 'equipment') {
+      setEquipment(result.equipment);
+      addLogEntry(`🛡️ Equipped ${item.name}.`);
     }
     if (result.consumed) {
       if (item.quantity !== undefined && item.quantity > 1) decrementItemQuantity(item.id, 1);
@@ -356,6 +360,21 @@ export function CombatUI({ enemy, onVictory, onDefeat }) {
               <span className="condition-asleep">😴 Asleep</span>
             </div>
           )}
+
+          <div className="combat-equipment-summary">
+            <span className="equipment-chip">
+              ⚔ {character.weapon || 'None'}{character.weaponTwoHanded ? ' (2H)' : ''}
+            </span>
+            <span className="equipment-chip">
+              🛡 {character.armor || 'None'}
+            </span>
+            <span className="equipment-chip">
+              ⛨ {character.shield || 'None'}
+            </span>
+            <span className="equipment-chip equipment-ac">
+              🧮 AC: {getEffectiveAC()}
+            </span>
+          </div>
         </div>
 
         <div className="combat-divider" />
@@ -408,7 +427,7 @@ export function CombatUI({ enemy, onVictory, onDefeat }) {
                 Cast Spell
               </Button>
               <Button variant="secondary" size="sm" icon={<Package size={14} />} onClick={() => setShowItemMenu(true)} fullWidth>
-                Use Item (free)
+                Inventory
               </Button>
               <Button variant="ghost" size="sm" icon={<AlertTriangle size={14} />} onClick={handlePlayerFlee} fullWidth>
                 Flee
