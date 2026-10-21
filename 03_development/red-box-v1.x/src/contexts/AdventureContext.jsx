@@ -1249,8 +1249,15 @@ export function AdventureProvider({ children }) {
 
     // Check if room is now clear — compute synchronously using the CURRENT state
     // plus the monster we just defeated (don't rely on post-dispatch state).
+    const isWanderingMonster = (ds.wanderingMonsters || []).some(
+      monster => monster.instanceId === instanceId
+    );
     let nextEnemy = null;
-    if (mod) {
+    if (isWanderingMonster) {
+      nextEnemy = (ds.wanderingMonsters || []).find(
+        monster => monster.instanceId !== instanceId && !monster.isDefeated
+      ) || null;
+    } else if (mod) {
       const alreadyDefeated = new Set([...(ds.defeatedMonsters || []), instanceId]);
       const roomMonsters = mod.rooms?.[ds.currentLevel]?.[ds.currentRoomId]
         ?.contents?.monsters ?? [];
@@ -1267,11 +1274,10 @@ export function AdventureProvider({ children }) {
 
     dispatch({ type: ACTIONS.DEFEAT_MONSTER, payload: { instanceId, narration, xp } });
 
-    // Either end combat (room cleared) or start the next combat (more enemies remain)
+    // Either end combat or advance to another member of the active encounter.
     if (!nextEnemy) {
-      endCombat(true, xp);
+      endCombat(!isWanderingMonster, xp);
     } else {
-      // Start combat with the next monster (don't call endCombat first)
       const nextNarration = `The ${nextEnemy.name} advances!`;
       dispatch({
         type: ACTIONS.START_COMBAT,

@@ -1,6 +1,6 @@
 import React from 'react';
 import { X, Package } from 'lucide-react';
-import { canUseItem, getItemIcon, isEquipableItem } from '../../utils/items';
+import { canUseItem, getItemIcon, isEquipableItem, isItemEquipped } from '../../utils/items';
 import Button from '../common/Button';
 import './ItemMenu.css';
 
@@ -16,11 +16,7 @@ export function ItemMenu({ character, onUseItem, onClose, context = 'exploration
   const handleItemClick = (item) => {
     const { canUse } = canUseItem(item, context, character);
     const equipable = isEquipable(item);
-    const isEquipped = equipable && (
-      (item.effect?.type === 'equip_weapon' && character.weapon === item.name) ||
-      (item.effect?.type === 'equip_armor' && character.armor === item.name) ||
-      (item.effect?.type === 'equip_shield' && character.shield === item.name)
-    );
+    const isEquipped = equipable && isItemEquipped(item, character);
     
     if (canUse || isEquipped) {
       onUseItem(item);
@@ -81,11 +77,11 @@ export function ItemMenu({ character, onUseItem, onClose, context = 'exploration
 
               if (equipable) {
                 if (item.effect?.type === 'equip_weapon') {
-                  actionLabel = character.weapon === item.name ? 'Unequip' : 'Equip';
+                  actionLabel = isItemEquipped(item, character) ? 'Unequip' : 'Equip';
                 } else if (item.effect?.type === 'equip_armor') {
-                  actionLabel = character.armor === item.name ? 'Unequip' : 'Equip';
+                  actionLabel = isItemEquipped(item, character) ? 'Unequip' : 'Equip';
                 } else if (item.effect?.type === 'equip_shield') {
-                  actionLabel = character.shield === item.name ? 'Unequip' : 'Equip';
+                  actionLabel = isItemEquipped(item, character) ? 'Unequip' : 'Equip';
                 } else {
                   actionLabel = 'Equip';
                 }

@@ -18,6 +18,26 @@ export function isEquipableItem(item) {
   return !!item?.effect?.type && EQUIP_TYPES.includes(item.effect.type);
 }
 
+const normalizeEquipmentName = (name) => typeof name === 'string' ? name.trim().toLowerCase() : '';
+
+export function isItemEquipped(item, character = {}) {
+  const itemName = normalizeEquipmentName(item?.name);
+  if (!itemName) return false;
+
+  switch (item?.effect?.type) {
+    case 'equip_weapon':
+      return normalizeEquipmentName(character.weapon) === itemName;
+    case 'equip_armor': {
+      const armorName = normalizeEquipmentName(character.armor);
+      return armorName !== '' && armorName !== 'none' && armorName === itemName;
+    }
+    case 'equip_shield':
+      return normalizeEquipmentName(character.shield) === itemName;
+    default:
+      return false;
+  }
+}
+
 export function canEquipItem(item, character = {}) {
   const { effect = {} } = item;
   const { type } = effect;
@@ -44,8 +64,8 @@ export function canEquipItem(item, character = {}) {
   }
 
   if (type === 'equip_armor') {
-    // Allow unequipping if already equipped, but prevent equipping different armor if one is equipped
-    if (character.armor && character.armor !== item.name && character.armor !== item.name.toLowerCase()) {
+    const equippedArmor = normalizeEquipmentName(character.armor);
+    if (equippedArmor && equippedArmor !== 'none' && equippedArmor !== normalizeEquipmentName(item.name)) {
       return { canUse: false, reason: 'Armor is already equipped.' };
     }
   }
@@ -183,11 +203,7 @@ export function equipItem(item, character) {
   let newHasShield = character.hasShield || false;
 
   // Check if item is already equipped (for unequipping)
-  const isEquipped = (
-    (effect.type === 'equip_weapon' && currentWeapon === item.name) ||
-    (effect.type === 'equip_armor' && (character.armor === item.name || character.armor === item.name.toLowerCase())) ||
-    (effect.type === 'equip_shield' && currentShield === item.name)
-  );
+  const isEquipped = isItemEquipped(item, character);
 
   if (isEquipped) {
     // Unequip the item

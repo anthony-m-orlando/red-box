@@ -1,6 +1,7 @@
 import { expect } from 'vitest';
 import {
   canUseItem,
+  isItemEquipped,
   useHealingItem,
   useLightSource,
   useUtilityItem,
@@ -85,6 +86,26 @@ describe('Item Utilities', () => {
       const character = { armor: 'Chain Mail' };
       const result = canUseItem(armor, 'exploration', character);
       expect(result.canUse).toBe(true);
+    });
+
+    it('allows equipping armor when the character has no armor', () => {
+      const armor = {
+        name: 'Chain Mail',
+        type: 'armor',
+        effect: { type: 'equip_armor', acValue: 5 }
+      };
+      const result = canUseItem(armor, 'exploration', { armor: 'none' });
+      expect(result.canUse).toBe(true);
+    });
+
+    it('recognizes equipped armor regardless of name casing', () => {
+      const armor = {
+        name: 'Chain Mail',
+        type: 'armor',
+        effect: { type: 'equip_armor', acValue: 5 }
+      };
+      expect(isItemEquipped(armor, { armor: 'chain mail' })).toBe(true);
+      expect(isItemEquipped(armor, { armor: 'none' })).toBe(false);
     });
 
     it('allows unequipping an equipped shield', () => {

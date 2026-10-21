@@ -338,6 +338,39 @@ it('should trigger room victory when all monsters in Room 3 are defeated', () =>
   // ──────────────────────────────────────────────────────────────────────────
 
   describe('Edge Cases - Bug Prevention', () => {
+    it('continues combat until every wandering monster in the pack is defeated', () => {
+      const { result } = renderHook(() => useAdventure(), { wrapper });
+      const pack = Array.from({ length: 4 }, (_, index) => ({
+        instanceId: `wm_kobold_test_${index}`,
+        name: 'Kobold',
+        typeId: 'kobold',
+        hp: { current: 2, max: 2 },
+        isDefeated: false,
+        isWandering: true,
+      }));
+
+      act(() => {
+        result.current.startDungeon('quasqueton', 1);
+        result.current.dispatch({
+          type: result.current.ACTIONS.SPAWN_WANDERING_MONSTER,
+          payload: { instances: pack, narration: 'Four Kobolds emerge from the darkness!' },
+        });
+      });
+
+      act(() => result.current.defeatMonster(pack[0].instanceId, 2));
+
+      expect(result.current.inCombat).toBe(true);
+      expect(result.current.currentEnemy.instanceId).toBe(pack[1].instanceId);
+      expect(result.current.dungeonState.wanderingMonsters[0].isDefeated).toBe(true);
+
+      pack.slice(1).forEach(monster => {
+        act(() => result.current.defeatMonster(monster.instanceId, 2));
+      });
+
+      expect(result.current.inCombat).toBe(false);
+      expect(result.current.dungeonState.roomStates[1].q1_1).not.toBe('cleared');
+    });
+
     it('should not get stuck on victory screen when defeating Kobold in Room 3', () => {
       const { result } = renderHook(() => useAdventure(), { wrapper });
       

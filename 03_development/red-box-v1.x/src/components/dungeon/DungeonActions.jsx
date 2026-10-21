@@ -145,8 +145,12 @@ export function DungeonActions({
     if (result.type === 'healing') heal(result.healAmount);
     if (result.type === 'light')   lightNewSource('torch');
     if (result.type === 'equipment') setEquipment(result.equipment);
-    if (result.removeOnUse)        removeItem(item.id);
-    else                           decrementItemQuantity(item.id);
+    if (result.removeOnUse) {
+      removeItem(item.id);
+    } else if (result.consumed) {
+      if (item.quantity !== undefined && item.quantity > 1) decrementItemQuantity(item.id);
+      else removeItem(item.id);
+    }
   }, [character, addNarration, heal, lightNewSource, removeItem, decrementItemQuantity, setEquipment]);
 
   // Spell casting (delegates to shared handleCastSpell util)
